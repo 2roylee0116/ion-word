@@ -2114,6 +2114,7 @@ function bookCardHTML(b, isTeacher, fromDash) {
       <button class="btn btn-secondary btn-sm" style="flex:1" onclick="openBook('${b.id}')">✏️ 편집</button>
       <button class="btn btn-primary btn-sm" style="flex:1" onclick="openBookStudy('${b.id}')">🃏 학습</button>
       <button class="btn btn-secondary btn-sm" style="flex:1" onclick="bookMakeTest('${b.id}')">📝 시험지</button>
+      <button class="btn btn-secondary btn-sm btn-icon" onclick="openEditBookModal('${b.id}')" title="이름·태그 수정">⚙️</button>
       <button class="btn btn-danger btn-sm btn-icon" onclick="deleteBook('${b.id}',${fromDash||false})" title="삭제">🗑</button>
     </div>`:`<div class="book-footer">
       <button class="btn btn-primary btn-sm" style="flex:1" onclick="openStudentStudy('${b.id}')">🃏 플래시카드</button>
@@ -2626,6 +2627,69 @@ async function createBookFromPaste() {
     showToast(`"${name}" 단어장 생성 완료! (${words.length}개 단어)`, 'success');
     setTimeout(() => openBook(b.id), 400);
   } catch(e){ showToast('저장 실패: '+e.message, 'error'); }
+}
+
+// =========================================================
+//  단어장 이름/태그/학년/색상 수정
+// =========================================================
+function openEditBookModal(bookId) {
+  const b = DB.books.find(b => b.id === bookId);
+  if (!b) return;
+  const COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#a78bfa','#ec4899'];
+  window._editBookSelColor = b.color || '#3b82f6';
+  showModal(`
+    <div class="modal-title">⚙️ 단어장 수정</div>
+    <div class="form-group">
+      <label class="form-label">단어장 이름</label>
+      <input class="form-input" id="eb-name" value="${esc(b.name)}" placeholder="단어장 이름">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">태그</label>
+        <input class="form-input" id="eb-tag" value="${esc(b.tag||'')}" placeholder="토익, 수능...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">대상 학년</label>
+        <input class="form-input" id="eb-grade" value="${esc(b.grade||'')}" placeholder="중2, 고등...">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">색상</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${COLORS.map(c => `
+          <div onclick="window._editBookSelColor='${c}';document.querySelectorAll('.eb-color-pick').forEach(el=>el.style.outline='none');this.style.outline='3px solid #333'"
+            class="eb-color-pick"
+            style="width:28px;height:28px;border-radius:50%;background:${c};cursor:pointer;outline:${c===(b.color||'#3b82f6')?'3px solid #333':'none'}"></div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveEditBook('${bookId}')">저장</button>
+    </div>`);
+  setTimeout(() => document.getElementById('eb-name')?.focus(), 80);
+}
+
+async function saveEditBook(bookId) {
+  const b = DB.books.find(b => b.id === bookId);
+  if (!b) return;
+  const name  = document.getElementById('eb-name').value.trim();
+  const tag   = document.getElementById('eb-tag').value.trim();
+  const grade = document.getElementById('eb-grade').value.trim();
+  const color = window._editBookSelColor || b.color;
+  if (!name) { showToast('이름을 입력하세요.', 'error'); return; }
+
+  try {
+    await sb.from('books').update({ name, tag, grade, color }).eq('id', bookId);
+    b.name = name; b.tag = tag; b.grade = grade; b.color = color;
+    closeModal();
+    showToast(`"${name}" 수정 완료!`, 'success');
+    renderLibrary();
+    renderDashboard();
+    refreshSelects();
+  } catch(e) {
+    showToast('저장 실패: ' + e.message, 'error');
+  }
 }
 
 async function createBook() {
