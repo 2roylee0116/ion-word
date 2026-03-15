@@ -1283,6 +1283,41 @@ input:checked + .toggle-slider:before { transform: translateX(18px); }
         <div id="progress-body"></div>
       </div>
 
+      <!-- ===== 반 관리 (선생님) ===== -->
+      <div id="pg-classes" class="page">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px">
+          <div>
+            <div class="section-title">반 관리</div>
+            <div class="section-sub">반을 만들고 학생을 배정하세요</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openNewClassModal()">+ 새 반 만들기</button>
+        </div>
+        <div id="classes-body"></div>
+      </div>
+
+      <!-- ===== 쪽지함 (선생님 + 학생 공통) ===== -->
+      <div id="pg-messages" class="page">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:8px">
+          <div>
+            <div class="section-title">쪽지함</div>
+            <div class="section-sub" id="messages-sub">받은 쪽지</div>
+          </div>
+          <div style="display:flex;gap:8px" id="messages-actions"></div>
+        </div>
+        <!-- 탭 -->
+        <div style="display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:0">
+          <button id="msg-tab-inbox" onclick="switchMsgTab('inbox')"
+            style="padding:8px 18px;border:none;background:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px">
+            📥 받은 쪽지
+          </button>
+          <button id="msg-tab-sent" onclick="switchMsgTab('sent')"
+            style="padding:8px 18px;border:none;background:none;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;font-weight:400;color:var(--text-muted);border-bottom:2px solid transparent;margin-bottom:-1px">
+            📤 보낸 쪽지
+          </button>
+        </div>
+        <div id="messages-body"></div>
+      </div>
+
     </div>
   </main>
 </div>
@@ -1384,11 +1419,12 @@ async function loadDB() {
       const { data: assigns } = await sb.from('assignments').select('book_id').eq('student_id', uid);
       const bookIds = (assigns || []).map(a => a.book_id);
 
-      const [booksRes, progressRes] = await Promise.all([
+      const [booksRes, progressRes, teachersRes] = await Promise.all([
         bookIds.length
           ? sb.from('books').select('*, words(id, en, ko, example, sort_order)').in('id', bookIds)
           : Promise.resolve({ data: [] }),
-        sb.from('progress').select('*').eq('student_id', uid)
+        sb.from('progress').select('*').eq('student_id', uid),
+        sb.from('profiles').select('id, name, role').eq('role', 'teacher')
       ]);
 
       DB.books = (booksRes.data || []).map(b => ({
@@ -1399,7 +1435,9 @@ async function loadDB() {
       }));
       // 학생 currentUser에 assigned 직접 설정 (getAssignedBooks가 이걸 참조)
       currentUser.assigned = bookIds;
-      DB.users = [{ ...currentUser, assigned: bookIds }];
+      // 선생님 목록도 포함 (답장 기능에서 필요)
+      const teachers = (teachersRes.data || []).map(t => ({ ...t, username: t.name, assigned: [] }));
+      DB.users = [{ ...currentUser, assigned: bookIds }, ...teachers];
       DB.progress = {};
       (progressRes.data || []).forEach(p => {
         const key = uid + '_' + p.book_id;
@@ -1414,6 +1452,8 @@ async function loadDB() {
     refreshSelects();
     if (currentUser.role === 'teacher') renderDashboard();
     else renderMyBooks();
+    // 읽지 않은 쪽지 배지
+    setTimeout(updateUnreadBadge, 500);
 
   } catch(e) {
     console.error('loadDB 오류:', e);
@@ -1705,6 +1745,8 @@ const teacherNav = [
     {id:'pg-editor',icon:'✏️',label:'단어 편집기'},
     {id:'pg-assign',icon:'📤',label:'학생 배포'},
     {id:'pg-students',icon:'🐥',label:'학생 관리'},
+    {id:'pg-classes',icon:'🏫',label:'반 관리'},
+    {id:'pg-messages',icon:'✉️',label:'쪽지함'},
     {id:'pg-filevault',icon:'🗂️',label:'파일 보관함'},
   ]},
   { group:'AI 도구', items:[
@@ -1718,6 +1760,7 @@ const studentNav = [
     {id:'pg-flashcard',icon:'🃏',label:'플래시카드'},
     {id:'pg-quiz',icon:'📝',label:'퀴즈 테스트'},
     {id:'pg-progress',icon:'📊',label:'내 학습 기록'},
+    {id:'pg-messages',icon:'✉️',label:'쪽지함'},
   ]}
 ];
 
@@ -1738,7 +1781,8 @@ const pageTitles = {
   'pg-dashboard':'대시보드','pg-library':'단어장 보관함','pg-editor':'단어 편집기',
   'pg-assign':'학생 배포','pg-ai':'AI 단어 생성','pg-filevault':'파일 보관함',
   'pg-mybooks':'내 단어장','pg-flashcard':'플래시카드 학습',
-  'pg-quiz':'퀴즈 테스트','pg-progress':'내 학습 기록'
+  'pg-quiz':'퀴즈 테스트','pg-progress':'내 학습 기록',
+  'pg-classes':'반 관리','pg-messages':'쪽지함'
 };
 
 function showPage(id) {
@@ -1759,6 +1803,8 @@ function showPage(id) {
   if (id==='pg-assign') { refreshSelects(); renderAssign(); }
   if (id==='pg-ai') { refreshSelects(); populateAIDest(); }
   if (id==='pg-filevault') renderFileVault();
+  if (id==='pg-classes') renderClasses();
+  if (id==='pg-messages') renderMessages();
   if (id==='pg-mybooks') renderMyBooks();
   if (id==='pg-flashcard') refreshSelects();
   if (id==='pg-quiz') refreshSelects();
@@ -2867,12 +2913,12 @@ JSON 배열로만 응답: [{"en":"word","example":"sentence"},...]`);
 // =========================================================
 //  학생 초대 & 관리 (Supabase Auth)
 // =========================================================
-function openInviteStudentModal() {
+async function openInviteStudentModal() {
+  await loadClasses();
   showModal(`
     <div class="modal-title">👨‍🎓 학생 초대</div>
     <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
-      학생이 이 이메일/비밀번호로 로그인할 수 있습니다.<br>
-      Supabase Auth에 새 계정이 만들어집니다.
+      학생이 이 이메일/비밀번호로 로그인할 수 있습니다.
     </p>
     <div class="form-group">
       <label class="form-label">학생 이름</label>
@@ -2890,6 +2936,14 @@ function openInviteStudentModal() {
       <label class="form-label">학년</label>
       <input class="form-input" id="inv-grade" placeholder="예: 4학년, 초5">
     </div>
+    ${DB_classes.length ? `
+    <div class="form-group">
+      <label class="form-label">반 배정 (선택)</label>
+      <select class="form-input" id="inv-class">
+        <option value="">-- 반 미배정 --</option>
+        ${DB_classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+      </select>
+    </div>` : ''}
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">취소</button>
       <button class="btn btn-primary" onclick="doInviteStudent()">✅ 학생 계정 만들기</button>
@@ -2918,6 +2972,10 @@ async function doInviteStudent() {
       id: uid, name, role: 'student', grade, email, assigned_book_ids: []
     });
 
+    const classId = document.getElementById('inv-class')?.value || '';
+    if (classId) {
+      await sb.from('class_members').insert({ class_id: classId, student_id: uid });
+    }
     const newStudent = { id: uid, name, role: 'student', grade, email, username: email, assigned: [] };
     DB.users.push(newStudent);
     closeModal();
@@ -4926,6 +4984,434 @@ function emptyHTML(msg){return`<div class="empty"><div class="empty-icon">📭</
 function esc(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 function today(){return new Date().toLocaleDateString('ko-KR');}
 function randColor(){const c=['#3b82f6','#10b981','#f59e0b','#a78bfa','#ef4444','#ec4899'];return c[Math.floor(Math.random()*c.length)];}
+
+// =========================================================
+//  반(CLASS) 관리
+// =========================================================
+let DB_classes = [];
+
+async function loadClasses() {
+  const { data } = await sb.from('classes').select('*, class_members(student_id)').order('created_at');
+  DB_classes = (data || []).map(c => ({
+    ...c,
+    memberIds: (c.class_members || []).map(m => m.student_id)
+  }));
+}
+
+function renderClasses() {
+  const body = document.getElementById('classes-body');
+  if (!body) return;
+  loadClasses().then(() => {
+    if (!DB_classes.length) {
+      body.innerHTML = emptyHTML('반이 없습니다. + 새 반 만들기를 눌러보세요');
+      return;
+    }
+    body.innerHTML = DB_classes.map(cls => {
+      const members = DB.users.filter(u => cls.memberIds.includes(u.id) && u.role === 'student');
+      return `
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:var(--surface2);border-bottom:1px solid var(--border)">
+            <div style="width:42px;height:42px;border-radius:12px;background:${cls.color}22;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">🏫</div>
+            <div style="flex:1">
+              <div style="font-weight:700;font-size:16px">${cls.name}</div>
+              <div style="font-size:12px;color:var(--text-muted);margin-top:2px">학생 ${members.length}명</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-secondary btn-sm" onclick="openSendClassMessageModal('${cls.id}','${esc(cls.name)}')">✉️ 단체 쪽지</button>
+              <button class="btn btn-secondary btn-sm" onclick="openEditClassModal('${cls.id}')">✏️ 편집</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteClass('${cls.id}')">🗑</button>
+            </div>
+          </div>
+          <div style="padding:14px 18px">
+            ${members.length === 0
+              ? '<span style="font-size:13px;color:var(--text-dim)">배정된 학생이 없습니다.</span>'
+              : `<div style="display:flex;flex-wrap:wrap;gap:8px">
+                  ${members.map(s => `
+                    <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;font-size:13px">
+                      <span>🐥</span>
+                      <span style="font-weight:500">${s.name}</span>
+                      <span style="color:var(--text-dim);font-size:11px">${s.grade||''}</span>
+                      <button onclick="removeMemberFromClass('${cls.id}','${s.id}')" style="border:none;background:none;cursor:pointer;color:var(--red);font-size:11px;padding:0;line-height:1">✕</button>
+                    </div>`).join('')}
+                </div>`}
+          </div>
+        </div>`;
+    }).join('');
+  });
+}
+
+function openNewClassModal() {
+  const COLORS = ['#3b82f6','#10b981','#f59e0b','#ef4444','#8b5cf6','#ec4899'];
+  window._classSelColor = COLORS[0];
+  showModal(`
+    <div class="modal-title">🏫 새 반 만들기</div>
+    <div class="form-group">
+      <label class="form-label">반 이름</label>
+      <input class="form-input" id="class-name-inp" placeholder="예: 초등 4반, 화요일반">
+    </div>
+    <div class="form-group">
+      <label class="form-label">색상</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${COLORS.map((c,i) => `<div onclick="window._classSelColor='${c}';document.querySelectorAll('.cls-color-pick').forEach(el=>el.style.border='3px solid transparent');this.style.border='3px solid #333'"
+          class="cls-color-pick"
+          style="width:28px;height:28px;border-radius:50%;background:${c};cursor:pointer;border:${i===0?'3px solid #333':'3px solid transparent'}"></div>`).join('')}
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveNewClass()">만들기</button>
+    </div>`);
+  setTimeout(() => document.getElementById('class-name-inp')?.focus(), 80);
+}
+
+async function saveNewClass() {
+  const name = document.getElementById('class-name-inp').value.trim();
+  if (!name) { showToast('반 이름을 입력하세요.', 'error'); return; }
+  const cls = { id: crypto.randomUUID(), owner_id: currentUser.id, name, color: window._classSelColor || '#3b82f6' };
+  const { error } = await sb.from('classes').insert(cls);
+  if (error) { showToast('저장 실패: ' + error.message, 'error'); return; }
+  closeModal();
+  showToast(`"${name}" 반이 만들어졌습니다!`, 'success');
+  renderClasses();
+}
+
+function openEditClassModal(classId) {
+  const cls = DB_classes.find(c => c.id === classId);
+  if (!cls) return;
+  const unassigned = DB.users.filter(u => u.role === 'student' && !cls.memberIds.includes(u.id));
+  showModal(`
+    <div class="modal-title">✏️ "${cls.name}" 반 편집</div>
+    <div class="form-group">
+      <label class="form-label">반 이름</label>
+      <input class="form-input" id="edit-class-name" value="${cls.name}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">학생 추가</label>
+      ${unassigned.length ? `
+        <div style="display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto">
+          ${unassigned.map(s => `
+            <label style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--surface2);border-radius:8px;cursor:pointer;font-size:13px">
+              <input type="checkbox" value="${s.id}" class="cls-add-chk" style="accent-color:var(--accent);width:15px;height:15px">
+              🐥 ${s.name} <span style="color:var(--text-dim)">${s.grade||''}</span>
+            </label>`).join('')}
+        </div>` : '<div style="font-size:13px;color:var(--text-dim)">추가할 학생이 없습니다</div>'}
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">닫기</button>
+      <button class="btn btn-primary" onclick="saveEditClass('${classId}')">저장</button>
+    </div>`);
+}
+
+async function saveEditClass(classId) {
+  const name = document.getElementById('edit-class-name').value.trim();
+  const checked = [...document.querySelectorAll('.cls-add-chk:checked')].map(c => c.value);
+  try {
+    if (name) await sb.from('classes').update({ name }).eq('id', classId);
+    if (checked.length) {
+      await sb.from('class_members').insert(checked.map(sid => ({ class_id: classId, student_id: sid })));
+    }
+    closeModal();
+    showToast('저장됐습니다.', 'success');
+    renderClasses();
+  } catch(e) { showToast('저장 실패: ' + e.message, 'error'); }
+}
+
+async function removeMemberFromClass(classId, studentId) {
+  await sb.from('class_members').delete().eq('class_id', classId).eq('student_id', studentId);
+  renderClasses();
+  showToast('반에서 제외했습니다.');
+}
+
+async function deleteClass(classId) {
+  const cls = DB_classes.find(c => c.id === classId);
+  if (!confirm(`"${cls?.name}" 반을 삭제할까요?`)) return;
+  await sb.from('class_members').delete().eq('class_id', classId);
+  await sb.from('classes').delete().eq('id', classId);
+  renderClasses();
+  showToast('반이 삭제됐습니다.');
+}
+
+// =========================================================
+//  쪽지 (MESSAGES)
+// =========================================================
+let _msgTab = 'inbox';
+
+async function renderMessages() {
+  const body = document.getElementById('messages-body');
+  const actionsEl = document.getElementById('messages-actions');
+  const subEl = document.getElementById('messages-sub');
+  if (!body) return;
+
+  // 액션 버튼
+  if (currentUser.role === 'teacher') {
+    actionsEl.innerHTML = `
+      <button class="btn btn-primary btn-sm" onclick="openSendMessageModal()">✉️ 쪽지 보내기</button>`;
+  } else {
+    actionsEl.innerHTML = `
+      <button class="btn btn-primary btn-sm" onclick="openReplyModal()">↩️ 선생님께 답장</button>`;
+  }
+
+  body.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-dim)">불러오는 중...</div>';
+
+  try {
+    let query;
+    if (_msgTab === 'inbox') {
+      subEl.textContent = '받은 쪽지';
+      query = await sb.from('messages')
+        .select('*, sender:profiles!messages_sender_id_fkey(name, role)')
+        .eq('receiver_id', currentUser.id)
+        .order('created_at', { ascending: false });
+    } else {
+      subEl.textContent = '보낸 쪽지';
+      query = await sb.from('messages')
+        .select('*, receiver:profiles!messages_receiver_id_fkey(name)')
+        .eq('sender_id', currentUser.id)
+        .order('created_at', { ascending: false });
+    }
+
+    const msgs = query.data || [];
+    if (!msgs.length) {
+      body.innerHTML = emptyHTML(_msgTab === 'inbox' ? '받은 쪽지가 없습니다' : '보낸 쪽지가 없습니다');
+      return;
+    }
+
+    body.innerHTML = msgs.map(m => {
+      const who = _msgTab === 'inbox'
+        ? `<span style="font-size:12px;color:var(--text-muted)">보낸 사람: <strong>${m.sender?.name || '알 수 없음'}</strong></span>`
+        : `<span style="font-size:12px;color:var(--text-muted)">받는 사람: <strong>${m.receiver?.name || '알 수 없음'}</strong></span>`;
+      const unread = !m.is_read && _msgTab === 'inbox'
+        ? '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:6px;flex-shrink:0"></span>'
+        : '';
+      const date = new Date(m.created_at).toLocaleDateString('ko-KR', { month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+      return `
+        <div onclick="openMessageDetail('${m.id}')"
+          style="background:var(--surface);border:1px solid ${!m.is_read && _msgTab==='inbox' ? 'var(--accent)' : 'var(--border)'};border-radius:var(--radius);padding:16px 18px;margin-bottom:10px;cursor:pointer;transition:all 0.15s"
+          onmouseenter="this.style.borderColor='var(--accent)'" onmouseleave="this.style.borderColor='${!m.is_read && _msgTab==='inbox' ? 'var(--accent)' : 'var(--border)'}'">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            ${unread}
+            <div style="font-weight:${!m.is_read && _msgTab==='inbox' ? '700' : '500'};font-size:14px;flex:1">${m.title}</div>
+            <span style="font-size:11px;color:var(--text-dim);flex-shrink:0">${date}</span>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            ${who}
+            <span style="font-size:12px;color:var(--text-muted)">${m.body.slice(0, 40)}${m.body.length > 40 ? '...' : ''}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    // 읽지 않은 쪽지 자동 읽음 처리
+    if (_msgTab === 'inbox') {
+      const unreadIds = msgs.filter(m => !m.is_read).map(m => m.id);
+      if (unreadIds.length) {
+        sb.from('messages').update({ is_read: true }).in('id', unreadIds).then(() => {
+          updateUnreadBadge();
+        });
+      }
+    }
+  } catch(e) {
+    body.innerHTML = `<div style="color:var(--red);padding:20px">오류: ${e.message}</div>`;
+  }
+}
+
+function switchMsgTab(tab) {
+  _msgTab = tab;
+  ['inbox','sent'].forEach(t => {
+    const btn = document.getElementById(`msg-tab-${t}`);
+    if (!btn) return;
+    const active = t === tab;
+    btn.style.color = active ? 'var(--accent)' : 'var(--text-muted)';
+    btn.style.fontWeight = active ? '600' : '400';
+    btn.style.borderBottom = active ? '2px solid var(--accent)' : '2px solid transparent';
+  });
+  renderMessages();
+}
+
+async function openMessageDetail(msgId) {
+  const { data: m } = await sb.from('messages')
+    .select('*, sender:profiles!messages_sender_id_fkey(name,role), receiver:profiles!messages_receiver_id_fkey(name)')
+    .eq('id', msgId).single();
+  if (!m) return;
+  const date = new Date(m.created_at).toLocaleString('ko-KR');
+  const replyBtn = _msgTab === 'inbox' && currentUser.role === 'student'
+    ? `<button class="btn btn-primary" onclick="closeModal();openReplyModal('${m.sender?.name}','${esc(m.title)}')">↩️ 답장</button>`
+    : '';
+  showModal(`
+    <div class="modal-title">📨 ${m.title}</div>
+    <div style="display:flex;gap:16px;margin-bottom:16px;font-size:12px;color:var(--text-muted);flex-wrap:wrap">
+      <span>보낸 사람: <strong style="color:var(--text)">${m.sender?.name||'알 수 없음'}</strong></span>
+      <span>받는 사람: <strong style="color:var(--text)">${m.receiver?.name||'알 수 없음'}</strong></span>
+      <span>${date}</span>
+    </div>
+    <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:18px;font-size:14px;line-height:1.8;white-space:pre-wrap;min-height:80px">${m.body}</div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">닫기</button>
+      ${replyBtn}
+    </div>`);
+}
+
+// 선생님: 쪽지 보내기 (개별 또는 반 전체)
+async function openSendMessageModal() {
+  await loadClasses();
+  const students = DB.users.filter(u => u.role === 'student');
+  showModal(`
+    <div class="modal-title">✉️ 쪽지 보내기</div>
+    <div class="form-group">
+      <label class="form-label">받는 사람</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;padding:10px;background:var(--surface2)">
+        ${DB_classes.length ? `<div style="grid-column:1/-1;font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">반 전체</div>
+        ${DB_classes.map(c => `
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--border);cursor:pointer;font-size:13px">
+            <input type="checkbox" value="class_${c.id}" class="msg-recv-chk" style="accent-color:var(--accent)">
+            🏫 ${c.name}
+          </label>`).join('')}
+        <div style="grid-column:1/-1;font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin:8px 0 4px">개별 학생</div>` : ''}
+        ${students.map(s => `
+          <label style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--border);cursor:pointer;font-size:13px">
+            <input type="checkbox" value="student_${s.id}" class="msg-recv-chk" style="accent-color:var(--accent)">
+            🐥 ${s.name}
+          </label>`).join('')}
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">제목</label>
+      <input class="form-input" id="msg-title-inp" placeholder="예: 이번 주 숙제 안내">
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용</label>
+      <textarea class="form-input" id="msg-body-inp" rows="5" placeholder="쪽지 내용을 입력하세요..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="sendMessages()">📨 보내기</button>
+    </div>`);
+  setTimeout(() => document.getElementById('msg-title-inp')?.focus(), 80);
+}
+
+// 반 전체에 단체 쪽지 보내기 (반 관리 페이지에서)
+async function openSendClassMessageModal(classId, className) {
+  showModal(`
+    <div class="modal-title">✉️ "${className}" 반 전체 쪽지</div>
+    <div class="form-group">
+      <label class="form-label">제목</label>
+      <input class="form-input" id="cls-msg-title" placeholder="예: 숙제 안내">
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용</label>
+      <textarea class="form-input" id="cls-msg-body" rows="5" placeholder="내용을 입력하세요..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="sendClassMessage('${classId}')">📨 반 전체에 보내기</button>
+    </div>`);
+  setTimeout(() => document.getElementById('cls-msg-title')?.focus(), 80);
+}
+
+async function sendClassMessage(classId) {
+  const title = document.getElementById('cls-msg-title').value.trim();
+  const body = document.getElementById('cls-msg-body').value.trim();
+  if (!title || !body) { showToast('제목과 내용을 입력하세요.', 'error'); return; }
+  const cls = DB_classes.find(c => c.id === classId);
+  if (!cls) return;
+  const memberIds = cls.memberIds;
+  if (!memberIds.length) { showToast('반에 학생이 없습니다.', 'error'); return; }
+  try {
+    await sb.from('messages').insert(
+      memberIds.map(rid => ({ sender_id: currentUser.id, receiver_id: rid, class_id: classId, title, body }))
+    );
+    closeModal();
+    showToast(`${memberIds.length}명에게 쪽지를 보냈습니다!`, 'success');
+  } catch(e) { showToast('전송 실패: ' + e.message, 'error'); }
+}
+
+async function sendMessages() {
+  const title = document.getElementById('msg-title-inp').value.trim();
+  const body = document.getElementById('msg-body-inp').value.trim();
+  if (!title || !body) { showToast('제목과 내용을 입력하세요.', 'error'); return; }
+
+  const checked = [...document.querySelectorAll('.msg-recv-chk:checked')].map(c => c.value);
+  if (!checked.length) { showToast('받는 사람을 선택하세요.', 'error'); return; }
+
+  // 수신자 ID 수집 (반이면 멤버 전체 포함)
+  const receiverIds = new Set();
+  for (const val of checked) {
+    if (val.startsWith('class_')) {
+      const classId = val.replace('class_', '');
+      const cls = DB_classes.find(c => c.id === classId);
+      cls?.memberIds.forEach(id => receiverIds.add(id));
+    } else {
+      receiverIds.add(val.replace('student_', ''));
+    }
+  }
+
+  try {
+    await sb.from('messages').insert(
+      [...receiverIds].map(rid => ({ sender_id: currentUser.id, receiver_id: rid, title, body }))
+    );
+    closeModal();
+    showToast(`${receiverIds.size}명에게 쪽지를 보냈습니다!`, 'success');
+    renderMessages();
+  } catch(e) { showToast('전송 실패: ' + e.message, 'error'); }
+}
+
+// 학생: 선생님께 답장
+async function openReplyModal(senderName = '선생님', originalTitle = '') {
+  const teachers = DB.users.filter(u => u.role === 'teacher');
+  const replyTitle = originalTitle ? `Re: ${originalTitle}` : '';
+  showModal(`
+    <div class="modal-title">↩️ 선생님께 답장</div>
+    ${teachers.length > 1 ? `
+    <div class="form-group">
+      <label class="form-label">받는 선생님</label>
+      <select class="form-input" id="reply-teacher-sel">
+        ${teachers.map(t => `<option value="${t.id}">${t.name}</option>`).join('')}
+      </select>
+    </div>` : `<input type="hidden" id="reply-teacher-sel" value="${teachers[0]?.id||''}">`}
+    <div class="form-group">
+      <label class="form-label">제목</label>
+      <input class="form-input" id="reply-title-inp" value="${replyTitle}" placeholder="제목 입력">
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용</label>
+      <textarea class="form-input" id="reply-body-inp" rows="5" placeholder="내용을 입력하세요..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="sendReply()">📨 보내기</button>
+    </div>`);
+  setTimeout(() => document.getElementById('reply-body-inp')?.focus(), 80);
+}
+
+async function sendReply() {
+  const teacherId = document.getElementById('reply-teacher-sel').value;
+  const title = document.getElementById('reply-title-inp').value.trim();
+  const body = document.getElementById('reply-body-inp').value.trim();
+  if (!teacherId) { showToast('선생님을 선택하세요.', 'error'); return; }
+  if (!title || !body) { showToast('제목과 내용을 입력하세요.', 'error'); return; }
+  try {
+    await sb.from('messages').insert({ sender_id: currentUser.id, receiver_id: teacherId, title, body });
+    closeModal();
+    showToast('쪽지를 보냈습니다!', 'success');
+    renderMessages();
+  } catch(e) { showToast('전송 실패: ' + e.message, 'error'); }
+}
+
+// 읽지 않은 쪽지 배지 업데이트
+async function updateUnreadBadge() {
+  const { count } = await sb.from('messages')
+    .select('id', { count: 'exact', head: true })
+    .eq('receiver_id', currentUser.id)
+    .eq('is_read', false);
+  const navBtn = document.getElementById('nav-pg-messages');
+  if (!navBtn) return;
+  const existing = navBtn.querySelector('.nav-badge');
+  if (count > 0) {
+    if (existing) existing.textContent = count;
+    else navBtn.innerHTML += `<span class="nav-badge">${count}</span>`;
+  } else {
+    if (existing) existing.remove();
+  }
+}
+
 </script>
 </body>
 </html>
