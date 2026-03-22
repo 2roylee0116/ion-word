@@ -1724,25 +1724,8 @@ function showPage(id) {
   if (id==='pg-editor') { refreshSelects(); document.getElementById('editor-sel').value=''; loadEditor(); }
   if (id==='pg-sentences') { sentShowMgmtView(); loadSentenceBooks().then(() => { loadSentColls(); renderSentMgmt(); }).catch(()=>{renderSentMgmt();}); }
   if (id==='pg-sentence-study') {
-    (async () => {
-      const body = document.getElementById('sent-student-body');
-      if (body) body.innerHTML = '<div class="empty"><div class="empty-icon">⏳</div></div>';
-      await loadSentenceBooks();
-      console.log('✅ pg-sentence-study 로드 완료, DB_sentBooks:', DB_sentBooks.length);
-      // 페이지가 아직 active인지 확인 후 렌더링
-      const pg = document.getElementById('pg-sentence-study');
-      if (pg && pg.classList.contains('active')) {
-        await renderSentenceStudy();
-      } else {
-        // active가 아니면 다시 active로 만들고 렌더링
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        if (pg) pg.classList.add('active');
-        await renderSentenceStudy();
-      }
-    })();
+    renderSentenceStudy();
   }
-  if (id==='pg-assign') { refreshSelects(); renderAssign(); refreshSentBookSel(); }
-  if (id==='pg-ai') { refreshSelects(); populateAIDest(); }
   if (id==='pg-filevault') renderFileVault();
   if (id==='pg-classes') renderClasses();
   if (id==='pg-messages') renderMessages();
@@ -2203,10 +2186,18 @@ async function loadSentenceBooks() {
 async function loadSentenceItems(bookId) {
   if (DB_sentItems[bookId]) return DB_sentItems[bookId];
   try {
-    const { data } = await sb.from('sentence_items').select('*').eq('book_id', bookId).order('sort_order', {ascending:true});
+    const { data, error } = await sb.from('sentence_items').select('*').eq('book_id', bookId).order('sort_order', {ascending:true});
+    if (error) {
+      console.error('🔴 sentence_items 조회 에러:', error.message, error.code);
+      return [];
+    }
+    console.log('📝 sentence_items 조회:', bookId.slice(0,8), '→', data?.length, '건');
     DB_sentItems[bookId] = data || [];
     return DB_sentItems[bookId];
-  } catch(e) { return []; }
+  } catch(e) {
+    console.error('🔴 sentence_items 예외:', e.message);
+    return [];
+  }
 }
 
 // ── 선생님: 문장집 관리 ───────────────────────────────────
@@ -3297,6 +3288,7 @@ async function renderSentenceStudy() {
   const body = document.getElementById('sent-student-body');
   if (!body) return;
   body.innerHTML = '<div class="empty"><div class="empty-icon">\u23f3</div></div>';
+  await loadSentenceBooks();
   console.log('\ud83c\udfaf renderSentenceStudy \uc9c4\uc785, DB_sentBooks:', DB_sentBooks.length, '\uac1c');
 
   if (!DB_sentBooks.length) {
@@ -3349,7 +3341,7 @@ async function renderSentenceStudy() {
     [
       ['\ubb38\uc7a5 \ubc30\uc5f4', 'btn btn-primary btn-sm', function(){ startSentStudy(b.id, 'unscramble'); }],
       ['\ube48\uce78 \ucc44\uc6b0\uae30', 'btn btn-secondary btn-sm', function(){ startSentStudy(b.id, 'dictation'); }],
-      ['\ub099\ub3c5', 'btn btn-gold btn-sm', function(){ startSentRecording(b.id); }]
+      ['낭독', 'btn btn-gold btn-sm', function(){ startSentRecording(b.id); }]
     ].forEach(function(item) {
       const btn = document.createElement('button');
       btn.className = item[1];
@@ -3365,7 +3357,20 @@ async function renderSentenceStudy() {
 
   body.innerHTML = '';
   body.appendChild(grid);
-  console.log('\u2705 \uce74\ub4dc \ub80c\ub354\ub9c1 \uc644\ub8cc:', DB_sentBooks.length, '\uac1c');
+
+  // 페이지 강제 active 보장
+  const pgEl = document.getElementById('pg-sentence-study');
+  if (pgEl && !pgEl.classList.contains('active')) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    pgEl.classList.add('active');
+    console.warn('⚠️ pg-sentence-study active 강제 재적용');
+  }
+
+  // sent-student-body 가시성 확인
+  const computedStyle = window.getComputedStyle(body);
+  console.log('✅ 카드 렌더링 완료:', DB_sentBooks.length, '개',
+    '| body display:', computedStyle.display,
+    '| page active:', pgEl?.classList.contains('active'));
 }
 
 async function startSentStudy(bookId, mode) {
@@ -9179,17 +9184,19 @@ function showToast(msg, type=''){
 }
 
 function emptyHTML(msg){return`<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">${msg}</div></div>`;}
-function esc(s){
+// onclick 속성 안에서 안전하게 쓸 수 있는 기본 escape (원래 방식 유지)
+function esc(s){return String(s??'').replace(/'/g,"\'").replace(/"/g,'&quot;');}
+// 텍스트 노드에 innerHTML로 넣을 때 XSS 방어용
+function escHtml(s){
   return String(s??'')
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;')
-    .replace(/'/g,'&#x27;')
-    .replace(/`/g,'&#x60;');
+    .replace(/'/g,'&#x27;');
 }
-// HTML 속성값용 (onclick 등에 직접 넣을 때)
-function escAttr(s){return String(s??'').replace(/'/g,"\'").replace(/"/g,'&quot;');}
+// 이전 버전 호환
+function escAttr(s){return esc(s);}
 function today(){return new Date().toLocaleDateString('ko-KR');}
 function randColor(){const c=['#3b82f6','#10b981','#f59e0b','#a78bfa','#ef4444','#ec4899'];return c[Math.floor(Math.random()*c.length)];}
 
