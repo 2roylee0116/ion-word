@@ -179,11 +179,11 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-he
 
 .nav-badge{margin-left:auto;font-size:10px;font-weight:600;padding:2px 7px;border-radius:8px;background:rgba(59,130,246,0.25);color:#93c5fd}
 
-.sidebar-bottom{padding:12px;border-top:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:6px}
+.sidebar-bottom{padding:14px;border-top:1px solid rgba(255,255,255,0.08);display:flex;flex-direction:column;gap:8px}
 
-.logout-btn{width:100%;padding:9px 14px;background:none;border:1px solid rgba(255,255,255,0.09);
-  border-radius:9px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;color:var(--sb-t);
-  display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s}
+.logout-btn{width:100%;padding:11px 16px;background:none;border:1px solid rgba(255,255,255,0.09);
+  border-radius:10px;cursor:pointer;font-family:'Outfit',sans-serif;font-size:13px;color:var(--sb-t);
+  display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s;min-height:40px}
 .logout-btn:hover{border-color:rgba(239,68,68,0.35);color:#fca5a5;background:rgba(239,68,68,0.07)}
 
 /* ════ MAIN ════ */
@@ -311,12 +311,12 @@ tbody tr:last-child td{border-bottom:none}
 
 /* ════ QUIZ ════ */
 .quiz-container{max-width:580px;margin:0 auto}
-.quiz-q-card{background:linear-gradient(145deg,#1e3a8a 0%,#1e40af 60%,#2563eb 100%);
-  border:1px solid rgba(59,130,246,0.25);border-radius:18px;padding:40px;text-align:center;margin-bottom:18px;position:relative}
-.quiz-q-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(147,197,253,0.12) 0%,transparent 70%);border-radius:inherit}
-.quiz-qnum{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:2px;margin-bottom:8px}
-.quiz-word{font-family:'Fraunces',serif;font-size:62px;font-weight:900;color:#fff;position:relative}
-.quiz-ex{font-size:14px;color:rgba(255,255,255,0.4);margin-top:8px;font-style:italic}
+.quiz-q-card{background:linear-gradient(160deg,#1a2744 0%,#1e2f55 60%,#1a2a4a 100%);
+  border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:40px;text-align:center;margin-bottom:18px;position:relative;box-shadow:0 4px 24px rgba(26,39,68,0.3)}
+.quiz-q-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(180,200,240,0.08) 0%,transparent 70%);border-radius:inherit}
+.quiz-qnum{font-size:11px;color:rgba(180,200,240,0.5);letter-spacing:2px;margin-bottom:8px}
+.quiz-word{font-family:'Fraunces',serif;font-size:62px;font-weight:900;color:#ffffff;position:relative;letter-spacing:-1px}
+.quiz-ex{font-size:14px;color:rgba(180,200,240,0.6);margin-top:8px;font-style:italic}
 .quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .quiz-opt{padding:18px 14px;background:#fff;border:1.5px solid var(--border);border-radius:12px;
   font-family:'Outfit',sans-serif;font-size:17px;font-weight:500;
@@ -325,10 +325,10 @@ tbody tr:last-child td{border-bottom:none}
 .quiz-opt.correct{border-color:var(--green);background:var(--green-dim);color:var(--green)}
 .quiz-opt.wrong{border-color:var(--red);background:var(--red-dim);color:var(--red)}
 .quiz-feedback{height:48px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:17px}
-.quiz-result{background:linear-gradient(145deg,#1e3a8a 0%,#1e40af 100%);border:1px solid rgba(59,130,246,0.25);border-radius:20px;padding:60px 40px;text-align:center}
-.result-circle{width:120px;height:120px;border-radius:50%;border:4px solid #60a5fa;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;background:radial-gradient(circle,rgba(96,165,250,0.12) 0%,transparent 70%)}
-.result-pct{font-family:'Fraunces',serif;font-size:38px;font-weight:900;color:#93c5fd;line-height:1}
-.result-label{font-size:11px;color:rgba(255,255,255,0.45)}
+.quiz-result{background:linear-gradient(160deg,#1a2744 0%,#1e2f55 60%,#1a2a4a 100%);border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:60px 40px;text-align:center;box-shadow:0 4px 24px rgba(26,39,68,0.3)}
+.result-circle{width:120px;height:120px;border-radius:50%;border:4px solid rgba(180,200,240,0.5);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 24px;background:radial-gradient(circle,rgba(180,200,240,0.1) 0%,transparent 70%)}
+.result-pct{font-family:'Fraunces',serif;font-size:38px;font-weight:900;color:#b4c8f0;line-height:1}
+.result-label{font-size:11px;color:rgba(180,200,240,0.5)}
 
 /* ════ AI ════ */
 .ai-config{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px}
@@ -567,6 +567,46 @@ input:checked+.toggle-slider:before{transform:translateX(18px)}
 
         <div class="stats-row" id="dash-stats"></div>
 
+
+         <!-- 일정관리 -->
+         <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:24px;box-shadow:var(--sh)">
+           <!-- 헤더 -->
+           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+             <div style="display:flex;align-items:center;gap:8px">
+               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+               <span style="font-size:15px;font-weight:700;letter-spacing:-0.3px">일정관리</span>
+             </div>
+             <div style="display:flex;align-items:center;gap:6px">
+               <!-- 뷰 토글 -->
+               <div style="display:flex;background:var(--surface2);border-radius:8px;padding:3px;border:1px solid var(--border)">
+                 <button id="sched-view-week-btn" onclick="schedSetView('week')"
+                   style="padding:5px 10px;border-radius:6px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:var(--blue);color:white;transition:all 0.15s">주간</button>
+                 <button id="sched-view-month-btn" onclick="schedSetView('month')"
+                   style="padding:5px 10px;border-radius:6px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:none;color:var(--t2);transition:all 0.15s">월간</button>
+               </div>
+               <button onclick="schedOpenAdd()" style="display:flex;align-items:center;gap:5px;padding:6px 12px;background:var(--blue-dim);color:var(--blue2);border:1px solid rgba(59,130,246,0.2);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif">
+                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                 추가
+               </button>
+             </div>
+           </div>
+           <!-- 주간 뷰 -->
+           <div id="sched-week-view">
+             <div id="sched-date-tabs" style="display:flex;gap:5px;margin-bottom:12px;overflow-x:auto;padding-bottom:2px"></div>
+             <div id="sched-list"></div>
+           </div>
+           <!-- 월간 뷰 -->
+           <div id="sched-month-view" style="display:none">
+             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+               <button onclick="schedMonthMove(-1)" style="background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;color:var(--t2);font-size:18px" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='none'">‹</button>
+               <span id="sched-month-label" style="font-size:14px;font-weight:700;color:var(--t1)"></span>
+               <button onclick="schedMonthMove(1)" style="background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;color:var(--t2);font-size:18px" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='none'">›</button>
+             </div>
+             <div id="sched-calendar"></div>
+           </div>
+         </div>
+
+
         <!-- 컬렉션 -->
         <div class="section-head" style="margin-top:4px">
           <div><div class="section-title">컬렉션</div><div class="section-sub">단어장 그룹 · 클릭하면 이동</div></div>
@@ -623,6 +663,28 @@ input:checked+.toggle-slider:before{transform:translateX(18px)}
         </div>
 
         <div id="books-grid"></div>
+        <!-- 인라인 단어 편집기 (단어장 보관함 내) -->
+        <div id="lib-editor-panel" style="display:none;margin-top:24px;border-top:1.5px solid var(--border);padding-top:20px">
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px">
+            <button class="btn btn-ghost btn-sm" onclick="closeLibEditor()">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              목록으로
+            </button>
+            <div id="lib-editor-title" style="font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-0.3px"></div>
+            <div style="flex:1"></div>
+            <button class="btn btn-primary btn-sm" onclick="openAddWordModal()">+ 단어</button>
+            <button class="btn btn-secondary btn-sm" onclick="sortEditor()">↕ 정렬</button>
+            <button class="btn btn-secondary btn-sm" onclick="exportCSV()">⬇ CSV</button>
+            <button class="btn btn-gold btn-sm" onclick="openAIFillModal()">✨ AI 자동완성</button>
+            <button class="btn btn-danger btn-sm" id="editor-del-sel-btn" style="display:none" onclick="deleteSelectedWords()">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+              선택 삭제 (<span id="editor-sel-count">0</span>)
+            </button>
+            <button class="btn btn-danger btn-sm" id="editor-del-all-btn" style="display:none" onclick="deleteAllWords()">⛔ 전체 삭제</button>
+          </div>
+          <div id="editor-body"></div>
+        </div>
+
       </div>
 
       <!-- ===== TEACHER: EDITOR ===== -->
@@ -639,6 +701,70 @@ input:checked+.toggle-slider:before{transform:translateX(18px)}
           <button class="btn btn-danger btn-sm" id="editor-del-all-btn" style="display:none" onclick="deleteAllWords()">⛔ 전체 삭제</button>
         </div>
         <div id="editor-body"></div>
+      </div>
+
+      <!-- ===== TEACHER: SENTENCES ===== -->
+       <div id="pg-sentences" class="page">
+         <!-- 컬렉션 + 문장집 뷰 -->
+         <div id="sent-mgmt-view">
+           <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px">
+             <div><div class="section-title">문장 보관함</div><div class="section-sub">컬렉션으로 문장집을 정리하세요</div></div>
+             <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+               <button id="sent-bulk-del-btn" class="btn btn-danger btn-sm" style="display:none" onclick="deleteSentBooksSelected()">
+                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                 선택 삭제 (<span id="sent-bulk-del-count">0</span>)
+               </button>
+               <button class="btn btn-secondary btn-sm" onclick="openNewSentCollModal()">📁 새 컬렉션</button>
+               <button class="btn btn-primary btn-sm" onclick="openNewSentenceBookModal()">
+                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                 새 문장집
+               </button>
+             </div>
+           </div>
+           <div id="sent-coll-tabs" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px"></div>
+           <div id="sent-books-grid"></div>
+         </div>
+         <!-- 편집기 뷰 -->
+         <div id="sent-editor-view" style="display:none">
+           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px">
+             <button class="btn btn-ghost btn-sm" onclick="sentShowMgmtView()">
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+               목록
+             </button>
+              <div id="sent-editor-title" style="font-size:15px;font-weight:700;color:var(--t1);letter-spacing:-0.3px"></div>
+              <select id="sent-editor-coll-sel"
+                style="font-size:12px;padding:5px 8px;border:1.5px solid var(--border);border-radius:8px;background:white;color:var(--t2);cursor:pointer;outline:none"
+                title="컬렉션 변경"
+                onchange="sentChangeBookCollection(window._sentEditorBookId, this.value)">
+              </select>
+             <div style="flex:1"></div>
+             <button class="btn btn-primary btn-sm" onclick="sentAddEmptyRow(window._sentEditorBookId)">+ 문장 추가</button>
+             <button class="btn btn-gold btn-sm" onclick="openSentBulkModal()">
+               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+               붙여넣기+AI번역
+             </button>
+              <button class="btn btn-success btn-sm" onclick="sentSaveBook(window._sentEditorBookId)"
+                style="background:var(--green);color:white;border-color:var(--green)">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                저장
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="openSentAssignModalFromEditor()">배포</button>
+             <button class="btn btn-danger btn-sm" id="sent-del-sel-btn" style="display:none" onclick="deleteSentSelected()">
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+               선택삭제(<span id="sent-sel-count">0</span>)
+             </button>
+           </div>
+           <div id="sent-editor-body"></div>
+         </div>
+       </div>
+
+      <!-- ===== STUDENT: SENTENCE STUDY ===== -->
+      <div id="pg-sentence-study" class="page">
+        <div style="margin-bottom:20px">
+          <div class="section-title">문장학습</div>
+          <div class="section-sub">배정된 문장집으로 학습하세요</div>
+        </div>
+        <div id="sent-student-body"></div>
       </div>
 
       <!-- ===== TEACHER: STUDENTS ===== -->
@@ -909,11 +1035,11 @@ async function loadDB() {
     if (isTeacher) {
       // 선생님: 모든 데이터 로드
       const [booksRes, collectionsRes, usersRes, filesRes, progressRes] = await Promise.all([
-        sb.from('books').select('*, words(id, en, ko, example, sort_order)').order('created_at', { ascending: false }),
+        sb.from('books').select('*, words(id, en, ko, example, sort_order)').order('created_at', { ascending: false }).limit(200),
         sb.from('collections').select('*').order('created_at', { ascending: false }),
         sb.from('profiles').select('*'),
-        sb.from('vault_files').select('id, name, category, uploaded_at, storage_path, word_count, sheet_names, words_json').order('uploaded_at', { ascending: false }),
-        sb.from('progress').select('*, profiles(name)')
+        sb.from('vault_files').select('id, name, category, uploaded_at, storage_path, word_count, sheet_names').order('uploaded_at', { ascending: false }),
+        sb.from('progress').select('*')
       ]);
 
       DB.books = (booksRes.data || []).map(b => ({
@@ -936,8 +1062,8 @@ async function loadDB() {
         category: f.category || '기타',
         uploaded: f.uploaded_at ? new Date(f.uploaded_at).toLocaleDateString('ko-KR') : '',
         storage_path: f.storage_path,
-        content: '',        // 미리보기용 (필요 시 별도 로드)
-        words: f.words_json ? JSON.parse(f.words_json) : null,
+        content: '',
+        words: null,          // 파일 열 때 lazy load
         sheetNames: f.sheet_names ? JSON.parse(f.sheet_names) : null,
         wordCount: f.word_count || 0
       }));
@@ -966,7 +1092,7 @@ async function loadDB() {
 
       const [booksRes, progressRes, teachersRes] = await Promise.all([
         bookIds.length
-          ? sb.from('books').select('*, words(id, en, ko, example, sort_order)').in('id', bookIds)
+          ? sb.from('books').select('*, words(id, en, ko, example, sort_order)').in('id', bookIds).limit(100)
           : Promise.resolve({ data: [] }),
         sb.from('progress').select('*').eq('student_id', uid),
         sb.from('profiles').select('id, name, role').eq('role', 'teacher')
@@ -1007,13 +1133,15 @@ async function loadDB() {
     if (greetEl) {
       const h = new Date().getHours();
       const greeting = h < 12 ? '좋은 아침이에요' : h < 18 ? '안녕하세요' : '수고하셨어요';
-      greetEl.textContent = `${greeting}, ${currentUser.name} 선생님 👋`;
+      const _nm = currentUser.name.endsWith('선생님') ? currentUser.name : currentUser.name + ' 선생님';
+      greetEl.textContent = `${greeting}, ${_nm} 👋`;
     }
     if (dateEl) {
       dateEl.textContent = new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric',weekday:'long'});
     }
     // Supabase에서 Groq 키 로드
     loadGroqKeyFromDB();
+    loadSentenceBooks().catch(()=>{});
 
   } catch(e) {
     console.error('loadDB 오류:', e);
@@ -1180,7 +1308,7 @@ function showLoadingOverlay(show) {
   if (!el) {
     el = document.createElement('div');
     el.id = 'db-loading-overlay';
-    el.style.cssText = 'position:fixed;inset:0;background:rgba(245,240,232,0.85);backdrop-filter:blur(4px);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px';
+    el.style.cssText = 'position:fixed;inset:0;background:rgba(247,249,255,0.92);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px';
     el.innerHTML = '<div class="ai-loader"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div></div><div style="font-size:13px;color:var(--text-muted)">데이터 불러오는 중...</div>';
     document.body.appendChild(el);
   }
@@ -1302,7 +1430,7 @@ const teacherNav = [
   { group:'관리', items:[
     {id:'pg-dashboard',icon:'dashboard',label:'대시보드'},
     {id:'pg-library',icon:'library',label:'단어장 보관함'},
-    {id:'pg-editor',icon:'editor',label:'단어 편집기'},
+    {id:'pg-sentences',icon:'sentences',label:'문장 보관함'},
     {id:'pg-assign',icon:'assign',label:'학생 배포'},
     {id:'pg-students',icon:'students',label:'학생 관리'},
     {id:'pg-classes',icon:'classes',label:'반 관리'},
@@ -1319,6 +1447,7 @@ const studentNav = [
     {id:'pg-mybooks',icon:'library',label:'내 단어장'},
     {id:'pg-flashcard',icon:'flashcard',label:'암기'},
     {id:'pg-quiz',icon:'quiz',label:'퀴즈 테스트'},
+    {id:'pg-sentence-study',icon:'sentences',label:'문장학습'},
     {id:'pg-progress',icon:'progress',label:'내 학습 기록'},
     {id:'pg-messages',icon:'messages',label:'쪽지함'},
   ]}
@@ -1338,6 +1467,7 @@ const NAV_ICONS = {
   flashcard: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>`,
   quiz:      `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
   progress:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
+  sentences: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="13" y2="13"/></svg>`,
 };
 
 function buildNav() {
@@ -1354,10 +1484,11 @@ function buildNav() {
 }
 
 const pageTitles = {
-  'pg-dashboard':'대시보드','pg-library':'단어장 보관함','pg-editor':'단어 편집기',
+  'pg-dashboard':'대시보드','pg-library':'단어장 보관함',
   'pg-assign':'학생 배포','pg-ai':'AI 단어 생성','pg-filevault':'파일 보관함',
   'pg-mybooks':'내 단어장','pg-flashcard':'암기 학습',
   'pg-quiz':'퀴즈 테스트','pg-progress':'내 학습 기록',
+  'pg-sentences':'문장 보관함','pg-sentence-study':'문장학습',
   'pg-classes':'반 관리','pg-messages':'쪽지함'
 };
 
@@ -1376,6 +1507,8 @@ function showPage(id) {
   if (id==='pg-library') renderLibrary();
   if (id==='pg-students') renderStudentsMgmt();
   if (id==='pg-editor') { refreshSelects(); document.getElementById('editor-sel').value=''; loadEditor(); }
+  if (id==='pg-sentences') { loadSentenceBooks().then(() => { loadSentColls(); renderSentMgmt(); }).catch(()=>{renderSentMgmt();}); }
+  if (id==='pg-sentence-study') renderSentenceStudy();
   if (id==='pg-assign') { refreshSelects(); renderAssign(); }
   if (id==='pg-ai') { refreshSelects(); populateAIDest(); }
   if (id==='pg-filevault') renderFileVault();
@@ -1391,6 +1524,7 @@ function showPage(id) {
 //  DASHBOARD
 // =========================================================
 function renderDashboard() {
+  schedRender();   // 일정 렌더
   const q = (document.getElementById('dash-search')?.value || '').toLowerCase();
   const totalWords = DB.books.reduce((s,b)=>s+b.words.length,0);
   const students = DB.users.filter(u=>u.role==='student');
@@ -1540,11 +1674,2329 @@ function statCard(icon, val, label, color, navIcon) {
   </div>`;
 }
 
+
+
+// =========================================================
+//  일정관리 — 주간 + 월간 뷰
+// =========================================================
+let _schedDate = new Date().toISOString().slice(0, 10);
+let _schedView = 'week'; // 'week' | 'month'
+let _schedMonth = new Date(); // 월간 뷰 기준 날짜
+
+function schedDateKey(d) { return 'ion_sched_' + d; }
+function schedLoad(d) { try { return JSON.parse(localStorage.getItem(schedDateKey(d)) || '[]'); } catch { return []; } }
+function schedSave(items, d) { localStorage.setItem(schedDateKey(d), JSON.stringify(items)); }
+
+function schedSetView(v) {
+  _schedView = v;
+  document.getElementById('sched-week-view').style.display  = v === 'week'  ? '' : 'none';
+  document.getElementById('sched-month-view').style.display = v === 'month' ? '' : 'none';
+  const wb = document.getElementById('sched-view-week-btn');
+  const mb = document.getElementById('sched-view-month-btn');
+  if (wb) { wb.style.background = v==='week' ? 'var(--blue)' : 'none'; wb.style.color = v==='week' ? 'white' : 'var(--t2)'; }
+  if (mb) { mb.style.background = v==='month'? 'var(--blue)' : 'none'; mb.style.color = v==='month'? 'white' : 'var(--t2)'; }
+  if (v === 'week')  schedRenderTabs();
+  if (v === 'month') schedRenderCalendar();
+}
+
+// ── 주간 뷰 ──────────────────────────────────────────────
+function schedRenderTabs() {
+  const tabEl = document.getElementById('sched-date-tabs');
+  if (!tabEl) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const dates = [];
+  for (let i = -1; i <= 6; i++) {
+    const d = new Date(); d.setDate(d.getDate() + i);
+    dates.push(d.toISOString().slice(0, 10));
+  }
+  tabEl.innerHTML = dates.map(d => {
+    const isToday = d === today;
+    const isSel   = d === _schedDate;
+    const hasSched = schedLoad(d).length > 0;
+    const dt = new Date(d + 'T00:00:00');
+    const dayLabel = dt.toLocaleDateString('ko-KR', { month: 'numeric', day: 'numeric', weekday: 'short' });
+    return `<button onclick="schedSelectDate('${d}')"
+      style="flex-shrink:0;padding:6px 11px;border-radius:9px;border:1.5px solid ${isSel?'var(--blue)':'var(--border)'};
+             background:${isSel?'var(--blue)':'white'};color:${isSel?'white':isToday?'var(--blue2)':'var(--t2)'};
+             font-size:12px;font-weight:${isSel||isToday?'700':'500'};cursor:pointer;font-family:'Outfit',sans-serif;position:relative">
+      ${isToday ? '<span style="font-size:10px;display:block;opacity:0.8">오늘</span>' : ''}${dayLabel}
+      ${hasSched?`<span style="position:absolute;top:3px;right:4px;width:5px;height:5px;border-radius:50%;background:${isSel?'rgba(255,255,255,0.8)':'var(--blue)'}"></span>`:''}
+    </button>`;
+  }).join('');
+}
+
+function schedRenderList() {
+  const list = document.getElementById('sched-list');
+  if (!list) return;
+  const items = schedLoad(_schedDate);
+  const today = new Date().toISOString().slice(0, 10);
+  items.sort((a, b) => (a.time||'').localeCompare(b.time||''));
+  if (!items.length) {
+    list.innerHTML = `<div style="text-align:center;padding:14px 0;color:var(--t3);font-size:13px">${_schedDate < today ? '이 날 일정이 없었습니다' : '일정 없음'}</div>`;
+    return;
+  }
+  list.innerHTML = items.map((item, idx) => `
+    <div style="display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;
+      background:${item.done?'var(--surface2)':'var(--bg)'};border:1px solid ${item.done?'var(--border)':'rgba(59,130,246,0.15)'};margin-bottom:5px">
+      <input type="checkbox" ${item.done?'checked':''} onchange="schedToggle('${_schedDate}',${idx})"
+        style="width:16px;height:16px;accent-color:var(--blue);cursor:pointer;flex-shrink:0">
+      ${item.time?`<span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-dim);padding:2px 7px;border-radius:6px;flex-shrink:0">${item.time}</span>`:''}
+      <span style="flex:1;font-size:14px;font-weight:500;color:${item.done?'var(--t3)':'var(--t1)'};text-decoration:${item.done?'line-through':'none'}">${item.text}</span>
+      <button onclick="schedDelete('${_schedDate}',${idx})" style="background:none;border:none;cursor:pointer;color:var(--t3);padding:2px 6px;font-size:18px;line-height:1;border-radius:6px"
+        onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--t3)'">×</button>
+    </div>`).join('');
+}
+
+function schedSelectDate(d) {
+  _schedDate = d;
+  schedRenderTabs();
+  schedRenderList();
+}
+
+function schedToggle(date, idx) {
+  const items = schedLoad(date);
+  if (items[idx]) items[idx].done = !items[idx].done;
+  schedSave(items, date);
+  if (_schedView === 'week') schedRenderList();
+  else { schedRenderCalendar(); schedRenderDayPanel(date); }
+}
+
+function schedDelete(date, idx) {
+  const items = schedLoad(date);
+  items.splice(idx, 1);
+  schedSave(items, date);
+  if (_schedView === 'week') { schedRenderTabs(); schedRenderList(); }
+  else { schedRenderCalendar(); schedRenderDayPanel(date); }
+}
+
+// ── 월간 뷰 ──────────────────────────────────────────────
+function schedMonthMove(delta) {
+  _schedMonth = new Date(_schedMonth.getFullYear(), _schedMonth.getMonth() + delta, 1);
+  schedRenderCalendar();
+}
+
+function schedRenderCalendar() {
+  const lbl = document.getElementById('sched-month-label');
+  const cal = document.getElementById('sched-calendar');
+  if (!cal) return;
+
+  const y = _schedMonth.getFullYear();
+  const m = _schedMonth.getMonth();
+  if (lbl) lbl.textContent = `${y}년 ${m+1}월`;
+
+  const today = new Date().toISOString().slice(0, 10);
+  const firstDay = new Date(y, m, 1).getDay(); // 0=일
+  const lastDate = new Date(y, m+1, 0).getDate();
+  const days = ['일','월','화','수','목','금','토'];
+
+  let html = `<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:6px">
+    ${days.map((d,i) => `<div style="text-align:center;font-size:11px;font-weight:700;color:${i===0?'var(--red)':i===6?'var(--blue)':'var(--t3)'};padding:4px 0">${d}</div>`).join('')}
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px" id="sched-cal-grid">`;
+
+  // 빈 칸
+  for (let i = 0; i < firstDay; i++) html += `<div style="min-height:52px"></div>`;
+
+  for (let date = 1; date <= lastDate; date++) {
+    const d = `${y}-${String(m+1).padStart(2,'0')}-${String(date).padStart(2,'0')}`;
+    const items = schedLoad(d);
+    const isToday = d === today;
+    const isSel   = d === _schedDate;
+    const dow = (firstDay + date - 1) % 7;
+    const numColor = dow===0 ? '#ef4444' : dow===6 ? 'var(--blue)' : 'var(--t1)';
+
+    html += `<div onclick="schedCalDayClick('${d}')" style="min-height:52px;border-radius:8px;padding:4px 5px;cursor:pointer;
+      border:1.5px solid ${isSel?'var(--blue)':isToday?'rgba(59,130,246,0.3)':'transparent'};
+      background:${isSel?'rgba(59,130,246,0.07)':isToday?'rgba(59,130,246,0.04)':'var(--bg)'};
+      transition:all 0.12s"
+      onmouseover="this.style.background='var(--blue-dim)'" onmouseout="this.style.background='${isSel?'rgba(59,130,246,0.07)':isToday?'rgba(59,130,246,0.04)':'var(--bg)'}'">
+      <div style="font-size:12px;font-weight:${isToday?'700':'500'};color:${isToday?'var(--blue)':numColor};margin-bottom:2px">${date}</div>
+      ${items.slice(0,2).map(it => `<div style="font-size:10px;background:${it.done?'var(--border)':'var(--blue)'};color:white;border-radius:3px;padding:1px 4px;margin-bottom:1px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;text-decoration:${it.done?'line-through':''}">${it.time?it.time+' ':''} ${it.text}</div>`).join('')}
+      ${items.length > 2 ? `<div style="font-size:10px;color:var(--t3)">+${items.length-2}개</div>` : ''}
+    </div>`;
+  }
+  html += `</div>`;
+
+  // 선택 날 일정 패널
+  html += `<div id="sched-day-panel" style="margin-top:12px;border-top:1px solid var(--border);padding-top:12px"></div>`;
+  cal.innerHTML = html;
+  if (_schedDate) schedRenderDayPanel(_schedDate);
+}
+
+function schedCalDayClick(d) {
+  _schedDate = d;
+  // 선택 셀 표시 업데이트
+  schedRenderCalendar();
+}
+
+function schedRenderDayPanel(date) {
+  const panel = document.getElementById('sched-day-panel');
+  if (!panel) return;
+  const items = schedLoad(date);
+  const dt = new Date(date + 'T00:00:00');
+  const label = dt.toLocaleDateString('ko-KR', { month: 'long', day: 'numeric', weekday: 'short' });
+  items.sort((a,b) => (a.time||'').localeCompare(b.time||''));
+
+  panel.innerHTML = `
+    <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px">${label}</div>
+    ${items.length ? items.map((item,idx) => `
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;
+        background:${item.done?'var(--surface2)':'var(--bg)'};border:1px solid ${item.done?'var(--border)':'rgba(59,130,246,0.15)'};margin-bottom:4px">
+        <input type="checkbox" ${item.done?'checked':''} onchange="schedToggle('${date}',${idx})"
+          style="width:15px;height:15px;accent-color:var(--blue);cursor:pointer;flex-shrink:0">
+        ${item.time?`<span style="font-size:11px;font-weight:700;color:var(--blue);background:var(--blue-dim);padding:1px 6px;border-radius:5px;flex-shrink:0">${item.time}</span>`:''}
+        <span style="flex:1;font-size:13px;color:${item.done?'var(--t3)':'var(--t1)'};text-decoration:${item.done?'line-through':'none'}">${item.text}</span>
+        <button onclick="schedDelete('${date}',${idx})" style="background:none;border:none;cursor:pointer;color:var(--t3);font-size:16px;line-height:1;border-radius:5px;padding:1px 5px"
+          onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--t3)'">×</button>
+      </div>`).join('')
+    : `<div style="color:var(--t3);font-size:13px;padding:8px 0">일정 없음</div>`}`;
+}
+
+// ── 공통 ──────────────────────────────────────────────────
+function schedRender() {
+  if (_schedView === 'week') { schedRenderTabs(); schedRenderList(); }
+  else schedRenderCalendar();
+}
+
+function schedOpenAdd() {
+  showModal(`
+    <div class="modal-title">일정 추가</div>
+    <div class="form-group">
+      <label class="form-label">날짜</label>
+      <input class="form-input" id="sched-inp-date" type="date" value="${_schedDate}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">내용 *</label>
+      <input class="form-input" id="sched-inp-text" placeholder="예: 초등 4반 단어 시험, 학부모 상담">
+    </div>
+    <div class="form-group">
+      <label class="form-label">시간 (선택)</label>
+      <input class="form-input" id="sched-inp-time" type="time">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="schedAdd()">추가</button>
+    </div>
+  `);
+  setTimeout(() => document.getElementById('sched-inp-text')?.focus(), 80);
+  document.getElementById('sched-inp-text')?.addEventListener('keydown', e => { if(e.key==='Enter') schedAdd(); });
+}
+
+function schedAdd() {
+  const text = document.getElementById('sched-inp-text')?.value.trim();
+  if (!text) { showToast('일정 내용을 입력하세요.', 'error'); return; }
+  const date = document.getElementById('sched-inp-date')?.value || _schedDate;
+  const time = document.getElementById('sched-inp-time')?.value || '';
+  const items = schedLoad(date);
+  items.push({ text, time, done: false });
+  schedSave(items, date);
+  _schedDate = date;
+  closeModal();
+  // 월간 뷰면 해당 월로 이동
+  if (_schedView === 'month') {
+    const parts = date.split('-');
+    _schedMonth = new Date(parseInt(parts[0]), parseInt(parts[1])-1, 1);
+  }
+  schedRender();
+  showToast('일정이 추가되었습니다.', 'success');
+}
+
 // =========================================================
 //  LIBRARY
 // =========================================================
 // 현재 선택된 컬렉션 필터 (null=전체)
 let libActiveCollId = null;
+
+// =========================================================
+//  문장학습 시스템
+// =========================================================
+// sentence_books: id, owner_id, name, tag, created_at
+// sentence_items: id, book_id, en, ko, sort_order
+// sentence_assignments: student_id, book_id
+// sentence_submissions: id, student_id, book_id, item_id, type, answer, correct, recorded_url, feedback, created_at
+
+// DB 캐시
+let DB_sentBooks = [];
+let DB_sentItems = {};     // bookId → []
+let DB_sentAssigns = [];   // {student_id, book_id}
+let _sentActiveBook = null;
+let _sentStudyBook  = null;
+let _sentStudyMode  = 'unscramble'; // unscramble | dictation | record
+let _sentStudyIdx   = 0;
+let _sentStudyItems = [];
+let _mediaRecorder  = null;
+let _recordedChunks = [];
+
+// ── 로드 ──────────────────────────────────────────────────
+async function loadSentenceBooks() {
+  if (!currentUser) return;
+  try {
+    if (currentUser.role === 'teacher') {
+      const { data } = await sb.from('sentence_books').select('*').eq('owner_id', currentUser.id).order('created_at', {ascending:false});
+      DB_sentBooks = data || [];
+    } else {
+      // 학생: 배정된 문장집
+      const { data: assigns } = await sb.from('sentence_assignments').select('book_id').eq('student_id', currentUser.id);
+      const bookIds = (assigns||[]).map(a => a.book_id);
+      if (!bookIds.length) { DB_sentBooks = []; return; }
+      const { data } = await sb.from('sentence_books').select('*').in('id', bookIds);
+      DB_sentBooks = data || [];
+      DB_sentAssigns = assigns || [];
+    }
+  } catch(e) { console.warn('sentence_books 로드 실패 (테이블 없을 수 있음):', e.message); DB_sentBooks = []; }
+}
+
+async function loadSentenceItems(bookId) {
+  if (DB_sentItems[bookId]) return DB_sentItems[bookId];
+  try {
+    const { data } = await sb.from('sentence_items').select('*').eq('book_id', bookId).order('sort_order', {ascending:true});
+    DB_sentItems[bookId] = data || [];
+    return DB_sentItems[bookId];
+  } catch(e) { return []; }
+}
+
+// ── 선생님: 문장집 관리 ───────────────────────────────────
+
+// ── 문장 편집기 ──────────────────────────────────────────
+// ── 컬렉션 시스템 ─────────────────────────────────────────
+let DB_sentColls   = [];   // sentence_collections
+let _sentActiveColl = null; // null = 전체
+let _sentEditorBookId = null;
+
+// sentence_collections: id, owner_id, name, color, created_at
+// sentence_books에 collection_id 컬럼 추가 필요
+
+function sentRefreshBookSel() {
+  // 구버전 호환용 (사용 안 함)
+}
+
+async function loadSentColls() {
+  try {
+    const { data } = await sb.from('sentence_collections').select('*').eq('owner_id', currentUser.id).order('created_at');
+    DB_sentColls = data || [];
+  } catch(e) { DB_sentColls = []; }
+}
+
+function sentShowMgmtView() {
+  document.getElementById('sent-mgmt-view').style.display = '';
+  document.getElementById('sent-editor-view').style.display = 'none';
+  renderSentMgmt();
+}
+
+function sentShowEditorView(bookId) {
+  _sentEditorBookId = bookId;
+  window._sentEditorBookId = bookId;
+  // 컬렉션 select 채우기
+  const collSel = document.getElementById('sent-editor-coll-sel');
+  if (collSel) {
+    const b = DB_sentBooks.find(b => b.id === bookId);
+    collSel.innerHTML = `<option value="">📂 컬렉션 없음</option>` +
+      DB_sentColls.map(c => `<option value="${c.id}" ${b?.collection_id===c.id?'selected':''}>${c.name}</option>`).join('');
+  }
+  document.getElementById('sent-mgmt-view').style.display = 'none';
+  document.getElementById('sent-editor-view').style.display = '';
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  const titleEl = document.getElementById('sent-editor-title');
+  if (titleEl) titleEl.textContent = b?.name || '';
+  // sent-book-sel 동기화
+  const sel = document.getElementById('sent-book-sel');
+  if (!sel) {
+    // 가상 select 없어도 loadSentEditor 호출 가능하게
+  }
+  loadSentEditorById(bookId);
+}
+
+async function renderSentMgmt() {
+  await loadSentColls();
+
+  // ── 컬렉션 탭 (단어장 보관함과 동일 방식) ──
+  const tabsEl = document.getElementById('sent-coll-tabs');
+  if (tabsEl) {
+    const tabs = [
+      {id: null, name: '전체', color: 'var(--blue)'},
+      ...DB_sentColls.map(c => ({id: c.id, name: c.name, color: c.color||'#6d28d9'})),
+    ];
+    tabsEl.innerHTML = tabs.map(t => {
+      const active = _sentActiveColl === t.id;
+      const cnt = t.id === null ? DB_sentBooks.length : DB_sentBooks.filter(b => b.collection_id === t.id).length;
+      return `<button onclick="sentFilterColl(${t.id===null?'null':`'${t.id}'`})"
+        style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:20px;
+               border:1.5px solid ${active?(t.color)+'88':'var(--border)'};
+               background:${active?t.color+'18':'white'};
+               color:${active?t.color:'var(--t2)'};
+               font-weight:${active?'700':'500'};font-size:13px;cursor:pointer;white-space:nowrap;transition:all 0.15s;font-family:'Outfit',sans-serif">
+        ${t.name}
+        <span style="background:${active?'rgba(0,0,0,0.1)':'var(--surface2)'};border-radius:10px;padding:0 7px;font-size:11px">${cnt}</span>
+        ${t.id!==null?`
+          <span onclick="event.stopPropagation();sentEditColl('${t.id}')" title="편집"
+            style="margin-left:2px;opacity:0.5;font-size:12px;cursor:pointer" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">✏️</span>
+          <span onclick="event.stopPropagation();sentDeleteColl('${t.id}')" title="삭제"
+            style="margin-left:2px;opacity:0.5;font-size:12px;cursor:pointer" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">✕</span>`:''}
+      </button>`;
+    }).join('');
+  }
+
+  // ── 문장집 그리드 ──
+  const grid = document.getElementById('sent-books-grid');
+  if (!grid) return;
+
+  let books = DB_sentBooks;
+
+  // 컬렉션 내부 뷰
+  if (_sentActiveColl !== null) {
+    const coll = DB_sentColls.find(c => c.id === _sentActiveColl);
+    books = books.filter(b => (b.collection_id||null) === _sentActiveColl);
+
+    // 컬렉션 헤더 표시
+    const headerHTML = `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;padding:14px 18px;background:white;border:1.5px solid var(--border);border-radius:14px;box-shadow:var(--sh)">
+        <div style="width:44px;height:44px;border-radius:12px;background:${coll?.color||'#6d28d9'}22;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="${coll?.color||'#6d28d9'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div style="flex:1">
+          <div style="font-weight:700;font-size:17px">${coll?.name||''}</div>
+          <div style="font-size:12px;color:var(--t3)">${books.length}개 문장집</div>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="sentEditColl('${_sentActiveColl}')">✏️ 편집</button>
+      </div>`;
+
+    if (!books.length) {
+      grid.innerHTML = headerHTML + '<div class="empty"><div class="empty-icon">💬</div><div class="empty-title">이 컬렉션에 문장집이 없습니다</div></div>';
+      return;
+    }
+    grid.innerHTML = headerHTML + `<div class="cards-grid">${books.map(b => sentBookCardHTML(b)).join('')}</div>`;
+    return;
+  }
+
+  // 전체 뷰 — 컬렉션별 그룹핑
+  if (!books.length) {
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">💬</div><div class="empty-title">문장집이 없습니다</div><div class="empty-sub">+ 새 문장집을 만들어 보세요</div></div>';
+    return;
+  }
+
+  // 컬렉션별 분류
+  const grouped = {};
+  books.forEach(b => {
+    const key = b.collection_id || '__none__';
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(b);
+  });
+
+  let html = '';
+  DB_sentColls.forEach(c => {
+    if (!grouped[c.id]) return;
+    html += `<div style="margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid ${c.color||'#6d28d9'}33">
+        <div style="width:10px;height:10px;border-radius:50%;background:${c.color||'#6d28d9'}"></div>
+        <span style="font-size:14px;font-weight:700;color:var(--t1)">${c.name}</span>
+        <span style="font-size:12px;color:var(--t3)">${grouped[c.id].length}개</span>
+      </div>
+      <div class="cards-grid">${grouped[c.id].map(b => sentBookCardHTML(b)).join('')}</div>
+    </div>`;
+  });
+  if (grouped['__none__']) {
+    html += `<div style="margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;padding-bottom:8px;border-bottom:2px solid var(--border)">
+        <span style="font-size:14px;font-weight:700;color:var(--t3)">미분류</span>
+        <span style="font-size:12px;color:var(--t3)">${grouped['__none__'].length}개</span>
+      </div>
+      <div class="cards-grid">${grouped['__none__'].map(b => sentBookCardHTML(b)).join('')}</div>
+    </div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function sentBookCardHTML(b) {
+  const coll = DB_sentColls.find(c => c.id === b.collection_id);
+  const collOpts = DB_sentColls.map(c =>
+    `<option value="${c.id}" ${b.collection_id===c.id?'selected':''}>${c.name}</option>`).join('');
+  return `<div class="book-card" style="position:relative" onclick="sentShowEditorView('${b.id}')">
+    <div class="book-card-stripe" style="background:${coll?.color||'#6d28d9'}"></div>
+    <!-- 오른쪽 상단: 문장 보기 + 체크박스 -->
+    <div style="position:absolute;top:10px;right:10px;display:flex;align-items:center;gap:6px;z-index:2">
+      <button onclick="event.stopPropagation();openSentListModal('${b.id}')" title="문장 목록 보기"
+        style="font-size:11px;padding:2px 9px;background:${coll?.color||'#6d28d9'}22;border:1px solid ${coll?.color||'#6d28d9'}55;border-radius:7px;cursor:pointer;color:${coll?.color||'#6d28d9'};font-family:'Outfit',sans-serif;font-weight:600;line-height:1.6">
+        보기
+      </button>
+      <input type="checkbox" class="sent-book-chk" data-id="${b.id}"
+        style="width:15px;height:15px;accent-color:var(--blue);cursor:pointer"
+        onclick="event.stopPropagation();sentBookCheckChange()">
+    </div>
+    <div class="book-name" style="padding-right:80px">${b.name}</div>
+    <div style="display:flex;align-items:center;gap:6px;margin:4px 0;flex-wrap:wrap">
+      ${b.tag?`<span class="tag tag-gold">${b.tag}</span>`:''}
+      <select onchange="event.stopPropagation();sentMoveBookColl('${b.id}',this.value||null);this.blur()"
+        style="font-size:10px;border:1px solid var(--border);border-radius:6px;padding:2px 4px;background:var(--surface2);color:var(--t3);cursor:pointer;outline:none;max-width:100px"
+        title="컬렉션 이동" onclick="event.stopPropagation()">
+        <option value="" ${!b.collection_id?'selected':''}>📂 미분류</option>
+        ${collOpts}
+      </select>
+    </div>
+    <div class="book-meta">${(DB_sentItems[b.id]||[]).length || '?'}개 문장</div>
+    <div class="book-footer">
+      <button class="btn btn-primary btn-sm" style="flex:1" onclick="event.stopPropagation();sentShowEditorView('${b.id}')">편집</button>
+      <button class="btn btn-secondary btn-sm" style="flex:1" onclick="event.stopPropagation();sentMakeTest('${b.id}')">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        시험지
+      </button>
+      <button class="btn btn-secondary btn-sm btn-icon" onclick="event.stopPropagation();_sentEditorBookId='${b.id}';openSentAssignModal('${b.id}')" title="배포">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+      </button>
+      <button class="btn btn-danger btn-sm btn-icon" onclick="event.stopPropagation();deleteSentBook('${b.id}')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      </button>
+    </div>
+  </div>`;
+}
+
+// 컬렉션 이동 (카드에서)
+async function sentMoveBookColl(bookId, collId) {
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  if (b) b.collection_id = collId || null;
+  try {
+    await sb.from('sentence_books').update({ collection_id: collId || null }).eq('id', bookId);
+    renderSentMgmt();
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+// 컬렉션 편집/삭제
+function sentEditColl(collId) {
+  const c = DB_sentColls.find(c => c.id === collId);
+  if (!c) return;
+  showModal(`
+    <div class="modal-title">컬렉션 편집</div>
+    <div class="form-group"><label class="form-label">이름</label>
+      <input class="form-input" id="scoll-edit-name" value="${esc(c.name)}"></div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="sentSaveColl('${collId}')">저장</button>
+    </div>`);
+}
+async function sentSaveColl(collId) {
+  const name = document.getElementById('scoll-edit-name')?.value.trim();
+  if (!name) return;
+  const c = DB_sentColls.find(c => c.id === collId);
+  if (c) c.name = name;
+  await sb.from('sentence_collections').update({ name }).eq('id', collId).catch(()=>{});
+  closeModal(); renderSentMgmt();
+}
+async function sentDeleteColl(collId) {
+  if (!confirm('컬렉션을 삭제할까요? 문장집은 미분류로 이동합니다.')) return;
+  await sb.from('sentence_books').update({ collection_id: null }).eq('collection_id', collId).catch(()=>{});
+  await sb.from('sentence_collections').delete().eq('id', collId).catch(()=>{});
+  DB_sentColls = DB_sentColls.filter(c => c.id !== collId);
+  DB_sentBooks.forEach(b => { if (b.collection_id === collId) b.collection_id = null; });
+  if (_sentActiveColl === collId) _sentActiveColl = null;
+  renderSentMgmt();
+}
+
+
+
+// 문장집 다중 선택 삭제
+function sentBookCheckChange() {
+  const checked = document.querySelectorAll('.sent-book-chk:checked');
+  const btn = document.getElementById('sent-bulk-del-btn');
+  const cnt = document.getElementById('sent-bulk-del-count');
+  if (btn) btn.style.display = checked.length ? 'inline-flex' : 'none';
+  if (cnt) cnt.textContent = checked.length;
+}
+
+async function deleteSentBooksSelected() {
+  const ids = [...document.querySelectorAll('.sent-book-chk:checked')].map(c => c.dataset.id);
+  if (!ids.length) return;
+  if (!confirm(`문장집 ${ids.length}개를 삭제할까요? 모든 문장과 배포 정보가 사라집니다.`)) return;
+
+  // 즉시 DOM에서 카드 제거
+  ids.forEach(id => {
+    const card = document.querySelector(`.sent-book-chk[data-id="${id}"]`)?.closest('.book-card');
+    if (card) { card.style.opacity = '0.3'; card.style.pointerEvents = 'none'; }
+  });
+
+  // 선택 삭제 버튼 즉시 숨김
+  const btn = document.getElementById('sent-bulk-del-btn');
+  if (btn) btn.style.display = 'none';
+
+  let failIds = [];
+  for (const id of ids) {
+    try {
+      await sb.from('sentence_items').delete().eq('book_id', id);
+      await sb.from('sentence_assignments').delete().eq('book_id', id);
+      await sb.from('sentence_books').delete().eq('id', id);
+      delete DB_sentItems[id];
+      // 성공한 카드 완전 제거
+      const card = document.querySelector(`.sent-book-chk[data-id="${id}"]`)?.closest('.book-card');
+      if (card) card.remove();
+    } catch(e) {
+      failIds.push(id);
+      const card = document.querySelector(`.sent-book-chk[data-id="${id}"]`)?.closest('.book-card');
+      if (card) { card.style.opacity = '1'; card.style.pointerEvents = ''; }
+    }
+  }
+
+  // DB 캐시 업데이트
+  const deletedIds = ids.filter(id => !failIds.includes(id));
+  DB_sentBooks = DB_sentBooks.filter(b => !deletedIds.includes(b.id));
+
+  // 빈 그리드면 빈 메시지 표시
+  const grid = document.getElementById('sent-books-grid');
+  if (grid && !grid.querySelector('.book-card')) {
+    grid.innerHTML = '<div class="empty"><div class="empty-icon">💬</div><div class="empty-title">문장집이 없습니다</div><div class="empty-sub">+ 새 문장집을 만들어 보세요</div></div>';
+  }
+
+  if (failIds.length) showToast(`${failIds.length}개 삭제 실패. 나머지 ${deletedIds.length}개는 삭제됐습니다.`, 'error');
+  else showToast(`${deletedIds.length}개 문장집이 삭제됐습니다.`, 'success');
+}
+
+
+// 편집기에서 컬렉션 변경
+async function sentChangeBookCollection(bookId, collId) {
+  if (!bookId) return;
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  if (b) b.collection_id = collId || null;
+  try {
+    await sb.from('sentence_books').update({ collection_id: collId || null }).eq('id', bookId);
+    showToast('컬렉션이 변경됐습니다.', 'success');
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+// 편집기 저장 (이름/태그 변경 반영)
+async function sentSaveBook(bookId) {
+  if (!bookId) { showToast('문장집을 선택하세요.', 'error'); return; }
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  if (!b) return;
+  try {
+    // 현재 편집기 내 변경사항은 이미 자동저장됨 — 여기선 명시적 확인 토스트
+    showToast('저장 완료!', 'success');
+    // 목록 뷰 반영을 위해 DB 캐시도 최신화
+    const { data } = await sb.from('sentence_items').select('id').eq('book_id', bookId);
+    if (data) b.item_count = data.length;
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+function sentFilterColl(collId) {
+  _sentActiveColl = collId;
+  renderSentMgmt();
+}
+
+function openNewSentCollModal() {
+  const colors = ['#6d28d9','#2563eb','#059669','#b45309','#dc2626','#0891b2'];
+  showModal(`
+    <div class="modal-title">📁 새 컬렉션</div>
+    <div class="form-group"><label class="form-label">이름 *</label>
+      <input class="form-input" id="scoll-name" placeholder="예: Bricks Level 1, 중등 독해"></div>
+    <div class="form-group"><label class="form-label">색상</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${colors.map((c,i) => `<label style="cursor:pointer"><input type="radio" name="scoll-color" value="${c}" ${i===0?'checked':''} style="display:none">
+          <div style="width:28px;height:28px;border-radius:50%;background:${c};border:2px solid transparent" onclick="this.style.border='2px solid #111'"></div></label>`).join('')}
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="createSentColl()">만들기</button>
+    </div>`);
+  setTimeout(() => document.getElementById('scoll-name')?.focus(), 80);
+}
+
+async function createSentColl() {
+  const name  = document.getElementById('scoll-name')?.value.trim();
+  if (!name) { showToast('이름을 입력하세요.', 'error'); return; }
+  const color = document.querySelector('input[name="scoll-color"]:checked')?.value || '#6d28d9';
+  try {
+    const { data, error } = await sb.from('sentence_collections').insert({ owner_id: currentUser.id, name, color }).select().single();
+    if (error) throw error;
+    DB_sentColls.push(data);
+    closeModal();
+    renderSentMgmt();
+    showToast('컬렉션이 만들어졌습니다.', 'success');
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+async function loadSentEditorById(id) {
+  const body   = document.getElementById('sent-editor-body');
+  const delBtn = document.getElementById('sent-del-sel-btn');
+  if (!body || !id) return;
+  body.innerHTML = '<div style="padding:20px;text-align:center;color:var(--t3)">불러오는 중...</div>';
+  const items = await loadSentenceItems(id);
+  if (delBtn) delBtn.style.display = 'none';
+  const selCountEl = document.getElementById('sent-sel-count');
+  if (selCountEl) selCountEl.textContent = '0';
+
+  // 기존 문장 없으면 빈 행 5개 생성
+  const rows = items.length > 0 ? items : Array.from({length:5}, (_,i) => ({
+    id: 'new_' + Date.now() + '_' + i, en: '', ko: '', sort_order: i+1, _isNew: true
+  }));
+
+  body.innerHTML = `
+    <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden">
+      <div class="table-wrap">
+        <table id="sent-edit-table">
+          <thead><tr>
+            <th width="28" title="드래그하여 순서 변경" style="text-align:center;color:var(--t3)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </th>
+            <th width="36" style="text-align:center">
+              <input type="checkbox" id="chk-all-sents" style="accent-color:var(--blue);width:15px;height:15px" onchange="sentToggleAll(this)">
+            </th>
+            <th width="28" style="color:var(--t3);font-size:11px">#</th>
+            <th>영어 문장</th>
+            <th>한국어 해석</th>
+            <th width="36">✕</th>
+          </tr></thead>
+          <tbody id="sent-table-body">
+            ${rows.map((it, i) => sentRowHTML(it, i, id)).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+
+  sentInitDrag(id);
+}
+
+function sentRowHTML(it, idx, bookId) {
+  const isNew = it._isNew || false;
+  return `<tr id="sent-row-${it.id}" draggable="true" data-id="${it.id}" data-new="${isNew}"
+    style="cursor:default;transition:background 0.15s">
+    <td style="text-align:center;cursor:grab;color:var(--t3)" class="drag-handle">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="19" r="1"/></svg>
+    </td>
+    <td style="text-align:center"><input type="checkbox" class="sent-chk" data-id="${it.id}" style="accent-color:var(--blue);width:15px;height:15px" onchange="sentOnCheckChange()"></td>
+    <td style="color:var(--t3);font-size:11px;font-family:'JetBrains Mono',monospace;min-width:24px">${idx+1}</td>
+    <td><input class="editable en-word" value="${esc(it.en)}" placeholder="영어 문장 입력..."
+      style="min-width:260px;background:${it.en?'':'rgba(59,130,246,0.03)'}"
+      onchange="sentAutoSaveRow('${bookId}','${it.id}',this,'en')"
+      onkeydown="if(event.key==='Tab'&&!event.shiftKey){event.preventDefault();this.closest('tr').querySelector('.ko-word')?.focus()}"></td>
+    <td><input class="editable ko-word" value="${esc(it.ko)}" placeholder="한국어 해석 입력..."
+      style="min-width:180px;background:${it.ko?'':'rgba(59,130,246,0.03)'}"
+      onchange="sentAutoSaveRow('${bookId}','${it.id}',this,'ko')"
+      onkeydown="if(event.key==='Tab'&&!event.shiftKey){event.preventDefault();const nextRow=this.closest('tr').nextElementSibling;if(nextRow)nextRow.querySelector('.en-word')?.focus()}"></td>
+    <td><button class="btn btn-danger btn-sm btn-icon" onclick="deleteSentItemRow('${bookId}','${it.id}')">✕</button></td>
+  </tr>`;
+}
+
+// 자동 저장: 빈 행이면 INSERT, 기존 행이면 UPDATE
+async function sentAutoSaveRow(bookId, rowId, inputEl, field) {
+  const row = document.getElementById('sent-row-' + rowId);
+  if (!row) return;
+  const isNew = row.dataset.new === 'true';
+  const enVal = row.querySelector('.en-word')?.value.trim() || '';
+  const koVal = row.querySelector('.ko-word')?.value.trim() || '';
+
+  if (isNew) {
+    // 두 필드 모두 값 있을 때 INSERT
+    if (!enVal || !koVal) return;
+    const sort_order = [...document.querySelectorAll('#sent-table-body tr')].indexOf(row) + 1;
+    try {
+      const { data, error } = await sb.from('sentence_items')
+        .insert({ book_id: bookId, en: enVal, ko: koVal, sort_order }).select().single();
+      if (error) throw error;
+      if (!DB_sentItems[bookId]) DB_sentItems[bookId] = [];
+      DB_sentItems[bookId].push(data);
+      // 행 ID와 상태 업데이트
+      row.id = 'sent-row-' + data.id;
+      row.dataset.id = data.id;
+      row.dataset.new = 'false';
+      row.querySelector('.sent-chk').dataset.id = data.id;
+      // 입력 이벤트 핸들러 업데이트
+      row.querySelectorAll('input.editable').forEach(inp => {
+        inp.setAttribute('onchange', inp.getAttribute('onchange').replace(rowId, data.id));
+      });
+      row.querySelector('.btn-danger').setAttribute('onclick',
+        `deleteSentItemRow('${bookId}','${data.id}')`);
+      // 저장 표시
+      inputEl.style.background = '';
+      inputEl.style.borderColor = 'var(--green)';
+      setTimeout(() => { inputEl.style.borderColor = ''; }, 1200);
+    } catch(e) { console.warn('저장 실패:', e); }
+  } else {
+    // UPDATE
+    const val = inputEl.value.trim();
+    const item = (DB_sentItems[bookId]||[]).find(i => i.id === rowId);
+    if (item) item[field] = val;
+    try {
+      await sb.from('sentence_items').update({ [field]: val }).eq('id', rowId);
+      inputEl.style.borderColor = 'var(--green)';
+      setTimeout(() => { inputEl.style.borderColor = ''; }, 800);
+    } catch(e) { console.warn('업데이트 실패:', e); }
+  }
+}
+
+// 빈 행 추가
+function sentAddEmptyRow(bookId) {
+  const tbody = document.getElementById('sent-table-body');
+  if (!tbody) return;
+  const idx = tbody.querySelectorAll('tr').length;
+  const tempId = 'new_' + Date.now();
+  const tr = document.createElement('tr');
+  tr.id = 'sent-row-' + tempId;
+  tr.draggable = true;
+  tr.dataset.id = tempId;
+  tr.dataset.new = 'true';
+  tr.style.transition = 'background 0.15s';
+  tr.innerHTML = `
+    <td style="text-align:center;cursor:grab;color:var(--t3)" class="drag-handle">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="19" r="1"/></svg>
+    </td>
+    <td style="text-align:center"><input type="checkbox" class="sent-chk" data-id="${tempId}" style="accent-color:var(--blue);width:15px;height:15px" onchange="sentOnCheckChange()"></td>
+    <td style="color:var(--t3);font-size:11px;font-family:'JetBrains Mono',monospace">${idx+1}</td>
+    <td><input class="editable en-word" value="" placeholder="영어 문장 입력..."
+      style="min-width:260px;background:rgba(59,130,246,0.03)"
+      onchange="sentAutoSaveRow('${bookId}','${tempId}',this,'en')"
+      onkeydown="if(event.key==='Tab'&&!event.shiftKey){event.preventDefault();this.closest('tr').querySelector('.ko-word')?.focus()}"></td>
+    <td><input class="editable ko-word" value="" placeholder="한국어 해석 입력..."
+      style="min-width:180px;background:rgba(59,130,246,0.03)"
+      onchange="sentAutoSaveRow('${bookId}','${tempId}',this,'ko')"
+      onkeydown="if(event.key==='Tab'&&!event.shiftKey){event.preventDefault();const nr=this.closest('tr').nextElementSibling;if(nr)nr.querySelector('.en-word')?.focus()}"></td>
+    <td><button class="btn btn-danger btn-sm btn-icon" onclick="deleteSentItemRow('${bookId}','${tempId}')">✕</button></td>`;
+  tbody.appendChild(tr);
+  tr.querySelector('.en-word')?.focus();
+  // 드래그 이벤트 재연결
+  sentBindDragRow(tr, bookId);
+  // 번호 재정렬
+  sentRenumber();
+}
+
+function sentRenumber() {
+  document.querySelectorAll('#sent-table-body tr').forEach((tr, i) => {
+    const cell = tr.cells[2];
+    if (cell) cell.textContent = i + 1;
+  });
+}
+
+// ── 드래그 앤 드롭 ────────────────────────────────────────
+let _dragSrc = null;
+
+function sentInitDrag(bookId) {
+  document.querySelectorAll('#sent-table-body tr').forEach(tr => sentBindDragRow(tr, bookId));
+}
+
+function sentBindDragRow(tr, bookId) {
+  tr.addEventListener('dragstart', e => {
+    _dragSrc = tr;
+    e.dataTransfer.effectAllowed = 'move';
+    tr.style.opacity = '0.5';
+  });
+  tr.addEventListener('dragend', () => {
+    tr.style.opacity = '1';
+    document.querySelectorAll('#sent-table-body tr').forEach(r => r.style.borderTop = '');
+    sentRenumber();
+    sentSaveSortOrder(bookId);
+  });
+  tr.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    const tbody = tr.parentElement;
+    const rows  = [...tbody.querySelectorAll('tr')];
+    const rect  = tr.getBoundingClientRect();
+    const after = e.clientY > rect.top + rect.height / 2;
+    rows.forEach(r => r.style.borderTop = '');
+    if (!after) tr.style.borderTop = '2px solid var(--blue)';
+    else {
+      const next = rows[rows.indexOf(tr) + 1];
+      if (next) next.style.borderTop = '2px solid var(--blue)';
+    }
+  });
+  tr.addEventListener('drop', e => {
+    e.preventDefault();
+    if (!_dragSrc || _dragSrc === tr) return;
+    const tbody = tr.parentElement;
+    const rows  = [...tbody.querySelectorAll('tr')];
+    const rect  = tr.getBoundingClientRect();
+    const after = e.clientY > rect.top + rect.height / 2;
+    if (after) {
+      tr.after(_dragSrc);
+    } else {
+      tbody.insertBefore(_dragSrc, tr);
+    }
+  });
+}
+
+async function sentSaveSortOrder(bookId) {
+  const rows = document.querySelectorAll('#sent-table-body tr');
+  const updates = [];
+  rows.forEach((tr, i) => {
+    const id = tr.dataset.id;
+    if (id && !tr.dataset.new.startsWith('true') && !id.startsWith('new_')) {
+      updates.push({ id, sort_order: i + 1 });
+    }
+  });
+  for (const u of updates) {
+    await sb.from('sentence_items').update({ sort_order: u.sort_order }).eq('id', u.id).catch(()=>{});
+  }
+  // DB 캐시 순서 업데이트
+  if (DB_sentItems[bookId]) {
+    const order = [...document.querySelectorAll('#sent-table-body tr')].map(tr => tr.dataset.id);
+    DB_sentItems[bookId].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+  }
+}
+
+
+function sentToggleAll(master) {
+  document.querySelectorAll('.sent-chk').forEach(c => c.checked = master.checked);
+  sentOnCheckChange();
+}
+
+function sentOnCheckChange() {
+  const checked = document.querySelectorAll('.sent-chk:checked');
+  const all     = document.querySelectorAll('.sent-chk');
+  const btn     = document.getElementById('sent-del-sel-btn');
+  const master  = document.getElementById('chk-all-sents');
+  document.getElementById('sent-sel-count').textContent = checked.length;
+  if (btn) btn.style.display = checked.length > 0 ? 'inline-flex' : 'none';
+  if (master) { master.indeterminate = checked.length > 0 && checked.length < all.length; master.checked = checked.length === all.length && all.length > 0; }
+}
+
+async function updateSentItem(bookId, itemId, field, value) {
+  const item = (DB_sentItems[bookId]||[]).find(i => i.id === itemId);
+  if (item) item[field] = value;
+  try { await sb.from('sentence_items').update({ [field]: value }).eq('id', itemId); }
+  catch(e) { showToast('저장 실패: ' + e.message, 'error'); }
+}
+
+async function deleteSentItemRow(bookId, itemId) {
+  // 즉시 DOM에서 행 제거
+  const row = document.getElementById('sent-row-' + itemId);
+  if (row) row.style.opacity = '0.3';
+  try {
+    await sb.from('sentence_items').delete().eq('id', itemId);
+    DB_sentItems[bookId] = (DB_sentItems[bookId]||[]).filter(i => i.id !== itemId);
+    if (row) row.remove();
+    // 번호 재정렬
+    document.querySelectorAll('#sent-editor-body tbody tr').forEach((tr, i) => {
+      const numCell = tr.cells[1];
+      if (numCell) numCell.textContent = i + 1;
+    });
+    showToast('삭제됐습니다.', 'success');
+  } catch(e) {
+    if (row) row.style.opacity = '1';
+    showToast('오류: ' + e.message, 'error');
+  }
+}
+
+async function deleteSentSelected() {
+  const ids = [...document.querySelectorAll('.sent-chk:checked')].map(c => c.dataset.id);
+  if (!ids.length) return;
+  const bookId = window._sentEditorBookId;
+  if (!bookId) { showToast('문장집을 선택하세요.', 'error'); return; }
+  if (!confirm(`${ids.length}개 문장을 삭제할까요?`)) return;
+  // 즉시 DOM에서 제거
+  ids.forEach(id => {
+    const row = document.getElementById('sent-row-' + id);
+    if (row) row.remove();
+  });
+  try {
+    await sb.from('sentence_items').delete().in('id', ids);
+    DB_sentItems[bookId] = (DB_sentItems[bookId]||[]).filter(i => !ids.includes(i.id));
+    // 번호 재정렬
+    document.querySelectorAll('#sent-editor-body tbody tr').forEach((tr, i) => {
+      const numCell = tr.cells[1];
+      if (numCell) numCell.textContent = i + 1;
+    });
+    // 버튼 상태 업데이트
+    sentOnCheckChange();
+    const delBtn = document.getElementById('sent-del-sel-btn');
+    if (delBtn) delBtn.style.display = 'none';
+    showToast(`${ids.length}개 삭제됐습니다.`, 'success');
+  } catch(e) {
+    // 실패 시 다시 로드
+    loadSentEditorById(bookId);
+    showToast('오류: ' + e.message, 'error');
+  }
+}
+
+// 단문장 추가 모달
+function openAddSentRowModal() {
+  const bookId = window._sentEditorBookId || document.getElementById('sent-book-sel')?.value;
+  if (!bookId) { showToast('먼저 문장집을 선택하세요.', 'error'); return; }
+  showModal(`
+    <div class="modal-title">문장 추가</div>
+    <div class="form-group">
+      <label class="form-label">영어 문장 *</label>
+      <input class="form-input" id="si-en" placeholder="예: The dog runs fast in the park.">
+    </div>
+    <div class="form-group">
+      <label class="form-label">한국어 해석 *</label>
+      <div style="display:flex;gap:8px">
+        <input class="form-input" id="si-ko" placeholder="예: 그 개는 공원에서 빠르게 달린다." style="flex:1">
+        <button class="btn btn-gold btn-sm" onclick="aiTranslateSingle()">✨ AI</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="addSentRow('${bookId}')">추가</button>
+    </div>
+  `);
+  setTimeout(() => document.getElementById('si-en')?.focus(), 80);
+  document.getElementById('si-en')?.addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('si-ko')?.focus(); });
+  document.getElementById('si-ko')?.addEventListener('keydown', e => { if(e.key==='Enter') addSentRow(bookId); });
+}
+
+async function aiTranslateSingle() {
+  const en = document.getElementById('si-en')?.value.trim();
+  if (!en) { showToast('영어 문장을 먼저 입력하세요.', 'error'); return; }
+  const btn = document.querySelector('.btn-gold');
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+  try {
+    const result = await callClaude(`Translate the following English sentence into natural, fluent Korean. Use only standard Korean characters (한글). Do NOT use any other scripts (Vietnamese, Chinese, Japanese, etc.). Output only the Korean translation, nothing else.\n\n"${en}"`);
+    const koEl = document.getElementById('si-ko');
+    if (koEl) koEl.value = result.trim();
+  } catch(e) { showToast('번역 실패: ' + e.message, 'error'); }
+  finally { if (btn) { btn.disabled = false; btn.textContent = '✨ AI'; } }
+}
+
+async function addSentRow(bookId) {
+  const en = document.getElementById('si-en')?.value.trim();
+  const ko = document.getElementById('si-ko')?.value.trim();
+  if (!en || !ko) { showToast('영어 문장과 해석을 모두 입력하세요.', 'error'); return; }
+  try {
+    const sort_order = (DB_sentItems[bookId]?.length || 0) + 1;
+    const { data, error } = await sb.from('sentence_items').insert({ book_id: bookId, en, ko, sort_order }).select().single();
+    if (error) throw error;
+    if (!DB_sentItems[bookId]) DB_sentItems[bookId] = [];
+    DB_sentItems[bookId].push(data);
+    closeModal();
+    // 테이블에 즉시 행 추가
+    const tbody = document.getElementById('sent-table-body');
+    if (tbody) {
+      // 빈 상태 메시지 제거
+      const emptyRow = tbody.querySelector('td[colspan]');
+      if (emptyRow) emptyRow.closest('tr').remove();
+      const idx = DB_sentItems[bookId].length;
+      const tr = document.createElement('tr');
+      tr.id = 'sent-row-' + data.id;
+      tr.innerHTML = `
+        <td style="text-align:center"><input type="checkbox" class="sent-chk" data-id="${data.id}" style="accent-color:var(--blue);width:15px;height:15px" onchange="sentOnCheckChange()"></td>
+        <td style="color:var(--t3);font-size:11px;font-family:'JetBrains Mono',monospace">${idx}</td>
+        <td><input class="editable en-word" value="${esc(data.en)}" onchange="updateSentItem('${bookId}','${data.id}','en',this.value)" style="min-width:240px"></td>
+        <td><input class="editable ko-word" value="${esc(data.ko)}" onchange="updateSentItem('${bookId}','${data.id}','ko',this.value)" style="min-width:180px"></td>
+        <td><button class="btn btn-danger btn-sm btn-icon" onclick="deleteSentItemRow('${bookId}','${data.id}')">✕</button></td>`;
+      tbody.appendChild(tr);
+    } else {
+      loadSentEditorById(bookId);
+    }
+    showToast('문장이 추가됐습니다.', 'success');
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+// 붙여넣기 + AI 번역 모달
+function openSentBulkModal() {
+  const bookId = window._sentEditorBookId || document.getElementById('sent-book-sel')?.value;
+  if (!bookId) { showToast('먼저 문장집을 선택하세요.', 'error'); return; }
+  showModal(`
+    <div class="modal-title">붙여넣기 + AI 번역</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:14px">
+      영어 문장들을 붙여넣으세요. 한 줄에 하나씩 자동 분리되며 AI가 한국어 해석을 달아줍니다.
+    </div>
+    <div class="form-group">
+      <label class="form-label">영어 문장 (여러 줄 가능) *</label>
+      <textarea class="form-input" id="bulk-en-text" rows="8"
+        placeholder="The cat sleeps on the sofa.
+Dogs are friendly animals.
+She reads books every morning.
+(한 줄에 하나씩 입력하세요)"></textarea>
+    </div>
+    <div id="bulk-preview" style="display:none;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">미리보기</div>
+      <div id="bulk-preview-list" style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:10px"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-gold" onclick="sentBulkAnalyze('${bookId}')">✨ AI 번역</button>
+      <button class="btn btn-primary" id="bulk-save-btn" style="display:none" onclick="sentBulkSave('${bookId}')">저장</button>
+    </div>
+  `);
+}
+
+let _bulkParsed = [];
+
+async function sentBulkAnalyze(bookId) {
+  const raw = document.getElementById('bulk-en-text')?.value.trim();
+  if (!raw) { showToast('문장을 입력하세요.', 'error'); return; }
+
+  // 줄 분리 → 각 줄을 다시 문장 단위(.!?로 끝나는)로 분리
+  const rawLines = raw.split(/\n/).map(l => l.replace(/^\d+[\.\)\s]+/, '').trim()).filter(l => l.length > 2);
+  const sentences = [];
+  for (const line of rawLines) {
+    // 문장 경계: .!? 뒤에 공백+대문자 or 따옴표+공백+대문자
+    const parts = line.match(/[^.!?]+[.!?]["']?(?=\s+[A-Z"]|$)/g);
+    if (parts && parts.length > 1) {
+      parts.forEach(p => { const t = p.trim(); if (t.length > 3) sentences.push(t); });
+    } else {
+      sentences.push(line);
+    }
+  }
+
+  if (!sentences.length) { showToast('유효한 문장이 없습니다.', 'error'); return; }
+
+  const analyzeBtn = document.querySelector('.btn-gold');
+  if (analyzeBtn) { analyzeBtn.disabled = true; analyzeBtn.innerHTML = '<div class="ai-loader" style="display:inline-flex"><div class="ai-dot"></div><div class="ai-dot"></div><div class="ai-dot"></div></div>'; }
+
+  try {
+    const prompt = `Translate each English sentence into natural, fluent Korean. Rules: use ONLY standard Korean (한글) — no Vietnamese, Chinese, Japanese or other scripts. Return ONLY a JSON array, no explanation.
+Format: [{"en":"original sentence","ko":"Korean translation"},...]
+
+Sentences:
+${sentences.map((s,i)=>`${i+1}. ${s}`).join('\n')}`;
+
+    const raw_result = await callClaude(prompt);
+    const clean = raw_result.replace(/\`\`\`json|\`\`\`/g,'').trim();
+    _bulkParsed = JSON.parse(clean);
+
+    // 미리보기
+    const prev = document.getElementById('bulk-preview');
+    const list = document.getElementById('bulk-preview-list');
+    if (prev) prev.style.display = '';
+    if (list) list.innerHTML = _bulkParsed.map((item, i) => `
+      <div style="padding:8px 10px;border-bottom:1px solid var(--border);${i===_bulkParsed.length-1?'border-bottom:none':''}">
+        <div style="font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--t1)">${item.en}</div>
+        <input class="editable" value="${esc(item.ko)}" data-idx="${i}" oninput="_bulkParsed[${i}].ko=this.value"
+          style="font-size:12px;color:var(--t2);width:100%;margin-top:2px">
+      </div>`).join('');
+
+    const saveBtn = document.getElementById('bulk-save-btn');
+    if (saveBtn) saveBtn.style.display = '';
+    showToast(`${_bulkParsed.length}개 문장 번역 완료! 확인 후 저장하세요.`, 'success');
+  } catch(e) {
+    showToast('AI 번역 실패: ' + e.message, 'error');
+  } finally {
+    if (analyzeBtn) { analyzeBtn.disabled = false; analyzeBtn.innerHTML = '✨ AI 번역'; }
+  }
+}
+
+async function sentBulkSave(bookId) {
+  if (!_bulkParsed.length) return;
+  const startOrder = (DB_sentItems[bookId]?.length || 0) + 1;
+  const inserts = _bulkParsed.map((item, i) => ({
+    book_id: bookId, en: item.en, ko: item.ko, sort_order: startOrder + i
+  }));
+  try {
+    const { data, error } = await sb.from('sentence_items').insert(inserts).select();
+    if (error) throw error;
+    if (!DB_sentItems[bookId]) DB_sentItems[bookId] = [];
+    DB_sentItems[bookId].push(...(data||[]));
+    _bulkParsed = [];
+    closeModal();
+    // 편집기 새로고침 (대량 추가이므로 전체 재렌더)
+    loadSentEditorById(bookId);
+    showToast(`${inserts.length}개 문장이 저장됐습니다.`, 'success');
+  } catch(e) { showToast('저장 실패: ' + e.message, 'error'); }
+}
+
+function openSentAssignModalFromEditor() {
+  const bookId = window._sentEditorBookId || document.getElementById('sent-book-sel')?.value;
+  if (!bookId) { showToast('먼저 문장집을 선택하세요.', 'error'); return; }
+  openSentAssignModal(bookId);
+}
+
+async function renderSentenceMgmt() {
+  const body = document.getElementById('sent-mgmt-body');
+  if (!body) return;
+  body.innerHTML = '<div class="empty"><div class="empty-icon">⏳</div></div>';
+  await loadSentenceBooks();
+
+  if (!DB_sentBooks.length) {
+    body.innerHTML = `<div class="empty">
+      <div class="empty-icon">💬</div>
+      <div class="empty-title">문장집이 없습니다</div>
+      <div class="empty-sub">+ 새 문장집을 만들어 문장을 추가하세요</div>
+    </div>`;
+    return;
+  }
+
+  body.innerHTML = `<div class="cards-grid">${DB_sentBooks.map(b => `
+    <div class="book-card" style="cursor:pointer" onclick="openSentenceBook('${b.id}')">
+      <div class="book-card-stripe" style="background:var(--lavender,#6d28d9)"></div>
+      <div style="font-size:24px;margin-bottom:8px">💬</div>
+      <div class="book-name">${b.name}</div>
+      <div class="book-meta">${b.tag||''}</div>
+      <div class="book-footer">
+        <button class="btn btn-primary btn-sm" style="flex:1" onclick="event.stopPropagation();openSentenceBook('${b.id}')">편집</button>
+        <button class="btn btn-secondary btn-sm" style="flex:1" onclick="event.stopPropagation();openSentAssignModal('${b.id}')">배포</button>
+        <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteSentBook('${b.id}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        </button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function openNewSentenceBookModal() {
+  const collOpts = DB_sentColls.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+  showModal(`
+    <div class="modal-title">새 문장집</div>
+    <div class="form-group">
+      <label class="form-label">문장집 이름 *</label>
+      <input class="form-input" id="sb-name" placeholder="예: Bricks Reading 1 Unit 3">
+    </div>
+    <div class="form-group">
+      <label class="form-label">태그</label>
+      <input class="form-input" id="sb-tag" placeholder="예: 초등5, 브릭스">
+    </div>
+    ${collOpts ? `<div class="form-group">
+      <label class="form-label">컬렉션 (선택)</label>
+      <select class="form-input" id="sb-coll"><option value="">— 없음 —</option>${collOpts}</select>
+    </div>` : ''}
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="createSentBook()">만들기 → 편집</button>
+    </div>
+  `);
+  setTimeout(() => document.getElementById('sb-name')?.focus(), 80);
+  document.getElementById('sb-name')?.addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('sb-tag')?.focus(); });
+}
+
+async function createSentBook() {
+  const name = document.getElementById('sb-name')?.value.trim();
+  if (!name) { showToast('이름을 입력하세요.', 'error'); return; }
+  const tag        = document.getElementById('sb-tag')?.value.trim() || '';
+  const collectionId = document.getElementById('sb-coll')?.value || null;
+  try {
+    const { data, error } = await sb.from('sentence_books').insert({
+      owner_id: currentUser.id, name, tag, collection_id: collectionId || null
+    }).select().single();
+    if (error) throw error;
+    closeModal();
+    showToast('문장집이 만들어졌습니다!', 'success');
+    sentShowEditorView(data.id);
+  } catch(e) {
+    if (e.message?.includes('does not exist')) {
+      showToast('Supabase에 sentence_books 테이블을 먼저 만들어주세요.', 'error');
+    } else { showToast('오류: ' + e.message, 'error'); }
+  }
+}
+
+
+
+
+
+async function openSentenceBook(bookId) {
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  if (!b) return;
+  _sentActiveBook = bookId;
+  const items = await loadSentenceItems(bookId);
+
+  showModal(`
+    <div class="modal-title" style="display:flex;align-items:center;justify-content:space-between">
+      <span>💬 ${b.name}</span>
+      <span style="font-size:13px;color:var(--t3);font-weight:400">${items.length}개 문장</span>
+    </div>
+    <div style="margin-bottom:14px">
+      <button class="btn btn-primary btn-sm" onclick="openAddSentenceModal('${bookId}')">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        문장 추가
+      </button>
+    </div>
+    <div id="sent-item-list" style="max-height:55vh;overflow-y:auto">
+      ${renderSentItemList(items, bookId)}
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">닫기</button>
+    </div>
+  `);
+}
+
+function renderSentItemList(items, bookId) {
+  if (!items.length) return '<div style="text-align:center;padding:24px;color:var(--t3);font-size:13px">문장이 없습니다. + 문장 추가를 눌러보세요.</div>';
+  return items.map((it, idx) => `
+    <div style="border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;background:var(--bg)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+        <div style="flex:1">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;color:var(--t1);margin-bottom:4px">${it.en}</div>
+          <div style="font-size:12px;color:var(--t2)">${it.ko}</div>
+        </div>
+        <button onclick="deleteSentItem('${bookId}','${it.id}')" style="background:none;border:none;cursor:pointer;color:var(--t3);font-size:18px;line-height:1;padding:2px 4px;border-radius:5px;flex-shrink:0"
+          onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--t3)'">×</button>
+      </div>
+    </div>`).join('');
+}
+
+function openAddSentenceModal(bookId) {
+  const existing = document.querySelector('.modal-overlay.open .modal');
+  // 모달 안에 추가 폼 표시
+  showModal(`
+    <div class="modal-title">문장 추가</div>
+    <div class="form-group">
+      <label class="form-label">영어 문장 *</label>
+      <input class="form-input" id="si-en" placeholder="예: The dog runs fast in the park.">
+    </div>
+    <div class="form-group">
+      <label class="form-label">한국어 해석 *</label>
+      <input class="form-input" id="si-ko" placeholder="예: 그 개는 공원에서 빠르게 달린다.">
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="openSentenceBook('${bookId}')">취소</button>
+      <button class="btn btn-primary" onclick="addSentItem('${bookId}')">추가</button>
+    </div>
+  `);
+  setTimeout(() => document.getElementById('si-en')?.focus(), 80);
+  document.getElementById('si-en')?.addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('si-ko')?.focus(); });
+}
+
+async function addSentItem(bookId) {
+  const en = document.getElementById('si-en')?.value.trim();
+  const ko = document.getElementById('si-ko')?.value.trim();
+  if (!en || !ko) { showToast('영어 문장과 해석을 모두 입력하세요.', 'error'); return; }
+  try {
+    const sortOrder = (DB_sentItems[bookId]?.length || 0) + 1;
+    const { data, error } = await sb.from('sentence_items').insert({ book_id: bookId, en, ko, sort_order: sortOrder }).select().single();
+    if (error) throw error;
+    if (!DB_sentItems[bookId]) DB_sentItems[bookId] = [];
+    DB_sentItems[bookId].push(data);
+    const b = DB_sentBooks.find(b => b.id === bookId);
+    if (b) b.item_count = (DB_sentItems[bookId]?.length || 0);
+    showToast('문장이 추가됐습니다.', 'success');
+    openSentenceBook(bookId);
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+async function deleteSentItem(bookId, itemId) {
+  try {
+    await sb.from('sentence_items').delete().eq('id', itemId);
+    DB_sentItems[bookId] = (DB_sentItems[bookId]||[]).filter(i => i.id !== itemId);
+    openSentenceBook(bookId);
+    showToast('삭제됐습니다.', 'success');
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+async function deleteSentBook(bookId) {
+  if (!confirm('문장집을 삭제하면 모든 문장과 배포 정보가 사라집니다. 삭제할까요?')) return;
+  // 즉시 카드 제거
+  const card = document.querySelector(`.sent-book-chk[data-id="${bookId}"]`)?.closest('.book-card');
+  if (card) card.remove();
+  try {
+    await sb.from('sentence_items').delete().eq('book_id', bookId);
+    await sb.from('sentence_assignments').delete().eq('book_id', bookId);
+    await sb.from('sentence_books').delete().eq('id', bookId);
+    DB_sentBooks = DB_sentBooks.filter(b => b.id !== bookId);
+    delete DB_sentItems[bookId];
+    // 빈 그리드면 빈 메시지 표시
+    const grid = document.getElementById('sent-books-grid');
+    if (grid && !grid.querySelector('.book-card')) {
+      grid.innerHTML = '<div class="empty"><div class="empty-icon">💬</div><div class="empty-title">문장집이 없습니다</div><div class="empty-sub">+ 새 문장집을 만들어 보세요</div></div>';
+    }
+    showToast('문장집이 삭제됐습니다.', 'success');
+  } catch(e) {
+    if (card) { card.style.opacity = '1'; }
+    renderSentMgmt(); // 실패 시 복원
+    showToast('오류: ' + e.message, 'error');
+  }
+}
+
+// ── 배포 ────────────────────────────────────────────────────
+async function openSentAssignModal(bookId) {
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  const students = DB.users.filter(u => u.role === 'student');
+  let assigned = [];
+  try {
+    const { data } = await sb.from('sentence_assignments').select('student_id').eq('book_id', bookId);
+    assigned = (data||[]).map(d => d.student_id);
+  } catch(e) {}
+
+  showModal(`
+    <div class="modal-title">📤 배포 — ${b?.name}</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:14px">학생을 선택하면 문장학습 탭에 나타납니다.</div>
+    ${students.length ? `<div style="display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow-y:auto">
+      ${students.map(s => `
+        <label style="display:flex;align-items:center;gap:10px;padding:9px 13px;border:1px solid var(--border);border-radius:9px;cursor:pointer;background:var(--bg)">
+          <input type="checkbox" value="${s.id}" class="sent-assign-chk" ${assigned.includes(s.id)?'checked':''}
+            style="width:15px;height:15px;accent-color:var(--blue)">
+          <span style="font-size:14px">${s.name}</span>
+          <span style="font-size:11px;color:var(--t3)">${s.grade||''}</span>
+        </label>`).join('')}
+    </div>` : '<div style="color:var(--t3);font-size:13px;padding:12px 0">등록된 학생이 없습니다.</div>'}
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveSentAssign('${bookId}')">저장</button>
+    </div>
+  `);
+}
+
+async function saveSentAssign(bookId) {
+  const checked = [...document.querySelectorAll('.sent-assign-chk:checked')].map(c => c.value);
+  const unchecked = [...document.querySelectorAll('.sent-assign-chk:not(:checked)')].map(c => c.value);
+  try {
+    if (checked.length) {
+      const inserts = checked.map(sid => ({ student_id: sid, book_id: bookId }));
+      await sb.from('sentence_assignments').upsert(inserts, { onConflict: 'student_id,book_id', ignoreDuplicates: true });
+    }
+    if (unchecked.length) {
+      for (const sid of unchecked) {
+        await sb.from('sentence_assignments').delete().eq('student_id', sid).eq('book_id', bookId);
+      }
+    }
+    closeModal();
+    showToast('배포 설정이 저장됐습니다.', 'success');
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+// ── 학생: 문장학습 ────────────────────────────────────────
+async function renderSentenceStudy() {
+  const body = document.getElementById('sent-student-body');
+  if (!body) return;
+  body.innerHTML = '<div class="empty"><div class="empty-icon">⏳</div></div>';
+  await loadSentenceBooks();
+
+  if (!DB_sentBooks.length) {
+    body.innerHTML = `<div class="empty">
+      <div class="empty-icon">💬</div>
+      <div class="empty-title">배정된 문장집이 없습니다</div>
+      <div class="empty-sub">선생님이 문장집을 배정하면 여기에 나타납니다</div>
+    </div>`;
+    return;
+  }
+
+  body.innerHTML = `<div class="cards-grid">${DB_sentBooks.map(b => `
+    <div class="book-card" style="cursor:pointer" onclick="startSentStudy('${b.id}')">
+      <div class="book-card-stripe" style="background:#6d28d9"></div>
+      <div style="font-size:28px;margin-bottom:10px">💬</div>
+      <div class="book-name">${b.name}</div>
+      <div class="book-meta">${b.tag||''}</div>
+      <div class="book-footer">
+        <button class="btn btn-primary btn-sm" style="flex:1" onclick="event.stopPropagation();startSentStudy('${b.id}','unscramble')">문장 배열</button>
+        <button class="btn btn-secondary btn-sm" style="flex:1" onclick="event.stopPropagation();startSentStudy('${b.id}','dictation')">빈칸 채우기</button>
+        <button class="btn btn-gold btn-sm" style="flex:1" onclick="event.stopPropagation();startSentRecording('${b.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          낭독
+        </button>
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+async function startSentStudy(bookId, mode) {
+  mode = mode || 'unscramble';
+  _sentStudyBook  = bookId;
+  _sentStudyMode  = mode;
+  _sentStudyIdx   = 0;
+  _sentStudyItems = await loadSentenceItems(bookId);
+  if (!_sentStudyItems.length) { showToast('문장이 없습니다.', 'error'); return; }
+  _sentStudyItems = [..._sentStudyItems].sort(() => Math.random() - 0.5);
+  renderSentStudyCard();
+}
+
+function renderSentStudyCard() {
+  const body = document.getElementById('sent-student-body');
+  if (!body) return;
+  const total = _sentStudyItems.length;
+  const item  = _sentStudyItems[_sentStudyIdx];
+  const b     = DB_sentBooks.find(b => b.id === _sentStudyBook);
+  const pct   = Math.round((_sentStudyIdx / total) * 100);
+  const modeLabel = { unscramble:'문장 배열하기', dictation:'빈칸 채우기' }[_sentStudyMode];
+
+  let questionHTML = '';
+
+  if (_sentStudyMode === 'unscramble') {
+    const words = item.en.replace(/[.,!?]/g,'').split(' ').sort(() => Math.random() - 0.5);
+    questionHTML = `
+      <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:12px">단어를 클릭해 올바른 순서로 문장을 만드세요</div>
+      <div id="sent-answer-area" style="min-height:44px;background:rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;cursor:pointer" onclick="sentRemoveWord(event)">
+        <span style="color:rgba(255,255,255,0.3);font-size:13px" id="sent-placeholder">여기에 단어를 클릭해 배치하세요</span>
+      </div>
+      <div id="sent-word-bank" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">
+        ${words.map((w,i) => `<button onclick="sentAddWord('${w.replace(/'/g,"\'")}',this)"
+          style="padding:8px 14px;background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.2);border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s"
+          onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">${w}</button>`).join('')}
+      </div>
+      <div style="text-align:center;margin-top:14px">
+        <button onclick="sentCheckUnscramble()" class="btn btn-primary">확인</button>
+      </div>
+      <div id="sent-check-area" style="margin-top:10px;text-align:center"></div>`;
+  }
+
+  if (_sentStudyMode === 'dictation') {
+    // 문장에서 핵심 단어 2개 빈칸 처리
+    const words = item.en.split(' ');
+    const blankIdxs = new Set();
+    while(blankIdxs.size < Math.min(2, Math.floor(words.length * 0.4))) {
+      blankIdxs.add(Math.floor(Math.random() * words.length));
+    }
+    const displayWords = words.map((w, i) => blankIdxs.has(i)
+      ? `<input data-answer="${w.replace(/[.,!?]/g,'').toLowerCase()}" type="text" placeholder="___"
+          style="width:${Math.max(60, w.length*12)}px;border:none;border-bottom:2px solid #60a5fa;background:transparent;color:white;font-size:20px;font-weight:700;font-family:'Fraunces',serif;text-align:center;outline:none;padding:2px 4px"
+          onkeydown="if(event.key==='Enter')sentCheckDictation()">`
+      : `<span style="font-size:20px;font-weight:700;font-family:'Fraunces',serif">${w}</span>`
+    ).join(' ');
+    questionHTML = `
+      <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:12px">빈칸에 알맞은 단어를 입력하세요</div>
+      <div style="line-height:2.2;text-align:center;padding:8px 0">${displayWords}</div>
+      <div style="text-align:center;margin-top:16px">
+        <button onclick="sentCheckDictation()" class="btn btn-primary">확인</button>
+      </div>
+      <div id="sent-check-area" style="margin-top:10px;text-align:center"></div>`;
+  }
+
+  body.innerHTML = `
+    <div style="max-width:600px;margin:0 auto">
+      <!-- 헤더 -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <button onclick="renderSentenceStudy()" class="btn btn-ghost btn-sm">← 목록</button>
+        <span style="font-size:13px;color:var(--t2);font-weight:600">${b?.name} · ${modeLabel}</span>
+        <span style="font-size:12px;color:var(--t3)">${_sentStudyIdx+1}/${total}</span>
+      </div>
+      <!-- 진행 바 -->
+      <div style="height:4px;background:var(--border);border-radius:2px;margin-bottom:20px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,#6d28d9,#3b82f6);border-radius:2px;transition:width 0.4s"></div>
+      </div>
+      <!-- 문제 카드 -->
+      <div style="background:linear-gradient(145deg,#1e1b4b 0%,#312e81 60%,#1e3a8a 100%);border-radius:20px;padding:28px;color:white;margin-bottom:16px;border:1px solid rgba(255,255,255,0.08)">
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:2px;margin-bottom:8px">${_sentStudyIdx+1}번</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.65);margin-bottom:16px;font-style:italic">${item.ko}</div>
+        ${questionHTML}
+      </div>
+      <!-- 컨트롤 -->
+      <div style="display:flex;gap:8px;justify-content:center">
+        <button onclick="sentSkip()" class="btn btn-ghost btn-sm">건너뛰기</button>
+        ${_sentStudyIdx < total-1
+          ? `<button onclick="sentNext()" id="sent-next-btn" class="btn btn-secondary btn-sm" style="display:none">다음 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>`
+          : `<button onclick="sentFinish()" id="sent-next-btn" class="btn btn-primary btn-sm" style="display:none">완료</button>`}
+      </div>
+    </div>`;
+
+  // unscramble 상태 초기화
+  if (_sentStudyMode === 'unscramble') {
+    window._sentSelected = [];
+    window._sentAnswer = item.en.replace(/[.,!?]/g,'').toLowerCase();
+  }
+}
+
+// ── Unscramble 헬퍼 ────────────────────────────────────────
+function sentAddWord(word, btn) {
+  if (btn.style.opacity === '0.3') return;
+  window._sentSelected = window._sentSelected || [];
+  window._sentSelected.push(word);
+  btn.style.opacity = '0.3';
+  btn.style.pointerEvents = 'none';
+  const area = document.getElementById('sent-answer-area');
+  const ph   = document.getElementById('sent-placeholder');
+  if (ph) ph.remove();
+  const tag = document.createElement('span');
+  tag.textContent = word;
+  tag.dataset.word = word;
+  tag.style.cssText = 'padding:6px 12px;background:rgba(99,102,241,0.8);color:white;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer';
+  tag.onclick = () => {
+    window._sentSelected = window._sentSelected.filter(w => w !== word);
+    tag.remove();
+    btn.style.opacity = '1'; btn.style.pointerEvents = '';
+    if (!document.querySelectorAll('#sent-answer-area span[data-word]').length) {
+      area.innerHTML = '<span style="color:rgba(255,255,255,0.3);font-size:13px" id="sent-placeholder">여기에 단어를 클릭해 배치하세요</span>';
+    }
+  };
+  area.appendChild(tag);
+}
+function sentRemoveWord(e) { /* 탭 영역 클릭 시 처리 - 각 단어 클릭으로 처리됨 */ }
+
+function sentCheckUnscramble() {
+  const answer = (window._sentSelected||[]).join(' ').toLowerCase().trim();
+  const correct = window._sentAnswer?.toLowerCase().trim();
+  const area = document.getElementById('sent-check-area');
+  const nextBtn = document.getElementById('sent-next-btn');
+  if (answer === correct) {
+    if (area) area.innerHTML = '<div style="color:#6ee7b7;font-size:16px;font-weight:700">✓ 정답!</div>';
+  } else {
+    if (area) area.innerHTML = `<div style="color:#fca5a5;font-size:14px">✗ 다시 해보세요<br><span style="font-size:12px;color:rgba(255,255,255,0.5)">정답: ${_sentStudyItems[_sentStudyIdx].en}</span></div>`;
+  }
+  if (nextBtn) nextBtn.style.display = '';
+}
+
+function sentCheckDictation() {
+  const inputs = document.querySelectorAll('#sent-student-body input[data-answer]');
+  let allCorrect = true;
+  inputs.forEach(inp => {
+    const userVal = inp.value.trim().toLowerCase().replace(/[.,!?]/g,'');
+    const ans     = inp.dataset.answer;
+    if (userVal === ans) {
+      inp.style.borderBottomColor = '#6ee7b7';
+    } else {
+      inp.style.borderBottomColor = '#fca5a5';
+      allCorrect = false;
+    }
+  });
+  const area = document.getElementById('sent-check-area');
+  const nextBtn = document.getElementById('sent-next-btn');
+  if (area) area.innerHTML = allCorrect
+    ? '<div style="color:#6ee7b7;font-size:16px;font-weight:700">✓ 정답!</div>'
+    : `<div style="color:#fca5a5;font-size:14px">✗ 빨간 칸을 확인하세요<br><span style="font-size:12px;color:rgba(255,255,255,0.5)">${_sentStudyItems[_sentStudyIdx].en}</span></div>`;
+  if (nextBtn) nextBtn.style.display = '';
+}
+
+function sentNext() { _sentStudyIdx++; renderSentStudyCard(); }
+function sentSkip() {
+  const nextBtn = document.getElementById('sent-next-btn');
+  if (nextBtn) nextBtn.style.display = '';
+  const area = document.getElementById('sent-check-area');
+  if (area) area.innerHTML = `<div style="color:rgba(255,255,255,0.4);font-size:12px">건너뜀 — 정답: ${_sentStudyItems[_sentStudyIdx].en}</div>`;
+}
+
+function sentFinish() {
+  const body = document.getElementById('sent-student-body');
+  if (!body) return;
+  const b = DB_sentBooks.find(b => b.id === _sentStudyBook);
+  body.innerHTML = `
+    <div style="max-width:500px;margin:0 auto;text-align:center">
+      <div style="background:linear-gradient(145deg,#1e1b4b,#312e81);border-radius:20px;padding:60px 40px;color:white;border:1px solid rgba(255,255,255,0.1)">
+        <div style="font-size:52px;margin-bottom:16px">🎉</div>
+        <div style="font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-bottom:8px">학습 완료!</div>
+        <div style="font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:28px">${b?.name} · ${_sentStudyItems.length}개 문장</div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <button onclick="startSentStudy('${_sentStudyBook}','${_sentStudyMode}')" class="btn btn-secondary" style="background:rgba(255,255,255,0.12);color:white;border-color:rgba(255,255,255,0.2)">다시 학습</button>
+          <button onclick="startSentStudy('${_sentStudyBook}','${_sentStudyMode==='unscramble'?'dictation':'unscramble'}')" class="btn btn-primary">${_sentStudyMode==='unscramble'?'빈칸 채우기':'문장 배열'}</button>
+          <button onclick="startSentRecording('${_sentStudyBook}')" class="btn btn-gold">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+            낭독 연습
+          </button>
+          <button onclick="renderSentenceStudy()" class="btn btn-ghost" style="color:rgba(255,255,255,0.7)">목록으로</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// unscramble 확인 버튼 연결 (카드 내 버튼에서 호출)
+window.sentCheckUnscramble = sentCheckUnscramble;
+window.sentCheckDictation  = sentCheckDictation;
+
+// =========================================================
+//  낭독(녹음) 시스템
+// =========================================================
+
+// 학생: 문장집 카드에 낭독 버튼 추가 (renderSentenceStudy에서 호출)
+// =========================================================
+//  낭독 시스템 — 본문 전체 보며 한번에 녹음
+// =========================================================
+let _recStream = null, _recTimer = null, _recSeconds = 0;
+let _recAnimFrame = null, _recAudioCtx = null, _recAnalyser = null;
+
+async function startSentRecording(bookId) {
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  const items = await loadSentenceItems(bookId);
+  if (!items.length) { showToast('문장이 없습니다.', 'error'); return; }
+  window._recBookId = bookId;
+  window._recItems  = items;
+  window._recBlob   = null;
+
+  const body = document.getElementById('sent-student-body');
+  if (!body) return;
+
+  body.innerHTML = `
+    <div style="max-width:680px;margin:0 auto">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+        <button onclick="renderSentenceStudy()" class="btn btn-ghost btn-sm">← 목록</button>
+        <span style="font-size:14px;font-weight:700;color:var(--t1)">${b?.name||''} · 낭독 연습</span>
+        <span style="font-size:12px;color:var(--t3)">${items.length}개 문장</span>
+      </div>
+
+      <!-- 본문 전체 -->
+      <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:var(--sh)">
+        <div style="font-size:11px;font-weight:700;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px">
+          본문 — 읽으면서 녹음하세요
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px" id="rec-sentence-list">
+          ${items.map((it,i) => `
+            <div data-item-id="${it.id}" style="display:flex;gap:12px;align-items:flex-start;padding:9px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--border);transition:background 0.2s">
+              <span style="font-size:11px;font-weight:700;color:var(--t3);min-width:22px;padding-top:3px;flex-shrink:0">${i+1}.</span>
+              <div style="flex:1">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;color:var(--t1);line-height:1.6">${it.en}</div>
+                <div style="font-size:12px;color:var(--t3);margin-top:2px">${it.ko}</div>
+              </div>
+              <button onclick="speak('${it.en.replace(/'/g,"\\'")}')" class="speak-btn" title="원어민 발음">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+              </button>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- 녹음 컨트롤 -->
+      <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--sh)">
+        <div style="text-align:center;margin-bottom:16px">
+          <div id="rec-status" style="font-size:14px;color:var(--t2);margin-bottom:14px">위 본문을 보면서 소리 내어 읽고 녹음 버튼을 누르세요</div>
+          <div id="rec-wave" style="display:none;align-items:flex-end;justify-content:center;gap:3px;height:40px;margin-bottom:12px">
+            ${Array(20).fill(0).map(()=>'<div class="rec-bar" style="width:4px;border-radius:2px;background:linear-gradient(to top,#6d28d9,#a78bfa);height:4px;transition:height 0.08s"></div>').join('')}
+          </div>
+          <div id="rec-timer" style="display:none;font-size:36px;font-weight:700;font-family:\'JetBrains Mono\',monospace;color:var(--t1);margin-bottom:14px;letter-spacing:2px">0:00</div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+          <button id="rec-btn-start" onclick="recStart()"
+            style="padding:13px 30px;background:linear-gradient(135deg,#6d28d9,#4f46e5);color:white;border:none;border-radius:13px;font-size:15px;font-weight:600;cursor:pointer;font-family:\'Outfit\',sans-serif;display:inline-flex;align-items:center;gap:9px;box-shadow:0 4px 20px rgba(109,40,217,0.3)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="8"/></svg>
+            녹음 시작
+          </button>
+          <button id="rec-btn-stop" onclick="recStop()"
+            style="display:none;padding:13px 30px;background:#ef4444;color:white;border:none;border-radius:13px;font-size:15px;font-weight:600;cursor:pointer;font-family:\'Outfit\',sans-serif;align-items:center;gap:9px;box-shadow:0 4px 20px rgba(239,68,68,0.3)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+            중지
+          </button>
+        </div>
+
+        <!-- 결과 영역 -->
+        <div id="rec-result" style="display:none;margin-top:18px;padding-top:18px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;font-weight:700;color:var(--t3);margin-bottom:10px;letter-spacing:0.5px;text-transform:uppercase">녹음 결과</div>
+          <audio id="rec-audio" controls style="width:100%;height:38px;border-radius:10px;margin-bottom:14px"></audio>
+
+          <!-- 문장별 확인 섹션 -->
+          <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:14px">
+            <div style="font-size:12px;font-weight:700;color:var(--t2);margin-bottom:10px">문장별 확인 — 각 문장 발음을 따로 들어보세요</div>
+            <div id="rec-sentence-check" style="display:flex;flex-direction:column;gap:6px">
+              ${items.map((it,i) => `
+                <div style="display:flex;align-items:center;gap:10px;padding:7px 10px;background:white;border-radius:8px;border:1px solid var(--border)">
+                  <span style="font-size:11px;color:var(--t3);min-width:20px">${i+1}.</span>
+                  <span style="flex:1;font-size:13px;font-family:\'JetBrains Mono\',monospace;color:var(--t1)">${it.en}</span>
+                  <button onclick="speak('${it.en.replace(/'/g,"\\'")}')" class="speak-btn" title="원어민 발음 재생">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                  </button>
+                </div>`).join('')}
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button onclick="recRedo()" class="btn btn-ghost btn-sm">다시 녹음</button>
+            <button onclick="recSaveWhole()" class="btn btn-primary">저장 완료</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+async function recStart() {
+  try {
+    _recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    _mediaRecorder = new MediaRecorder(_recStream);
+    _recordedChunks = [];
+    _mediaRecorder.ondataavailable = e => { if (e.data.size > 0) _recordedChunks.push(e.data); };
+    _mediaRecorder.onstop = recOnStop;
+    _mediaRecorder.start(100);
+
+    document.getElementById('rec-btn-start').style.display = 'none';
+    const stopBtn = document.getElementById('rec-btn-stop');
+    if (stopBtn) { stopBtn.style.display = 'inline-flex'; }
+    document.getElementById('rec-status').innerHTML = '<span style="color:#ef4444;font-weight:700">● 녹음 중... 본문을 천천히 읽으세요</span>';
+    document.getElementById('rec-wave').style.display = 'flex';
+    document.getElementById('rec-timer').style.display = 'block';
+
+    _recSeconds = 0;
+    _recTimer = setInterval(() => {
+      _recSeconds++;
+      const el = document.getElementById('rec-timer');
+      if (el) el.textContent = Math.floor(_recSeconds/60)+':'+String(_recSeconds%60).padStart(2,'0');
+      if (_recSeconds >= 300) recStop();
+    }, 1000);
+
+    _recAudioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    _recAnalyser = _recAudioCtx.createAnalyser();
+    _recAnalyser.fftSize = 64;
+    _recAudioCtx.createMediaStreamSource(_recStream).connect(_recAnalyser);
+    recAnimWave();
+  } catch(e) { showToast('마이크 권한이 필요합니다. 브라우저 설정을 확인하세요.', 'error'); }
+}
+
+function recAnimWave() {
+  const bars = document.querySelectorAll('.rec-bar');
+  if (!bars.length || !_recAnalyser) return;
+  const data = new Uint8Array(_recAnalyser.frequencyBinCount);
+  _recAnalyser.getByteFrequencyData(data);
+  bars.forEach((bar,i) => { bar.style.height = Math.max(4,(data[i]||0)/255*36)+'px'; });
+  _recAnimFrame = requestAnimationFrame(recAnimWave);
+}
+
+function recStop() {
+  if (_mediaRecorder?.state !== 'inactive') _mediaRecorder?.stop();
+  _recStream?.getTracks().forEach(t => t.stop());
+  clearInterval(_recTimer);
+  cancelAnimationFrame(_recAnimFrame);
+  try { _recAudioCtx?.close(); } catch(e) {}
+  const stopBtn = document.getElementById('rec-btn-stop');
+  if (stopBtn) stopBtn.style.display = 'none';
+  document.getElementById('rec-btn-start').style.display = 'inline-flex';
+  document.getElementById('rec-wave').style.display = 'none';
+}
+
+function recOnStop() {
+  const blob = new Blob(_recordedChunks, { type: 'audio/webm' });
+  window._recBlob = blob;
+  const audio = document.getElementById('rec-audio');
+  if (audio) audio.src = URL.createObjectURL(blob);
+  const resultEl = document.getElementById('rec-result');
+  if (resultEl) resultEl.style.display = '';
+  const timerEl = document.getElementById('rec-timer');
+  if (timerEl) timerEl.style.display = 'none';
+  document.getElementById('rec-status').innerHTML = '✅ 녹음 완료! 전체 재생으로 확인하거나 문장별로 체크하세요.';
+}
+
+function recRedo() {
+  window._recBlob = null;
+  document.getElementById('rec-result').style.display = 'none';
+  document.getElementById('rec-status').textContent = '위 본문을 보면서 소리 내어 읽고 녹음 버튼을 누르세요';
+}
+
+async function recSaveWhole() {
+  if (window._recBlob) {
+    const path = `recordings/${currentUser.id}/${window._recBookId}/full_${Date.now()}.webm`;
+    try {
+      const { error } = await sb.storage.from('recordings').upload(path, window._recBlob, { contentType:'audio/webm', upsert:true });
+      if (!error) {
+        const { data: urlData } = sb.storage.from('recordings').getPublicUrl(path);
+        await sb.from('sentence_submissions').insert({
+          student_id: currentUser.id, book_id: window._recBookId, item_id: null,
+          type: 'record_full', recorded_url: urlData.publicUrl
+        }).catch(()=>{});
+      }
+    } catch(e) { console.warn('녹음 저장 실패:', e); }
+  }
+  showToast('낭독 완료! 잘 했어요 🎉', 'success');
+  sentFinish();
+}
+
+
+// 선생님: 낭독 제출 현황 (전체 녹음 + 문장별)
+async function renderSentSubmissions(bookId) {
+  if (!bookId) { showToast('문장집을 먼저 선택하세요.', 'error'); return; }
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  const items = await loadSentenceItems(bookId);
+  try {
+    const { data: subs } = await sb.from('sentence_submissions')
+      .select('*, profiles(name), sentence_items(en)')
+      .eq('book_id', bookId)
+      .in('type', ['record', 'record_full'])
+      .order('created_at', { ascending: false });
+
+    if (!subs?.length) { showToast('제출된 낭독이 없습니다.', 'error'); return; }
+
+    // 학생별 그룹핑
+    const byStudent = {};
+    subs.forEach(s => {
+      const name = s.profiles?.name || s.student_id.slice(0,8);
+      if (!byStudent[name]) byStudent[name] = [];
+      byStudent[name].push(s);
+    });
+
+    showModal(`
+      <div class="modal-title">🎙 낭독 제출 현황 — ${b?.name}</div>
+      <div style="max-height:65vh;overflow-y:auto">
+        ${Object.entries(byStudent).map(([name, list]) => `
+          <div style="margin-bottom:16px">
+            <div style="font-size:13px;font-weight:700;color:var(--t1);margin-bottom:8px;padding:6px 10px;background:var(--surface2);border-radius:8px">${name} · ${list.length}개 제출</div>
+            ${list.map(s => `
+              <div style="padding:10px 12px;border:1px solid var(--border);border-radius:10px;margin-bottom:6px">
+                <div style="font-size:12px;color:var(--t2);margin-bottom:6px;font-family:'JetBrains Mono',monospace">${s.sentence_items?.en || ''}</div>
+                <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                  <audio src="${s.recorded_url}" controls style="height:30px;flex:1;min-width:180px"></audio>
+                  <span style="font-size:10px;color:var(--t3)">${new Date(s.created_at).toLocaleDateString('ko-KR')}</span>
+                </div>
+              </div>`).join('')}
+          </div>`).join('')}
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">닫기</button>
+      </div>
+    `);
+  } catch(e) { showToast('오류: ' + e.message, 'error'); }
+}
+
+
+
+// =========================================================
+//  문장 시험지 스튜디오
+// =========================================================
+async function sentMakeTest(bookId) {
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  if (!b) return;
+  const items = await loadSentenceItems(bookId);
+  if (items.length < 2) { showToast('문장이 2개 이상 있어야 시험지를 만들 수 있습니다.', 'error'); return; }
+
+  const prev = document.getElementById('sent-test-overlay');
+  if (prev) prev.remove();
+  const modalBg = document.getElementById('modal-bg');
+  if (modalBg) modalBg.classList.remove('open');
+
+  const ov = document.createElement('div');
+  ov.id = 'sent-test-overlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:400;display:flex;flex-direction:column;background:#0d1b2a';
+
+  ov.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:#111c30;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0">
+      <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.3px">📝 문장 시험지 — ${b.name}</div>
+      <div style="display:flex;gap:8px">
+        <button onclick="sentTestPrint()"
+          style="padding:8px 18px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;font-family:'Outfit',sans-serif">
+          🖨 인쇄
+        </button>
+        <button onclick="document.getElementById('sent-test-overlay').remove()"
+          style="padding:8px 14px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;border-radius:9px;cursor:pointer;font-size:13px;font-family:'Outfit',sans-serif">
+          닫기
+        </button>
+      </div>
+    </div>
+
+    <div style="display:flex;flex:1;overflow:hidden">
+      <!-- 설정 패널 -->
+      <div style="width:320px;flex-shrink:0;background:#141f35;border-right:1px solid rgba(255,255,255,0.07);overflow-y:auto;padding:20px 18px">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">인쇄 설정</div>
+
+        <!-- 제목 -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase">제목</div>
+          <input id="stt-title" value="${b.name} 문장 시험"
+            style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:9px;color:#fff;font-size:13px;font-family:'Outfit',sans-serif;outline:none"
+            oninput="sttPreview()">
+        </div>
+
+        <!-- 문제 유형 -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">문제 유형 수량</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            ${[
+              ['stt-writing','문장 쓰기 (영어→한국어)',5],
+              ['stt-trans','해석 쓰기 (한국어→영어)',5],
+              ['stt-order','어순 배열',0],
+              ['stt-blank','빈칸 채우기',0],
+            ].map(([id,label,def])=>`
+              <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;background:rgba(255,255,255,0.02)">
+                <span style="flex:1;font-size:12px;color:rgba(255,255,255,0.7)">${label}</span>
+                <button onclick="sttAdj('${id}',-1)" style="width:22px;height:22px;border:1px solid rgba(255,255,255,0.15);border-radius:5px;background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;font-size:14px;line-height:1;font-family:'Outfit',sans-serif">-</button>
+                <input type="number" id="${id}" min="0" max="${items.length}" value="${def}"
+                  style="width:38px;text-align:center;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(255,255,255,0.06);color:#fff;font-size:13px;font-weight:700;padding:3px 4px;font-family:'Outfit',sans-serif"
+                  oninput="sttUpdateTotal();sttPreview()">
+                <button onclick="sttAdj('${id}',1)" style="width:22px;height:22px;border:1px solid rgba(255,255,255,0.15);border-radius:5px;background:rgba(255,255,255,0.06);color:#fff;cursor:pointer;font-size:14px;line-height:1;font-family:'Outfit',sans-serif">+</button>
+              </div>`).join('')}
+          </div>
+          <div style="margin-top:8px;padding:7px 10px;background:rgba(59,130,246,0.12);border-radius:8px;display:flex;justify-content:space-between;align-items:center">
+            <span style="font-size:12px;color:rgba(255,255,255,0.5)">총 문제 수</span>
+            <span id="stt-total-lbl" style="font-weight:700;font-size:14px;color:#60a5fa">10문제</span>
+          </div>
+          <!-- 문장 순서 옵션 -->
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.08)">
+              <input type="radio" name="stt-order-mode" value="original" checked style="accent-color:#3b82f6"
+                onchange="sttPreview()">
+              <span style="font-size:12px;color:rgba(255,255,255,0.7)">본문 순서대로</span>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:6px 8px;border-radius:7px;border:1px solid rgba(255,255,255,0.08)">
+              <input type="radio" name="stt-order-mode" value="shuffle" style="accent-color:#3b82f6"
+                onchange="sttPreview()">
+              <span style="font-size:12px;color:rgba(255,255,255,0.7)">섞기 (랜덤)</span>
+            </label>
+          </div>
+          <button onclick="sttPreview(true)"
+            style="width:100%;margin-top:8px;padding:9px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.25);border-radius:8px;color:rgba(255,255,255,0.7);cursor:pointer;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif"
+            onmouseover="this.style.background='rgba(99,102,241,0.25)'"
+            onmouseout="this.style.background='rgba(99,102,241,0.15)'">
+            🔀 다시 섞기
+          </button>
+        </div>
+
+        <!-- 단 수 -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase">단 수</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px" id="stt-col-btns">
+            ${[1,2].map(n=>`
+              <label style="display:flex;align-items:center;justify-content:center;padding:8px;border:1.5px solid ${n===1?'#3b82f6':'rgba(255,255,255,0.12)'};border-radius:8px;background:${n===1?'rgba(59,130,246,0.1)':'rgba(255,255,255,0.04)'};cursor:pointer">
+                <input type="radio" name="stt-cols" value="${n}" ${n===1?'checked':''} style="display:none"
+                  onchange="document.querySelectorAll('#stt-col-btns label').forEach((l,i)=>{l.style.borderColor=i===${n-1}?'#3b82f6':'rgba(255,255,255,0.12)';l.style.background=i===${n-1}?'rgba(59,130,246,0.1)':'rgba(255,255,255,0.04)'});sttPreview()">
+                <span style="font-size:13px;color:rgba(255,255,255,0.8)">${n}단</span>
+              </label>`).join('')}
+          </div>
+        </div>
+
+        <!-- 글자 크기 -->
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase">글자 크기 (pt)</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="number" id="stt-fontsize" min="7" max="20" value="11" step="0.5"
+              style="width:100%;padding:8px 10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:13px;font-weight:700;text-align:center;font-family:'Outfit',sans-serif;outline:none"
+              oninput="sttPreview()">
+            <span style="font-size:11px;color:rgba(255,255,255,0.4);flex-shrink:0">pt</span>
+          </div>
+        </div>
+
+        <!-- 정답지 -->
+        <div style="margin-bottom:14px">
+          <label style="display:flex;align-items:center;gap:10px;padding:9px 12px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;background:rgba(255,255,255,0.03);cursor:pointer">
+            <input type="checkbox" id="stt-answerkey" style="width:15px;height:15px;accent-color:#3b82f6">
+            <span style="font-size:13px;color:rgba(255,255,255,0.7)">정답지 함께 생성</span>
+          </label>
+        </div>
+
+        <!-- 상세 유형 편집 탭 -->
+        <div style="margin-bottom:14px">
+          <button onclick="sttToggleDetail()"
+            style="width:100%;padding:9px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:rgba(255,255,255,0.6);cursor:pointer;font-size:12px;font-weight:600;font-family:'Outfit',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px"
+            id="stt-detail-toggle-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            문장별 유형 직접 설정
+          </button>
+          <div id="stt-detail-panel" style="display:none;margin-top:10px;max-height:300px;overflow-y:auto"></div>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.22);line-height:1.6;padding:10px;border:1px solid rgba(255,255,255,0.06);border-radius:8px">
+          설정 변경 시 미리보기가 자동 업데이트됩니다.
+        </div>
+      </div>
+
+      <!-- 미리보기 -->
+      <div style="flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;background:#0d1421">
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;text-transform:uppercase;align-self:flex-start">미리보기 (A4)</div>
+        <iframe id="stt-preview-frame"
+          style="width:100%;max-width:700px;height:900px;background:white;border:none;border-radius:4px;box-shadow:0 4px 40px rgba(0,0,0,0.6)"></iframe>
+      </div>
+    </div>`;
+
+  document.body.appendChild(ov);
+  window._sttItems = items;
+  window._sttBookName = b.name;
+  window._sttDetailMap = {};
+  window._sttBlankMap  = {};
+  window._sttShuffled  = null;
+  _sttDetailOpen = false;
+  sttUpdateTotal();
+  setTimeout(sttPreview, 100);
+}
+
+function sttAdj(id, delta) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.value = Math.max(0, Math.min(parseInt(el.value||0) + delta, window._sttItems?.length || 20));
+  sttUpdateTotal(); sttPreview();
+}
+
+function sttUpdateTotal() {
+  const ids = ['stt-writing','stt-trans','stt-order','stt-blank'];
+  const total = ids.reduce((s,id) => s + (parseInt(document.getElementById(id)?.value)||0), 0);
+  const lbl = document.getElementById('stt-total-lbl');
+  if (lbl) lbl.textContent = total + '문제';
+}
+
+let _sttTimer = null;
+function sttPreview(reshuffle) {
+  clearTimeout(_sttTimer);
+  _sttTimer = setTimeout(() => {
+    const html = sttBuildHtml(reshuffle);
+    if (!html) return;
+    const frame = document.getElementById('stt-preview-frame');
+    if (!frame) return;
+    frame.srcdoc = html;
+    frame.onload = () => {
+      try {
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        if (!doc?.body) return;
+        doc.body.contentEditable = 'true';
+        doc.body.style.outline = 'none';
+        const old = doc.getElementById('stt-banner');
+        if (old) old.remove();
+        const banner = doc.createElement('div');
+        banner.id = 'stt-banner';
+        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:rgba(79,70,229,0.9);color:#fff;font-size:11px;padding:5px 12px;text-align:center;z-index:9999;font-family:sans-serif';
+        banner.textContent = '✏️ 직접 클릭해서 수정 가능 — 인쇄 시 수정된 내용 출력';
+        doc.body.insertBefore(banner, doc.body.firstChild);
+        const st = doc.createElement('style');
+        st.textContent = '@media print { #stt-banner { display:none !important; } }';
+        doc.head.appendChild(st);
+        doc.body.style.paddingTop = '28px';
+      } catch(e) {}
+    };
+  }, 350);
+}
+
+function sttBuildHtml(reshuffle) {
+  const items = window._sttItems;
+  if (!items?.length) return null;
+
+  const title   = document.getElementById('stt-title')?.value || '문장 시험';
+  const cols    = parseInt(document.querySelector('input[name="stt-cols"]:checked')?.value || 1);
+  const fs      = parseFloat(document.getElementById('stt-fontsize')?.value || 11);
+  const withKey = document.getElementById('stt-answerkey')?.checked;
+  const nW  = parseInt(document.getElementById('stt-writing')?.value) || 0;
+  const nT  = parseInt(document.getElementById('stt-trans')?.value)   || 0;
+  const nO  = parseInt(document.getElementById('stt-order')?.value)   || 0;
+  const nB  = parseInt(document.getElementById('stt-blank')?.value)   || 0;
+  const total = nW + nT + nO + nB;
+  if (total === 0) return null;
+  if (total > items.length) { showToast(`문장 수(${items.length}개)보다 문제 수(${total}개)가 많습니다.`, 'error'); return null; }
+
+  const orderMode = document.querySelector('input[name="stt-order-mode"]:checked')?.value || 'original';
+
+  // 상세 유형 설정 확인 (문장별 직접 지정)
+  const detailMap = window._sttDetailMap || {};  // itemId → type | null
+  const hasDetail = Object.keys(detailMap).length > 0 && Object.values(detailMap).some(v=>v);
+
+  let qList = [];
+
+  if (hasDetail) {
+    // 상세 유형 직접 설정 모드
+    items.forEach(item => {
+      const t = detailMap[item.id];
+      if (t && t !== 'none') qList.push({ type: t, item });
+    });
+    if (orderMode === 'shuffle') qList = qList.sort(() => Math.random() - 0.5);
+  } else {
+    // 일반 모드: 유형별 수량 배분
+    let pool;
+    if (orderMode === 'original') {
+      pool = [...items].slice(0, total);
+    } else {
+      const shuffled = reshuffle || !window._sttShuffled
+        ? [...items].sort(() => Math.random() - 0.5)
+        : window._sttShuffled;
+      window._sttShuffled = shuffled;
+      pool = shuffled.slice(0, total);
+    }
+    let idx = 0;
+    for (let i = 0; i < nW; i++) if (pool[idx]) qList.push({ type:'writing', item: pool[idx++] });
+    for (let i = 0; i < nT; i++) if (pool[idx]) qList.push({ type:'trans',   item: pool[idx++] });
+    for (let i = 0; i < nO; i++) if (pool[idx]) qList.push({ type:'order',   item: pool[idx++] });
+    for (let i = 0; i < nB; i++) if (pool[idx]) qList.push({ type:'blank',   item: pool[idx++] });
+    if (orderMode === 'shuffle') qList = qList.sort(() => Math.random() - 0.5);
+  }
+
+  qList = qList.map((q,i) => ({ ...q, n: i+1 }));
+
+  const lh = 1.5;
+  const fsS = Math.max(7, fs * 0.85);
+  const marginMm = 12;
+
+  function qHTML(q, ans) {
+    const item = q.item;
+    const ansLine = `<div style="margin-top:4pt;border-bottom:1pt solid #aaa;height:${fs*1.2}pt;min-width:${fs*14}pt"></div>`;
+    const ansLineShort = `<div style="margin-top:4pt;border-bottom:1pt solid #aaa;height:${fs*1.2}pt;min-width:${fs*8}pt"></div>`;
+
+    if (q.type === 'writing') return [
+      `<div style="font-size:${fs}pt;line-height:${lh};color:#111">${item.ko}</div>`,
+      ans ? `<div style="font-size:${fs}pt;color:#1d4ed8;font-weight:600;font-family:'Times New Roman',serif;margin-top:3pt">${item.en}</div>` : ansLine
+    ].join('');
+
+    if (q.type === 'trans') return [
+      `<div style="font-family:'Times New Roman',Georgia,serif;font-size:${(fs*1.1).toFixed(1)}pt;font-weight:700;line-height:${lh};color:#111">${item.en}</div>`,
+      ans ? `<div style="font-size:${fs}pt;color:#1d4ed8;margin-top:3pt">${item.ko}</div>` : ansLine
+    ].join('');
+
+    if (q.type === 'order') {
+      const words = item.en.replace(/[.,!?;:]/g,'').split(' ')
+        .filter(w=>w).sort(() => Math.random() - 0.5);
+      return [
+        `<div style="font-size:${fsS}pt;color:#555;margin-bottom:4pt">${item.ko}</div>`,
+        `<div style="display:flex;flex-wrap:wrap;gap:3pt;margin-bottom:4pt">
+          ${words.map(w=>`<span style="border:0.5pt solid #999;border-radius:3pt;padding:1pt 5pt;font-family:'Times New Roman',serif;font-size:${fs}pt;font-weight:600">${w}</span>`).join('')}
+        </div>`,
+        ans ? `<div style="font-size:${fs}pt;color:#1d4ed8;font-family:'Times New Roman',serif;font-weight:600;margin-top:2pt">${item.en}</div>` : ansLine
+      ].join('');
+    }
+
+    if (q.type === 'blank') {
+      const words = item.en.split(' ');
+      // 직접 선택된 빈칸 인덱스 사용 (없으면 자동)
+      const manualBlanks = (window._sttBlankMap||{})[item.id];
+      const blankIdxs = manualBlanks
+        ? new Set(manualBlanks)
+        : (() => {
+            const s = new Set();
+            while (s.size < Math.min(2, Math.ceil(words.length * 0.35))) {
+              s.add(Math.floor(Math.random() * words.length));
+            }
+            return s;
+          })();
+      const blankedWords = words.map((w,i) => {
+        if (!blankIdxs.has(i)) return `<span style="font-family:'Times New Roman',serif;font-weight:600">${w}</span>`;
+        const clean = w.replace(/[.,!?;:]/g,'');
+        const punct = w.replace(/[^.,!?;:]/g,'');
+        const box = `<span style="display:inline-block;border-bottom:1pt solid #333;min-width:${Math.max(30,clean.length*6)}pt;color:${ans?'#1d4ed8':'transparent'};font-family:'Times New Roman',serif;font-weight:600">${ans?clean+punct:'&nbsp;'.repeat(clean.length+2)}</span>${ans?'':punct}`;
+        return box;
+      });
+      return [
+        `<div style="font-size:${fsS}pt;color:#555;margin-bottom:4pt">${item.ko}</div>`,
+        `<div style="font-size:${fs}pt;line-height:${lh*1.4};word-break:break-word">${blankedWords.join(' ')}</div>`
+      ].join('');
+    }
+    return '';
+  }
+
+  function sheetHTML(ans) {
+    const colW = (100/cols).toFixed(1);
+    const rows = [];
+    for (let i = 0; i < qList.length; i += cols) {
+      const slice = qList.slice(i, i+cols);
+      while (slice.length < cols) slice.push(null);
+      const tds = slice.map(q => q
+        ? `<td style="padding:5pt 8pt;vertical-align:top;width:${colW}%;border:0.4pt solid #ddd">
+            <div style="display:flex;gap:5pt;align-items:flex-start">
+              <span style="font-size:${(fs*0.7).toFixed(1)}pt;color:#bbb;flex-shrink:0;min-width:13pt;line-height:${lh}">${q.n}.</span>
+              <div style="flex:1;min-width:0">${qHTML(q,ans)}</div>
+            </div>
+           </td>`
+        : `<td style="border:0.4pt solid #ddd;width:${colW}%"></td>`
+      ).join('');
+      rows.push(`<tr>${tds}</tr>`);
+    }
+    const titleSize = Math.min(16, fs*1.4);
+    return `<div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2pt solid #111;padding-bottom:10pt;margin-bottom:14pt">
+      <div>
+        <div style="font-size:${titleSize.toFixed(1)}pt;font-weight:900;letter-spacing:-0.3px;line-height:1.3">${title}${ans?' <span style="font-size:11pt;color:#b91c1c;font-weight:700">【 정 답 지 】</span>':''}</div>
+      </div>
+      <div style="text-align:right;font-size:9pt;color:#555;line-height:2.2">
+        <div style="font-size:10pt;font-weight:700;letter-spacing:1.5px">ION ENGLISH</div>
+        ${ans?'':`이름: <span style="display:inline-block;border-bottom:1pt solid #333;width:80pt;margin-left:4pt"></span>`}
+      </div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;table-layout:fixed"><tbody>${rows.join('')}</tbody></table>`;
+  }
+
+  const ansKeyHtml = withKey ? `<div style="page-break-before:always">${sheetHTML(true)}</div>` : '';
+
+  return [
+    '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8">',
+    `<title>${title}</title>`,
+    '<style>',
+    '* { box-sizing:border-box; margin:0; padding:0; }',
+    `@page { size: A4 portrait; margin: ${marginMm}mm ${marginMm+2}mm; }`,
+    'body { font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif; color:#111; }',
+    'table { width:100%; border-collapse:collapse; table-layout:fixed; }',
+    'td { word-break:break-word; }',
+    `@media screen { body { max-width:210mm; margin:0 auto; padding:${marginMm+2}mm ${marginMm+4}mm; background:white; box-shadow:0 0 30px rgba(0,0,0,0.15); min-height:297mm; } }`,
+    '@media print { body { padding:0; } }',
+    '</style></head><body>',
+    sheetHTML(false),
+    ansKeyHtml,
+    '</body></html>'
+  ].join('\n');
+}
+
+
+// ── 문장별 유형 상세 편집 ──────────────────────────────────
+let _sttDetailOpen = false;
+window._sttDetailMap = {};  // itemId → type
+window._sttBlankMap  = {};  // itemId → [wordIdx, ...]
+
+function sttToggleDetail() {
+  _sttDetailOpen = !_sttDetailOpen;
+  const panel = document.getElementById('stt-detail-panel');
+  const btn   = document.getElementById('stt-detail-toggle-btn');
+  if (!panel) return;
+  if (_sttDetailOpen) {
+    panel.style.display = '';
+    btn.style.background = 'rgba(59,130,246,0.15)';
+    btn.style.borderColor = 'rgba(59,130,246,0.3)';
+    sttRenderDetail();
+  } else {
+    panel.style.display = 'none';
+    btn.style.background = 'rgba(255,255,255,0.04)';
+    btn.style.borderColor = 'rgba(255,255,255,0.12)';
+  }
+}
+
+function sttRenderDetail() {
+  const panel = document.getElementById('stt-detail-panel');
+  const items = window._sttItems || [];
+  if (!panel || !items.length) return;
+
+  const typeLabels = { none:'없음', writing:'문장 쓰기', trans:'해석 쓰기', order:'어순 배열', blank:'빈칸 채우기' };
+  const typeColors = { none:'rgba(255,255,255,0.08)', writing:'rgba(59,130,246,0.2)', trans:'rgba(5,150,105,0.2)', order:'rgba(124,58,237,0.2)', blank:'rgba(180,130,0,0.2)' };
+
+  panel.innerHTML = items.map((item, idx) => {
+    const cur = window._sttDetailMap[item.id] || 'none';
+    const blanks = window._sttBlankMap[item.id] || [];
+    const words = item.en.split(' ');
+
+    return `<div style="padding:8px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;margin-bottom:6px;background:rgba(255,255,255,0.02)">
+      <div style="font-size:11px;color:rgba(180,200,240,0.6);margin-bottom:5px">${idx+1}. ${item.en.length > 45 ? item.en.slice(0,45)+'…' : item.en}</div>
+      <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:${cur==='blank'?'8px':'0'}">
+        ${Object.entries(typeLabels).map(([t, label]) => `
+          <button onclick="sttSetDetailType('${item.id}','${t}')"
+            style="padding:3px 8px;border-radius:5px;border:1px solid rgba(255,255,255,${cur===t?'0.3':'0.1'});
+                   background:${cur===t?typeColors[t]:'transparent'};
+                   color:rgba(255,255,255,${cur===t?'0.9':'0.4'});
+                   font-size:10px;cursor:pointer;font-family:'Outfit',sans-serif;font-weight:${cur===t?'700':'400'}">${label}</button>`).join('')}
+      </div>
+      ${cur === 'blank' ? `
+        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-bottom:4px">빈칸으로 할 단어 선택:</div>
+        <div style="display:flex;gap:3px;flex-wrap:wrap">
+          ${words.map((w, wi) => {
+            const isBlank = blanks.includes(wi);
+            return `<button onclick="sttToggleBlankWord('${item.id}',${wi})"
+              style="padding:2px 7px;border-radius:4px;border:1px solid ${isBlank?'#f59e0b':'rgba(255,255,255,0.12)'};
+                     background:${isBlank?'rgba(245,158,11,0.2)':'rgba(255,255,255,0.04)'};
+                     color:${isBlank?'#fcd34d':'rgba(255,255,255,0.5)'};
+                     font-size:11px;cursor:pointer;font-family:'JetBrains Mono',monospace">${w}</button>`;
+          }).join('')}
+        </div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function sttSetDetailType(itemId, type) {
+  if (!window._sttDetailMap) window._sttDetailMap = {};
+  window._sttDetailMap[itemId] = type;
+  if (type !== 'blank') {
+    if (!window._sttBlankMap) window._sttBlankMap = {};
+    delete window._sttBlankMap[itemId];
+  }
+  sttRenderDetail();
+  sttPreview();
+}
+
+function sttToggleBlankWord(itemId, wordIdx) {
+  if (!window._sttBlankMap) window._sttBlankMap = {};
+  if (!window._sttBlankMap[itemId]) window._sttBlankMap[itemId] = [];
+  const arr = window._sttBlankMap[itemId];
+  const pos = arr.indexOf(wordIdx);
+  if (pos === -1) arr.push(wordIdx);
+  else arr.splice(pos, 1);
+  sttRenderDetail();
+  sttPreview();
+}
+
+function sentTestPrint() {
+  const frame = document.getElementById('stt-preview-frame');
+  try {
+    const doc = frame.contentDocument || frame.contentWindow.document;
+    if (doc?.body) {
+      const banner = doc.getElementById('stt-banner');
+      if (banner) banner.style.display = 'none';
+      doc.body.contentEditable = 'false';
+      doc.body.style.paddingTop = '';
+      frame.contentWindow.focus();
+      frame.contentWindow.print();
+      setTimeout(() => {
+        if (banner) banner.style.display = '';
+        if (doc.body) { doc.body.contentEditable = 'true'; doc.body.style.paddingTop = '28px'; }
+      }, 1500);
+      return;
+    }
+  } catch(e) {}
+  // fallback
+  const html = sttBuildHtml(false);
+  if (!html) return;
+  let pf = document.getElementById('stt-print-hidden');
+  if (!pf) { pf = document.createElement('iframe'); pf.id = 'stt-print-hidden'; pf.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:0;height:0;border:none'; document.body.appendChild(pf); }
+  pf.srcdoc = html;
+  pf.onload = () => { try { pf.contentWindow.focus(); pf.contentWindow.print(); } catch(e) {} };
+}
+
+
+// ── 단어장 보관함 인라인 편집기 ──────────────────────────
+function renderLibraryEditor(bookId) {
+  const panel = document.getElementById('lib-editor-panel');
+  const titleEl = document.getElementById('lib-editor-title');
+  const b = DB.books.find(b => b.id === bookId);
+  if (!panel || !b) return;
+
+  // 편집기 셀렉트 동기화
+  const sel = document.getElementById('editor-sel');
+  if (sel) sel.value = bookId;
+
+  if (titleEl) titleEl.textContent = b.name;
+  panel.style.display = '';
+
+  // books-grid 숨기기 (편집 중)
+  const grid = document.getElementById('books-grid');
+  if (grid) grid.style.display = 'none';
+  const upload = document.querySelector('#pg-library .upload-zone');
+  if (upload) upload.style.display = 'none';
+
+  loadEditor();
+
+  // 편집기로 스크롤
+  setTimeout(() => panel.scrollIntoView({ behavior:'smooth', block:'start' }), 100);
+}
+
+function closeLibEditor() {
+  const panel = document.getElementById('lib-editor-panel');
+  if (panel) panel.style.display = 'none';
+  const grid = document.getElementById('books-grid');
+  if (grid) grid.style.display = '';
+  const upload = document.querySelector('#pg-library .upload-zone');
+  if (upload) upload.style.display = '';
+  window._libEditorBookId = null;
+}
 
 function renderLibrary() {
   const q = (document.getElementById('lib-search')?.value||'').toLowerCase();
@@ -1977,8 +4429,11 @@ async function setBookCollection(bookId, collId) {
 }
 
 function openBook(id) {
-  document.getElementById('editor-sel').value = id;
-  showPage('pg-editor'); loadEditor();
+  // 단어장 보관함에서 인라인 편집기 열기
+  showPage('pg-library');
+  // lib-editor-bookId 설정 후 편집기 로드
+  window._libEditorBookId = id;
+  renderLibraryEditor(id);
 }
 
 function openBookStudy(id) {
@@ -3854,6 +6309,18 @@ JSON 배열만 응답 (설명 없이, 마크다운 없이):
 }
 
 // ▶ 열기: 파일 내용을 그대로 뷰어로 표시
+
+// words_json lazy load 헬퍼
+async function fvEnsureWords(fileId) {
+  const f = DB.files.find(f => f.id === fileId);
+  if (!f) return null;
+  if (f.words !== null) return f.words; // 이미 로드됨
+  // DB에서 words_json만 가져오기
+  const { data } = await sb.from('vault_files').select('words_json').eq('id', fileId).single();
+  f.words = data?.words_json ? JSON.parse(data.words_json) : [];
+  return f.words;
+}
+
 function fvOpenFile(id) {
   const f = DB.files.find(f=>f.id===id);
   if (!f) return;
@@ -4234,10 +6701,11 @@ function bookMakeTest(bookId) {
 }
 
 // ── 파일 보관함 → 저장된 단어로 바로 시험지
-function fvMakeTest(fileId) {
+async function fvMakeTest(fileId) {
   const f = DB.files.find(f => f.id === fileId);
   if (!f) return;
-  if (!f.words || f.words.length < 4) {
+  const words = await fvEnsureWords(fileId);
+  if (!words || words.length < 4) {
     showToast('단어가 아직 추출되지 않았습니다. 잠시 후 다시 시도하세요.', 'error');
     return;
   }
@@ -4304,7 +6772,7 @@ function testShowSettings(defaultTitle, words) {
               ['ts-en2ko', '영어 → 한국어', 5, true],
               ['ts-ko2en', '한국어 → 영어', 5, true],
               ['ts-choice', '4지선다', 0, false],
-              ['ts-blank', `빈칸채우기 (예문 ${hasEx}개)`, hasEx>=4?5:0, hasEx>=4],
+              ['ts-blank', `빈칸채우기 (예문 ${hasEx}개)`, 0, false],
             ].map(([id, label, def, chk]) => `
               <div style="display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(255,255,255,0.08);border-radius:8px;background:rgba(255,255,255,0.03)">
                 <span style="flex:1;font-size:12px;color:rgba(255,255,255,0.7)">${label}</span>
@@ -4703,9 +7171,10 @@ function fvExcelSwitchSheet(idx) {
 }
 
 // 단어장 변환
-function fvConvertToBook(id) {
+async function fvConvertToBook(id) {
   const f = DB.files.find(f=>f.id===id);
   if (!f) return;
+  await fvEnsureWords(id);
 
   // 이미 AI 추출된 단어가 있으면 바로 단어장 생성 진행
   if (f.words && f.words.length > 0) {
@@ -5602,6 +8071,351 @@ function randColor(){const c=['#3b82f6','#10b981','#f59e0b','#a78bfa','#ef4444',
 // =========================================================
 //  단어장 인쇄 스튜디오
 // =========================================================
+
+// =========================================================
+//  문장 보기 모달 + 인쇄
+// =========================================================
+let _slBookId = null;
+let _slItems  = [];
+let _slHideKo = false;
+let _slCardView = false;
+let _slIdx = 0;
+
+async function openSentListModal(bookId) {
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  if (!b) return;
+  _slBookId = bookId;
+  _slHideKo = false;
+  _slCardView = false;
+  _slIdx = 0;
+  _slItems = await loadSentenceItems(bookId);
+
+  if (!_slItems.length) { showToast('문장이 없습니다.', 'error'); return; }
+
+  const tableRows = _slItems.map((it, i) => `
+    <tr style="border-bottom:1px solid var(--border)">
+      <td style="padding:8px 10px;font-size:12px;color:var(--t3);font-family:'JetBrains Mono',monospace;width:32px">${i+1}</td>
+      <td style="padding:10px 10px">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--t1);line-height:1.5">${it.en}</div>
+      </td>
+      <td style="padding:10px 10px" class="sl-ko-cell">
+        <div style="font-size:14px;color:var(--t2);word-break:keep-all">${it.ko}</div>
+      </td>
+      <td style="padding:8px 6px;text-align:center">
+        <button onclick="speak('${it.en.replace(/'/g,"\'")}')" style="background:none;border:none;cursor:pointer;font-size:16px">🔊</button>
+      </td>
+    </tr>`).join('');
+
+  showModal(`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:700">📄 ${b.name}</div>
+        <div style="font-size:12px;color:var(--t3);margin-top:2px">전체 ${_slItems.length}개 문장</div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="slToggleHide()" id="sl-hide-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          해석 가리기
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="slToggleCard()" id="sl-card-btn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          한 장씩
+        </button>
+      </div>
+    </div>
+
+    <!-- 목록 뷰 -->
+    <div id="sl-list-view">
+      <div style="height:60vh;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius)">
+        <table style="width:100%;border-collapse:collapse;table-layout:fixed" id="sl-table">
+          <colgroup>
+            <col style="width:36px">
+            <col style="width:48%">
+            <col style="width:42%">
+            <col style="width:44px">
+          </colgroup>
+          <thead>
+            <tr style="background:var(--surface2)">
+              <th style="padding:8px 10px;text-align:left;font-size:11px;font-weight:700;color:var(--t3);border-bottom:2px solid var(--border)">#</th>
+              <th style="padding:8px 10px;text-align:left;font-size:11px;font-weight:700;color:var(--t3);border-bottom:2px solid var(--border)">영어 문장</th>
+              <th style="padding:8px 10px;text-align:left;font-size:11px;font-weight:700;color:var(--t3);border-bottom:2px solid var(--border)" id="sl-ko-th">한국어 해석</th>
+              <th style="border-bottom:2px solid var(--border)"></th>
+            </tr>
+          </thead>
+          <tbody id="sl-tbody">${tableRows}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 카드 뷰 -->
+    <div id="sl-card-view" style="display:none">
+      <div style="text-align:center">
+        <div style="font-size:12px;color:var(--t3);margin-bottom:12px" id="sl-card-counter">1 / ${_slItems.length}</div>
+        <div id="sl-card-box" onclick="slFlipCard()" style="cursor:pointer;background:linear-gradient(160deg,#1a2744,#1e2f55,#1a2a4a);
+          border-radius:20px;padding:32px 28px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;margin-bottom:16px;border:1px solid rgba(255,255,255,0.06)">
+          <div style="font-size:11px;color:rgba(180,200,240,0.5);letter-spacing:2px;margin-bottom:10px">탭하면 해석이 보여요</div>
+          <div id="sl-card-en" style="font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700;color:#fff;text-align:center;line-height:1.6"></div>
+          <div id="sl-card-ko" style="font-size:16px;color:#b4c8f0;display:none;text-align:center;margin-top:10px;line-height:1.5"></div>
+          <button onclick="event.stopPropagation();speak(document.getElementById('sl-card-en').textContent)"
+            style="position:absolute;top:14px;right:16px;background:rgba(255,255,255,0.1);border:none;cursor:pointer;border-radius:8px;padding:6px;color:white">🔊</button>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-secondary" onclick="slCardNav(-1)" id="sl-prev-btn">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> 이전
+          </button>
+          <button class="btn btn-ghost" onclick="slFlipCard()">뒤집기</button>
+          <button class="btn btn-primary" onclick="slCardNav(1)" id="sl-next-btn">다음
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions" style="margin-top:14px">
+      <button class="btn btn-ghost" onclick="closeModal()">닫기</button>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal();sentShowEditorView('${bookId}')">편집</button>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal();openSentListPrint('${bookId}')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        인쇄
+      </button>
+      <button class="btn btn-primary btn-sm" onclick="closeModal();sentMakeTest('${bookId}')">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        시험지
+      </button>
+    </div>`);
+
+  slRenderCard();
+}
+
+function slToggleHide() {
+  _slHideKo = !_slHideKo;
+  const btn = document.getElementById('sl-hide-btn');
+  if (btn) { btn.style.background = _slHideKo ? 'var(--blue-dim)' : ''; btn.style.color = _slHideKo ? 'var(--blue2)' : ''; }
+  document.querySelectorAll('.sl-ko-cell').forEach(td => td.style.visibility = _slHideKo ? 'hidden' : '');
+  const koth = document.getElementById('sl-ko-th');
+  if (koth) koth.style.visibility = _slHideKo ? 'hidden' : '';
+}
+
+function slToggleCard() {
+  _slCardView = !_slCardView;
+  document.getElementById('sl-list-view').style.display = _slCardView ? 'none' : '';
+  document.getElementById('sl-card-view').style.display = _slCardView ? '' : 'none';
+  const btn = document.getElementById('sl-card-btn');
+  if (btn) { btn.style.background = _slCardView ? 'var(--blue-dim)' : ''; btn.style.color = _slCardView ? 'var(--blue2)' : ''; }
+  if (_slCardView) { _slIdx = 0; slRenderCard(); }
+}
+
+function slRenderCard() {
+  const it = _slItems[_slIdx];
+  if (!it) return;
+  const enEl = document.getElementById('sl-card-en');
+  const koEl = document.getElementById('sl-card-ko');
+  const ctr  = document.getElementById('sl-card-counter');
+  const prev = document.getElementById('sl-prev-btn');
+  const next = document.getElementById('sl-next-btn');
+  if (enEl) enEl.textContent = it.en;
+  if (koEl) { koEl.textContent = it.ko; koEl.style.display = 'none'; }
+  if (ctr)  ctr.textContent = `${_slIdx+1} / ${_slItems.length}`;
+  if (prev) prev.disabled = _slIdx === 0;
+  if (next) next.textContent = _slIdx === _slItems.length-1 ? '완료' : '다음 ›';
+}
+
+function slFlipCard() {
+  const koEl = document.getElementById('sl-card-ko');
+  if (koEl) koEl.style.display = koEl.style.display === 'none' ? '' : 'none';
+}
+
+function slCardNav(dir) {
+  const next = _slIdx + dir;
+  if (next < 0 || next >= _slItems.length) return;
+  _slIdx = next;
+  slRenderCard();
+}
+
+// ── 문장 인쇄 스튜디오 ────────────────────────────────────
+function openSentListPrint(bookId) {
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  if (!b || !_slItems.length) return;
+
+  const prev = document.getElementById('sl-print-overlay');
+  if (prev) prev.remove();
+  const ov = document.createElement('div');
+  ov.id = 'sl-print-overlay';
+  ov.style.cssText = 'position:fixed;inset:0;z-index:400;display:flex;flex-direction:column;background:#0d1b2a';
+
+  ov.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:#111c30;border-bottom:1px solid rgba(255,255,255,0.08);flex-shrink:0">
+      <div style="font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.3px">문장 인쇄 — ${b.name}</div>
+      <div style="display:flex;gap:8px">
+        <button onclick="slPrintNow()"
+          style="padding:8px 18px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;font-family:'Outfit',sans-serif">
+          🖨 인쇄
+        </button>
+        <button onclick="document.getElementById('sl-print-overlay').remove()"
+          style="padding:8px 14px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;border-radius:9px;cursor:pointer;font-size:13px;font-family:'Outfit',sans-serif">
+          닫기
+        </button>
+      </div>
+    </div>
+    <div style="display:flex;flex:1;overflow:hidden">
+      <!-- 설정 패널 -->
+      <div style="width:300px;flex-shrink:0;background:#141f35;border-right:1px solid rgba(255,255,255,0.07);overflow-y:auto;padding:20px 18px">
+        <div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">인쇄 설정</div>
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px">제목</div>
+          <input id="slp-title" value="${b.name}"
+            style="width:100%;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:9px;color:#fff;font-size:13px;font-family:'Outfit',sans-serif;outline:none"
+            oninput="slpPreview()">
+        </div>
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:8px">단 수</div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px" id="slp-col-btns">
+            ${[1,2].map(n=>`
+              <label style="display:flex;align-items:center;justify-content:center;padding:8px;border:1.5px solid ${n===1?'#3b82f6':'rgba(255,255,255,0.12)'};border-radius:8px;background:${n===1?'rgba(59,130,246,0.1)':'rgba(255,255,255,0.04)'};cursor:pointer">
+                <input type="radio" name="slp-cols" value="${n}" ${n===1?'checked':''} style="display:none"
+                  onchange="document.querySelectorAll('#slp-col-btns label').forEach((l,i)=>{l.style.borderColor=i===${n-1}?'#3b82f6':'rgba(255,255,255,0.12)';l.style.background=i===${n-1}?'rgba(59,130,246,0.1)':'rgba(255,255,255,0.04)'});slpPreview()">
+                <span style="font-size:13px;color:rgba(255,255,255,0.8)">${n}단</span>
+              </label>`).join('')}
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          ${[['slp-show-en','영어 문장',true],['slp-show-ko','한국어 해석',true],['slp-show-num','번호',true],['slp-hide-ko','해석 가리기 (시험용)',false]].map(([id,label,chk])=>`
+            <label style="display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid rgba(255,255,255,0.07);border-radius:8px;background:rgba(255,255,255,0.03);cursor:pointer;margin-bottom:5px">
+              <input type="checkbox" id="${id}" ${chk?'checked':''} style="width:14px;height:14px;accent-color:#3b82f6" onchange="slpPreview()">
+              <span style="font-size:12px;color:rgba(255,255,255,0.7)">${label}</span>
+            </label>`).join('')}
+        </div>
+        <div style="margin-bottom:14px">
+          <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:6px">글자 크기 (pt)</div>
+          <div style="display:flex;align-items:center;gap:5px">
+            <input type="number" id="slp-fontsize" min="6" max="24" value="11" step="0.5"
+              style="width:100%;padding:7px 10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;font-size:13px;font-weight:700;text-align:center;font-family:'Outfit',sans-serif;outline:none"
+              oninput="slpPreview()">
+            <span style="font-size:10px;color:rgba(255,255,255,0.35);flex-shrink:0">pt</span>
+          </div>
+        </div>
+      </div>
+      <!-- 미리보기 -->
+      <div style="flex:1;overflow:auto;padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px;background:#0d1421">
+        <div style="font-size:11px;color:rgba(255,255,255,0.3);letter-spacing:1.5px;text-transform:uppercase;align-self:flex-start">미리보기 (A4)</div>
+        <iframe id="slp-preview-frame" style="width:100%;max-width:700px;height:900px;background:white;border:none;border-radius:4px;box-shadow:0 4px 40px rgba(0,0,0,0.6)"></iframe>
+      </div>
+    </div>`;
+
+  document.body.appendChild(ov);
+  window._slpItems = _slItems;
+  setTimeout(slpPreview, 100);
+}
+
+let _slpTimer = null;
+function slpPreview() {
+  clearTimeout(_slpTimer);
+  _slpTimer = setTimeout(() => {
+    const html = slpBuildHtml();
+    if (!html) return;
+    const frame = document.getElementById('slp-preview-frame');
+    if (!frame) return;
+    frame.srcdoc = html;
+    frame.onload = () => {
+      try {
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        if (!doc?.body) return;
+        doc.body.contentEditable = 'true';
+        doc.body.style.outline = 'none';
+        const old = doc.getElementById('slp-banner');
+        if (old) old.remove();
+        const banner = doc.createElement('div');
+        banner.id = 'slp-banner';
+        banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:rgba(79,70,229,0.9);color:#fff;font-size:11px;padding:5px 12px;text-align:center;z-index:9999;font-family:sans-serif';
+        banner.textContent = '✏️ 직접 클릭해서 수정 가능 — 인쇄 시 수정된 내용 출력';
+        doc.body.insertBefore(banner, doc.body.firstChild);
+        const st = doc.createElement('style');
+        st.textContent = '@media print { #slp-banner { display:none !important; } }';
+        doc.head.appendChild(st);
+        doc.body.style.paddingTop = '28px';
+      } catch(e) {}
+    };
+  }, 300);
+}
+
+function slpBuildHtml() {
+  const items = window._slpItems || _slItems;
+  if (!items?.length) return null;
+  const title   = document.getElementById('slp-title')?.value || '문장 목록';
+  const cols    = parseInt(document.querySelector('input[name="slp-cols"]:checked')?.value || 1);
+  const showEn  = document.getElementById('slp-show-en')?.checked !== false;
+  const showKo  = document.getElementById('slp-show-ko')?.checked !== false;
+  const showNum = document.getElementById('slp-show-num')?.checked !== false;
+  const hideKo  = document.getElementById('slp-hide-ko')?.checked;
+  const fs      = parseFloat(document.getElementById('slp-fontsize')?.value || 11);
+  const lh = 1.5;
+  const colW = (100/cols).toFixed(1);
+  const cells = items.map((it, i) => {
+    const num  = showNum ? `<span style="font-size:${(fs*0.7).toFixed(1)}pt;color:#bbb;margin-right:4pt;flex-shrink:0">${i+1}.</span>` : '';
+    const en   = showEn  ? `<div style="font-family:'JetBrains Mono',monospace;font-size:${fs}pt;font-weight:700;line-height:${lh};color:#111">${it.en}</div>` : '';
+    const koContent = hideKo
+      ? `<div style="margin-top:3pt;border-bottom:1pt solid #aaa;height:${fs*1.2}pt;min-width:${fs*10}pt"></div>`
+      : `<div style="font-size:${(fs*0.9).toFixed(1)}pt;color:#555;margin-top:2pt;line-height:${lh}">${it.ko}</div>`;
+    const ko = showKo ? koContent : '';
+    return `<td style="padding:5pt 8pt;vertical-align:top;width:${colW}%;border:0.4pt solid #ddd">
+      <div style="display:flex;align-items:flex-start;gap:2pt">${num}<div style="flex:1">${en}${ko}</div></div>
+    </td>`;
+  });
+  const rows = [];
+  for (let i = 0; i < cells.length; i += cols) {
+    const sl = cells.slice(i, i+cols);
+    while (sl.length < cols) sl.push(`<td style="border:0.4pt solid #ddd;width:${colW}%"></td>`);
+    rows.push(`<tr>${sl.join('')}</tr>`);
+  }
+  const mm = 12;
+  return [
+    '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8">',
+    `<title>${title}</title>`,
+    '<style>* { box-sizing:border-box; margin:0; padding:0; }',
+    `@page { size: A4 portrait; margin: ${mm}mm ${mm+2}mm; }`,
+    'body { font-family:"Malgun Gothic","Apple SD Gothic Neo","Noto Sans KR",sans-serif; color:#111; }',
+    'table { width:100%; border-collapse:collapse; table-layout:fixed; }',
+    `@media screen { body { max-width:210mm; margin:0 auto; padding:${mm+2}mm ${mm+4}mm; background:white; box-shadow:0 0 30px rgba(0,0,0,0.15); min-height:297mm; } }`,
+    '@media print { body { padding:0; } }</style></head><body>',
+    `<div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:2pt solid #111;padding-bottom:10pt;margin-bottom:14pt">
+      <div style="font-size:${Math.min(16,fs*1.4).toFixed(1)}pt;font-weight:900;letter-spacing:-0.3px">${title}</div>
+      <div style="text-align:right;font-size:9pt;color:#555;line-height:2.2">
+        <div style="font-size:10pt;font-weight:700;letter-spacing:1.5px">ION ENGLISH</div>
+        ${hideKo?`이름: <span style="display:inline-block;border-bottom:1pt solid #333;width:80pt;margin-left:4pt"></span>`:''}
+      </div>
+    </div>`,
+    `<table><tbody>${rows.join('')}</tbody></table>`,
+    '</body></html>'
+  ].join('');
+}
+
+
+function slPrintNow() {
+  const frame = document.getElementById('slp-preview-frame');
+  try {
+    const doc = frame.contentDocument || frame.contentWindow.document;
+    if (doc?.body) {
+      const banner = doc.getElementById('slp-banner');
+      if (banner) banner.style.display = 'none';
+      doc.body.contentEditable = 'false';
+      doc.body.style.paddingTop = '';
+      frame.contentWindow.focus();
+      frame.contentWindow.print();
+      setTimeout(() => {
+        if (banner) banner.style.display = '';
+        if (doc.body) { doc.body.contentEditable = 'true'; doc.body.style.paddingTop = '28px'; }
+      }, 1500);
+      return;
+    }
+  } catch(e) {}
+  const html = slpBuildHtml();
+  if (!html) return;
+  let pf = document.getElementById('slp-print-hidden');
+  if (!pf) { pf = document.createElement('iframe'); pf.id = 'slp-print-hidden'; pf.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:0;height:0;border:none'; document.body.appendChild(pf); }
+  pf.srcdoc = html;
+  pf.onload = () => { try { pf.contentWindow.focus(); pf.contentWindow.print(); } catch(e) {} };
+}
+
 function openWordListPrint(bookId) {
   const b = DB.books.find(b => b.id === bookId);
   if (!b || !b.words.length) { showToast('단어가 없습니다.', 'error'); return; }
