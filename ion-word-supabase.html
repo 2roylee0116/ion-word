@@ -1465,15 +1465,83 @@ function setRole(r) {
   document.getElementById('tab-student').classList.toggle('active', r==='student');
 }
 
+
+// ── 보안 유틸 ────────────────────────────────────────────
+// 입력값 sanitize (script 태그 제거)
+function sanitizeInput(s) {
+  return String(s ?? '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<[^>]+>/g, '')
+    .trim();
+}
+
+// 이메일 형식 검증
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+// 비밀번호 강도 체크 (8자 이상 + 영문+숫자)
+function isStrongPassword(pw) {
+  return pw.length >= 8 && /[a-zA-Z]/.test(pw) && /[0-9]/.test(pw);
+}
+
+// 로그인 실패 횟수 체크 (간단한 brute force 방어)
+function checkLoginAttempts() {
+  const key = 'ion_login_attempts';
+  const lockKey = 'ion_login_lock';
+  const lockUntil = parseInt(localStorage.getItem(lockKey) || '0');
+  if (Date.now() < lockUntil) {
+    const remaining = Math.ceil((lockUntil - Date.now()) / 1000);
+    showToast(`잠시 후 다시 시도하세요. (${remaining}초 후)`, 'error');
+    return false;
+  }
+  return true;
+}
+
+function recordLoginFailure() {
+  const key = 'ion_login_attempts';
+  const lockKey = 'ion_login_lock';
+  const attempts = (parseInt(localStorage.getItem(key) || '0')) + 1;
+  localStorage.setItem(key, String(attempts));
+  if (attempts >= 5) {
+    const lockUntil = Date.now() + 60000; // 1분 잠금
+    localStorage.setItem(lockKey, String(lockUntil));
+    localStorage.setItem(key, '0');
+    showToast('로그인 5회 실패 — 1분 후 다시 시도하세요.', 'error');
+  }
+}
+
+function clearLoginFailures() {
+  localStorage.removeItem('ion_login_attempts');
+  localStorage.removeItem('ion_login_lock');
+}
+
+// 세션 타임아웃 (8시간 미사용 시 자동 로그아웃)
+let _sessionTimer = null;
+function resetSessionTimer() {
+  clearTimeout(_sessionTimer);
+  _sessionTimer = setTimeout(() => {
+    if (currentUser) {
+      showToast('세션이 만료됐습니다. 다시 로그인하세요.', 'error');
+      doLogout();
+    }
+  }, 8 * 60 * 60 * 1000);
+}
+document.addEventListener('click', resetSessionTimer);
+document.addEventListener('keypress', resetSessionTimer);
+
 async function doLogin() {
   const email = document.getElementById('login-id').value.trim();
   const pw    = document.getElementById('login-pw').value.trim();
   if (!email || !pw) { showToast('이메일과 비밀번호를 입력하세요.', 'error'); return; }
+  if (!isValidEmail(email)) { showToast('이메일 형식을 확인하세요.', 'error'); return; }
+  if (!checkLoginAttempts()) return;
   const btn = document.querySelector('.login-btn');
   btn.disabled = true; btn.textContent = '로그인 중...';
   try {
     const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
-    if (error) throw error;
+    if (error) { recordLoginFailure(); throw error; }
+    clearLoginFailures();
     const { data: profile } = await sb.from('profiles').select('*').eq('id', data.user.id).single();
     if (!profile) {
       const np = { id: data.user.id, name: email.split('@')[0], role: loginRole, grade: '', email, assigned_book_ids: [] };
@@ -1494,9 +1562,13 @@ async function doLogin() {
 }
 
 async function doLogout() {
+  clearTimeout(_sessionTimer);
   await sb.auth.signOut();
   currentUser = null;
   DB = { users: [], books: [], collections: [], files: [], progress: {} };
+  DB_sentBooks = []; DB_sentItems = {}; DB_sentColls = [];
+  // 민감 캐시 정리 (API 키는 유지, 로그인 관련만)
+  clearLoginFailures();
   document.getElementById('login-screen').style.display = 'flex';
   document.getElementById('app-shell').style.display = 'none';
 }
@@ -1506,6 +1578,7 @@ async function doLogout() {
 // =========================================================
 function initApp() {
   const u = currentUser;
+  resetSessionTimer(); // 세션 타임아웃 시작
   document.getElementById('user-name-display').textContent = u.name;
   const roleLabel = u.role==='teacher' ? (u.isAdmin ? '통합관리자' : '선생님') : '학생';
   document.getElementById('user-role-display').textContent = roleLabel;
@@ -3368,7 +3441,7 @@ function sentCheckUnscramble() {
   if (isCorrect) {
     if (area) area.innerHTML = '<div style="color:#6ee7b7;font-size:16px;font-weight:700">✓ 정답!</div>';
   } else {
-    if (area) area.innerHTML = `<div style="color:#fca5a5;font-size:14px">✗ 다시 해보세요<br><span style="font-size:12px;color:rgba(255,255,255,0.5)">정답: ${_sentStudyItems[_sentStudyIdx].en}</span></div>`;
+    if (area) { area.innerHTML = '<div style="color:#fca5a5;font-size:14px">✗ 다시 해보세요</div>'; const _hint=document.createElement('div'); _hint.style.cssText='font-size:12px;color:rgba(255,255,255,0.5)'; _hint.textContent='정답: '+_sentStudyItems[_sentStudyIdx].en; area.appendChild(_hint); }
   }
   // 결과 기록
   if (!window._sentSessionResults) window._sentSessionResults = [];
@@ -3413,7 +3486,7 @@ function sentSkip() {
   const nextBtn = document.getElementById('sent-next-btn');
   if (nextBtn) nextBtn.style.display = '';
   const area = document.getElementById('sent-check-area');
-  if (area) area.innerHTML = `<div style="color:rgba(255,255,255,0.4);font-size:12px">건너뜀 — 정답: ${_sentStudyItems[_sentStudyIdx].en}</div>`;
+  if (area) { const _sa=document.createElement('div'); _sa.style.cssText='color:rgba(255,255,255,0.4);font-size:12px'; _sa.textContent='건너뜀 — 정답: '+_sentStudyItems[_sentStudyIdx].en; area.innerHTML=''; area.appendChild(_sa); }
 }
 
 async function sentFinish() {
@@ -5665,10 +5738,13 @@ async function doInviteStudent() {
   const pw    = document.getElementById('inv-pw').value.trim();
   const grade = document.getElementById('inv-grade').value.trim();
   if (!name||!email||!pw) { showToast('이름, 이메일, 비밀번호를 모두 입력하세요.','error'); return; }
+  if (!isValidEmail(email)) { showToast('이메일 형식을 확인하세요.','error'); return; }
   if (pw.length < 6) { showToast('비밀번호는 6자 이상이어야 합니다.','error'); return; }
+  // 이름 sanitize
+  const safeName = sanitizeInput(name);
 
   try {
-    // Supabase Admin API 대신 signUp 사용 (이메일 확인 비활성화 필요)
+    // Supabase Auth signUp (이메일 확인 비활성화 필요)
     const { data, error } = await sb.auth.signUp({ email, password: pw });
     if (error) throw error;
 
@@ -6552,7 +6628,7 @@ function answerChoice(btn,selId,corrId){
     const cw=quizWords.find(w=>String(w.id)===corrId);
     const dir=document.getElementById('quiz-dir').value;
     document.querySelectorAll('.quiz-opt').forEach(b=>{if(b.textContent.trim()===(dir==='en2ko'?cw.ko:cw.en))b.classList.add('correct');});
-    document.getElementById('qfb').innerHTML=`<span style="color:var(--red)">❌ 오답 — 정답: ${dir==='en2ko'?cw.ko:cw.en}</span>`;
+    document.getElementById('qfb').textContent='❌ 오답 — 정답: '+(dir==='en2ko'?cw.ko:cw.en);
     quizWrong.push(cw);
   }
   document.getElementById('qnext').style.display='inline-flex';
@@ -6564,8 +6640,8 @@ function checkInput(wid, dir, mode){
   const ans=document.getElementById('quiz-inp').value.trim().toLowerCase();
   const correct=dir==='en2ko'?w.ko.toLowerCase():w.en.toLowerCase();
   const ok = ans===correct || correct.split(',').map(s=>s.trim()).some(s=>s===ans) || (correct.includes(ans) && ans.length>=3);
-  if(ok){quizScore++;document.getElementById('qfb').innerHTML=`<span style="color:var(--green)">정답! <span style="font-weight:400">${dir==='en2ko'?w.ko:w.en}</span></span>`;}
-  else{document.getElementById('qfb').innerHTML=`<span style="color:var(--red)">❌ 오답 — 정답: <strong>${dir==='en2ko'?w.ko:w.en}</strong></span>`;quizWrong.push(w);}
+  if(ok){quizScore++;const _fb=document.getElementById('qfb');_fb.style.color='var(--green)';_fb.textContent='✅ 정답! '+  (dir==='en2ko'?w.ko:w.en);}
+  else{const _fb=document.getElementById('qfb');_fb.style.color='var(--red)';_fb.textContent='❌ 오답 — 정답: '+(dir==='en2ko'?w.ko:w.en);quizWrong.push(w);}
   document.getElementById('qnext').style.display='inline-flex';
 }
 
@@ -6616,7 +6692,7 @@ JSON으로만 응답: {"score":0~100,"pass":true/false,"feedback":"짧은 한국
     const correct = dir==='en2ko'?w.ko:w.en;
     const ok = ans.toLowerCase().includes(correct.toLowerCase().split(',')[0].trim()) || correct.toLowerCase().includes(ans.toLowerCase().split(' ')[0]) && ans.length >= 2;
     if(ok) quizScore++; else quizWrong.push(w);
-    document.getElementById('qfb').innerHTML = `<span style="color:${ok?'var(--green)':'var(--red)'}">${ok?'✅ 정답':'❌ 오답'} — 정답: <strong>${correct}</strong></span>`;
+    const _efb=document.getElementById('qfb');_efb.style.color=ok?'var(--green)':'var(--red)';_efb.textContent=(ok?'✅ 정답':'❌ 오답')+' — 정답: '+correct;
   }
   document.getElementById('qnext').style.display = 'inline-flex';
   if(btn) btn.disabled = false;
@@ -9045,7 +9121,17 @@ function showToast(msg, type=''){
 }
 
 function emptyHTML(msg){return`<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">${msg}</div></div>`;}
-function esc(s){return String(s).replace(/'/g,"\\'").replace(/"/g,'&quot;');}
+function esc(s){
+  return String(s??'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#x27;')
+    .replace(/`/g,'&#x60;');
+}
+// HTML 속성값용 (onclick 등에 직접 넣을 때)
+function escAttr(s){return String(s??'').replace(/'/g,"\'").replace(/"/g,'&quot;');}
 function today(){return new Date().toLocaleDateString('ko-KR');}
 function randColor(){const c=['#3b82f6','#10b981','#f59e0b','#a78bfa','#ef4444','#ec4899'];return c[Math.floor(Math.random()*c.length)];}
 
