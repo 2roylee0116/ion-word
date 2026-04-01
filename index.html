@@ -1192,12 +1192,39 @@ body.student-mode { background: #e8f0f8; }
   .table-wrap{font-size:12px}.ex-text{max-width:120px}
   .toast{bottom:16px;right:16px;left:16px;max-width:none}
   #groq-quota-badge{left:16px;bottom:70px}.login-box{max-width:100vw;padding:0 16px}
-  /* quiz/fc/sent 2-col → 1-col */
   .slime-two-col{grid-template-columns:1fr !important;max-width:100% !important}
-  /* quiz setup bar selects */
   #quiz-setup-bar,#fc-setup-bar{flex-direction:column;align-items:stretch}
   #quiz-setup-bar select,#fc-setup-bar select,
   #quiz-setup-bar .toggle-wrap,#quiz-setup-bar button{width:100% !important;min-width:unset !important;box-sizing:border-box}
+
+  /* ── 모바일 암기학습 전용 레이아웃 ── */
+  .fc-mobile-hide{display:none !important}
+  .fc-mobile-header{padding:14px 20px 8px;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .fc-mobile-progress-row{width:100%;display:flex;align-items:center;gap:10px}
+  .fc-mobile-progress-label{font-size:13px;font-weight:700;color:#4a6fa5;white-space:nowrap}
+  .fc-mobile-progress-bar{flex:1;height:7px;background:rgba(255,255,255,0.6);border-radius:99px;overflow:hidden}
+  .fc-mobile-progress-fill{height:100%;border-radius:99px;transition:width 0.4s ease}
+  .fc-mobile-slime-pin{width:36px;height:36px;flex-shrink:0;animation:slimeBob 2.5s ease-in-out infinite}
+  .fc-mobile-card{margin:0 14px;background:#fff;border-radius:24px;padding:20px 20px 16px;box-shadow:0 4px 24px rgba(15,40,80,0.10);flex:1;display:flex;flex-direction:column;position:relative}
+  .fc-mobile-card-label{font-size:11px;font-weight:700;color:#7ea8cc;letter-spacing:1px;text-align:center;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
+  .fc-mobile-word{font-family:'Fraunces',serif;font-size:38px;font-weight:900;color:#1a2d4a;letter-spacing:-1.5px;text-align:center;line-height:1.1;margin-bottom:5px;text-transform:uppercase}
+  .fc-mobile-pron{font-size:14px;color:#7ea8cc;text-align:center;margin-bottom:8px;font-family:'JetBrains Mono',monospace}
+  .fc-mobile-ko{font-size:19px;font-weight:700;color:#1a2d4a;text-align:center;margin-bottom:14px}
+  .fc-mobile-example{flex:1;padding:11px 13px;background:#f8fafb;border-radius:12px;font-size:13px;color:#475569;line-height:1.7;font-style:italic}
+  .fc-mobile-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px 8px}
+  .fc-mobile-btn-know{padding:15px 10px;border-radius:18px;border:none;cursor:pointer;background:#1e3a5f;color:#fff;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;transition:all 0.15s}
+  .fc-mobile-btn-dont{padding:15px 10px;border-radius:18px;border:none;cursor:pointer;background:#f5b800;color:#5a3a00;font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;transition:all 0.15s}
+  .fc-mobile-btn-know:active,.fc-mobile-btn-dont:active{transform:scale(0.97)}
+  .fc-mobile-bottombar{position:relative;background:#fff;border-radius:28px 28px 0 0;padding:0 28px 18px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 -4px 20px rgba(15,40,80,0.08);margin-top:6px;flex-shrink:0}
+  .fc-mobile-bottombar-slime{position:absolute;left:50%;transform:translateX(-50%) translateY(-44%);top:0;width:62px;height:62px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 -2px 14px rgba(15,40,80,0.12);animation:slimeBob 3s ease-in-out infinite}
+  .fc-mobile-bottombar-side{display:flex;flex-direction:column;align-items:center;gap:3px;padding-top:16px;min-width:60px;cursor:pointer}
+  .fc-mobile-bottombar-icon{width:22px;height:22px;color:#7ea8cc}
+  .fc-mobile-bottombar-lbl{font-size:11px;font-weight:600;color:#7ea8cc}
+  .fc-mobile-bottombar-center{display:flex;flex-direction:column;align-items:center;gap:2px;padding-top:44px}
+  .fc-mobile-lv{font-size:13px;font-weight:700;color:#1a2d4a}
+  .fc-mobile-xp{font-size:12px;font-weight:600;color:#34d399}
+  .fc-mobile-xpbar{width:58px;height:4px;background:#e8eef7;border-radius:99px;overflow:hidden;margin-top:2px}
+  .fc-mobile-xpfill{height:100%;border-radius:99px}
 }
 @media print{.sidebar,.topbar,#modal-bg,.toast{display:none !important}.main{margin-left:0 !important}.content{padding:0 !important}}
 .fav-toggle{display:flex;align-items:center;gap:6px;flex-shrink:0;cursor:pointer;padding:4px 2px;border-radius:8px;background:none;border:none;transition:opacity 0.15s}
@@ -1960,7 +1987,7 @@ body.student-mode { background: #e8f0f8; }
             .fvp-ai-cell.en-cell {
               font-family: 'JetBrains Mono', monospace;
               font-weight: 700;
-              color: var(--blue2);
+              color: var(--t1);
             }
             .fvp-ai-cell.ko-cell { color: var(--t1); }
             .fvp-ai-cell:focus {
@@ -2044,7 +2071,7 @@ body.student-mode { background: #e8f0f8; }
               font-size: 12.5px;
             }
             .fvp-prev-num { font-size: 10px; color: var(--t3); min-width: 16px; text-align: right; }
-            .fvp-prev-en { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--blue2); flex: 1; }
+            .fvp-prev-en { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--t1); flex: 1; }
             .fvp-prev-ko { color: var(--t2); flex: 1; font-size: 12px; }
 
             /* 만들기 버튼 */
@@ -3270,6 +3297,14 @@ function slimeSVG({ size=120, bodyType='Blob', core=['#86e8b8','#22a862'],
   // 눈
   const eyeY=cy+rh*0.04, eGap=rw*0.30, eR=rw*0.115;
   function drawEye(ex) {
+    // 알아요: 기존 눈 그대로 + 작은 반사광 하나 추가 (mood=sparkle)
+    if (mood === 'sparkle') {
+      return `<circle cx="${ex}" cy="${eyeY}" r="${eR}" fill="#1e1530"/><circle cx="${ex+eR*0.44}" cy="${eyeY-eR*0.40}" r="${eR*0.30}" fill="white"/><circle cx="${ex-eR*0.30}" cy="${eyeY+eR*0.36}" r="${eR*0.16}" fill="rgba(255,255,255,.52)"/>`;
+    }
+    // 몰라요: 기존 눈 구조 + 크기 완전 동일, 흰 테두리 없음 (mood=tears)
+    if (mood === 'tears') {
+      return `<circle cx="${ex}" cy="${eyeY}" r="${eR}" fill="#1e1530"/><circle cx="${ex+eR*0.44}" cy="${eyeY-eR*0.40}" r="${eR*0.30}" fill="white"/>`;
+    }
     if (stageIdx===0) return `<circle cx="${ex}" cy="${eyeY}" r="${eR}" fill="#1e1530"/><circle cx="${ex+eR*0.44}" cy="${eyeY-eR*0.40}" r="${eR*0.30}" fill="white"/>`;
     if (stageIdx===1) return `<circle cx="${ex}" cy="${eyeY}" r="${eR}" fill="#1e1530"/><circle cx="${ex+eR*0.44}" cy="${eyeY-eR*0.40}" r="${eR*0.32}" fill="white"/><circle cx="${ex-eR*0.28}" cy="${eyeY+eR*0.20}" r="${eR*0.14}" fill="rgba(255,255,255,.55)"/>`;
     if (stageIdx===2) return `<circle cx="${ex}" cy="${eyeY}" r="${eR*1.1}" fill="#1e1530"/><text x="${ex}" y="${eyeY+eR*0.45}" font-size="${eR*1.55}" text-anchor="middle" fill="white" opacity=".92">★</text>`;
@@ -3279,7 +3314,13 @@ function slimeSVG({ size=120, bodyType='Blob', core=['#86e8b8','#22a862'],
   const mW=rw*0.18, mY=eyeY+rh*0.28;
   // mood에 따라 입 모양 변경
   let mouth;
-  if (mood === 'happy') {
+  if (mood === 'sparkle') {
+    // 알아요: 환하게 활짝 웃음 + 이빨 보임
+    mouth = `<path d="M${cx-mW*1.4},${mY-rh*0.05} Q${cx},${mY+rh*0.26} ${cx+mW*1.4},${mY-rh*0.05}" fill="none" stroke="#1e1530" stroke-width="${rw*0.052}" stroke-linecap="round" opacity=".9"/>`;
+  } else if (mood === 'tears') {
+    // 몰라요: 놀란 표정 — 입 O 모양
+    mouth = `<ellipse cx="${cx}" cy="${mY+rh*0.04}" rx="${mW*0.9}" ry="${mW*1.1}" fill="#1e1530" opacity=".85"/><ellipse cx="${cx}" cy="${mY+rh*0.04}" rx="${mW*0.52}" ry="${mW*0.68}" fill="#5c1a1a" opacity=".45"/>`;
+  } else if (mood === 'happy') {
     // 활짝 웃음 - 크게 위로 휨
     mouth = `<path d="M${cx-mW*1.3},${mY-rh*0.04} Q${cx},${mY+rh*0.22} ${cx+mW*1.3},${mY-rh*0.04}" fill="none" stroke="#1e1530" stroke-width="${rw*0.048}" stroke-linecap="round" opacity=".85"/>`;
   } else if (mood === 'sad') {
@@ -3289,9 +3330,15 @@ function slimeSVG({ size=120, bodyType='Blob', core=['#86e8b8','#22a862'],
     // 기본 - 살짝 웃음
     mouth = `<path d="M${cx-mW},${mY} Q${cx},${mY+rh*0.14} ${cx+mW},${mY}" fill="none" stroke="#1e1530" stroke-width="${rw*0.040}" stroke-linecap="round" opacity=".78"/>`;
   }
-  // mood에 따라 볼 홍조
+  // mood에 따라 볼 홍조 (sparkle일 때 더 진하게)
   const bOff=eGap+eR*1.2, bY=eyeY+eR*1.4;
-  const blush=`<ellipse cx="${cx-bOff}" cy="${bY}" rx="${rw*0.175}" ry="${rh*0.095}" fill="#ff8fab" opacity=".35"/><ellipse cx="${cx+bOff}" cy="${bY}" rx="${rw*0.175}" ry="${rh*0.095}" fill="#ff8fab" opacity=".35"/>`;  // 슬플 때 눈물
+  const blushOp = mood === 'sparkle' ? '.60' : '.35';
+  const blush=`<ellipse cx="${cx-bOff}" cy="${bY}" rx="${rw*0.175}" ry="${rh*0.095}" fill="#ff8fab" opacity="${blushOp}"/><ellipse cx="${cx+bOff}" cy="${bY}" rx="${rw*0.175}" ry="${rh*0.095}" fill="#ff8fab" opacity="${blushOp}"/>`;
+  // sparkle일 때 눈 바깥쪽 ✦ 각 1개씩
+  const sparkles = mood === 'sparkle' ? `<text x="${cx-eGap-eR*2.4}" y="${eyeY-eR*0.8}" font-size="${eR*1.1}" text-anchor="middle" fill="#fbbf24" opacity=".88">✦</text><text x="${cx+eGap+eR*2.4}" y="${eyeY-eR*0.8}" font-size="${eR*1.1}" text-anchor="middle" fill="#fbbf24" opacity=".88">✦</text>` : '';
+  // tears mood — 눈물 없음 (표정은 입 모양으로만 표현)
+  const sweat = '';
+  // 슬플 때 눈물
   const tears = mood === 'sad' ? `<ellipse cx="${cx-eGap}" cy="${eyeY+eR*1.8}" rx="${eR*0.22}" ry="${eR*0.38}" fill="#93c5fd" opacity=".7"/><ellipse cx="${cx+eGap}" cy="${eyeY+eR*2.0}" rx="${eR*0.18}" ry="${eR*0.30}" fill="#93c5fd" opacity=".6"/>` : '';
   // 단계별 장식
   const topY = cy - rh*0.88;
@@ -3400,6 +3447,8 @@ function slimeSVG({ size=120, bodyType='Blob', core=['#86e8b8','#22a862'],
     ${blush}
     ${drawEye(cx-eGap)} ${drawEye(cx+eGap)}
     ${tears}
+    ${sparkles}
+    ${sweat}
     ${mouth}
     ${stageAcc}
     ${accessory!=='cape' ? accSVG : ''}
@@ -4333,6 +4382,11 @@ function assignSetTab(tab) {
   else if (tab === 'sent') mgmtSetTab('assign-sent');
 }
 
+// SVG 안의 id를 고유값으로 치환 (그라디언트 충돌 방지)
+function _safeSVG(svg, uid) {
+  return svg.replace(/sl[a-z0-9]{4}/g, uid);
+}
+
 // 슬라임 표정 변경 (정답/오답)
 function setSlimeMood(mood, duration = 2000) {
   const slimeEls = document.querySelectorAll('[data-slime-main]');
@@ -4345,8 +4399,44 @@ function setSlimeMood(mood, duration = 2000) {
     accessory: slime.accessory || 'none',
     mood
   });
-  slimeEls.forEach(el => { el.innerHTML = newSVG; });
-  // 일정 시간 후 원래 표정으로 복원
+  slimeEls.forEach((el, idx) => {
+    el.innerHTML = _safeSVG(newSVG, 'md' + Date.now() + idx);
+    // bounce 애니메이션
+    el.style.transition = 'transform 0.08s';
+    el.style.transform = 'scale(1.22, 0.82)';
+    setTimeout(() => { el.style.transform = 'scale(0.88, 1.18)'; }, 80);
+    setTimeout(() => { el.style.transform = 'scale(1.08, 0.94)'; }, 160);
+    setTimeout(() => { el.style.transform = 'scale(0.97, 1.03)'; }, 240);
+    setTimeout(() => { el.style.transform = 'scale(1, 1)'; el.style.transition = ''; }, 320);
+    // sparkle일 때 파티클 — 슬라임 몸통 근처에서 터짐
+    if (mood === 'sparkle') {
+      const box = el.parentElement;
+      if (!box) return;
+      box.style.position = 'relative';
+      const colors = ['#fbbf24', '#a78bfa', '#34d399', '#fbbf24', '#a78bfa'];
+      // 슬라임 중심(40~60%) 근처에서 조금만 퍼지도록
+      const offsets = [
+        { l: '36%', t: '32%', tx: '-18px', ty: '-20px' },
+        { l: '56%', t: '30%', tx:  '16px', ty: '-22px' },
+        { l: '30%', t: '50%', tx: '-20px', ty:   '8px' },
+        { l: '62%', t: '48%', tx:  '18px', ty:  '10px' },
+        { l: '46%', t: '24%', tx:  '-2px', ty: '-24px' },
+      ];
+      offsets.forEach((pos, i) => {
+        const p = document.createElement('span');
+        p.textContent = '✦';
+        p.style.cssText = `position:absolute;pointer-events:none;font-size:12px;color:${colors[i]};left:${pos.l};top:${pos.t};opacity:1;transition:none;z-index:10;`;
+        box.appendChild(p);
+        setTimeout(() => {
+          p.style.transition = 'transform 0.55s ease-out, opacity 0.55s ease-out';
+          p.style.transform = `translate(${pos.tx}, ${pos.ty}) scale(0.2)`;
+          p.style.opacity = '0';
+        }, 20);
+        setTimeout(() => p.remove(), 600);
+      });
+    }
+  });
+  // 일정 시간 후 원래 표정으로 복원 (id 충돌 방지 동일하게 적용)
   if (duration > 0) {
     setTimeout(() => {
       const normalSVG = slimeSVG({
@@ -4356,7 +4446,9 @@ function setSlimeMood(mood, duration = 2000) {
         accessory: slime.accessory || 'none',
         mood: 'normal'
       });
-      slimeEls.forEach(el => { el.innerHTML = normalSVG; });
+      slimeEls.forEach((el, idx) => {
+        el.innerHTML = _safeSVG(normalSVG, 'nr' + Date.now() + idx);
+      });
     }, duration);
   }
 }
@@ -4406,25 +4498,26 @@ window.addEventListener('popstate', function(e) {
 const _RECENT_KEY_W = () => 'ion_recent_word_' + (currentUser?.id||'');
 const _RECENT_KEY_S = () => 'ion_recent_sent_' + (currentUser?.id||'');
 
-// ── 즐겨찾기 헬퍼 (컬렉션 단위) ──
-const _FAV_KEY_W = () => 'ion_fav_wcoll_' + (currentUser?.id||'');
-const _FAV_KEY_S = () => 'ion_fav_scoll_' + (currentUser?.id||'');
+// ── 즐겨찾기 헬퍼 (컬렉션 단위) — Supabase profiles 저장 ──
+// currentUser.fav_word_colls / fav_sent_colls 배열로 메모리 관리
 function _getFavIds(type) {
   if (!currentUser?.id) return [];
-  const key = type === 'word' ? _FAV_KEY_W() : _FAV_KEY_S();
-  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
+  const field = type === 'word' ? 'fav_word_colls' : 'fav_sent_colls';
+  return Array.isArray(currentUser[field]) ? currentUser[field] : [];
 }
 function _isFav(type, id) { return _getFavIds(type).includes(id); }
-function _toggleFav(type, id) {
+async function _toggleFav(type, id) {
   if (!currentUser?.id) return;
-  const key = type === 'word' ? _FAV_KEY_W() : _FAV_KEY_S();
+  const field = type === 'word' ? 'fav_word_colls' : 'fav_sent_colls';
   const ids = _getFavIds(type);
   const idx = ids.indexOf(id);
   if (idx >= 0) ids.splice(idx, 1); else ids.push(id);
-  localStorage.setItem(key, JSON.stringify(ids));
+  currentUser[field] = ids;
+  // Supabase에 저장 (비동기, 실패해도 UI는 즉시 반영)
+  await sb.from('profiles').update({ [field]: ids }).eq('id', currentUser.id);
 }
-function toggleFavWordColl(id) { _toggleFav('word', id); renderDashboard(); renderLibrary(); }
-function toggleFavSentColl(id) { _toggleFav('sent', id); renderDashboard(); renderSentMgmt(); }
+function toggleFavWordColl(id) { _toggleFav('word', id).then(() => { renderDashboard(); renderLibrary(); }); }
+function toggleFavSentColl(id) { _toggleFav('sent', id).then(() => { renderDashboard(); renderSentMgmt(); }); }
 function toggleFavWord(id) { toggleFavWordColl(id); }
 function toggleFavSent(id) { toggleFavSentColl(id); }
 function _favToggleHTML(type, id, fn) {
@@ -4483,7 +4576,7 @@ async function renderDashboard() {
       wordColEl.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0 8px">${favWordColls.map(c => {
         const bookCount = (DB.books||[]).filter(b => b.collectionId === c.id).length;
         const icon = c.icon || '📁';
-        return `<div onclick="libActiveCollId='${c.id}';showPage('pg-library');renderLibrary()"
+        return `<div onclick="libActiveCollId='${c.id}';window._skipLibCollReset=true;showPage('pg-library')"
           style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;
             border:1.5px solid var(--border);border-radius:14px;cursor:pointer;
             transition:border-color 0.18s,box-shadow 0.18s,transform 0.18s;
@@ -4513,7 +4606,7 @@ async function renderDashboard() {
       sentColEl.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0 8px">${favSentColls.map(c => {
         const bookCount = (DB_sentBooks||[]).filter(b => b.collection_id === c.id).length;
         const icon = c.icon || '📂';
-        return `<div onclick="_sentActiveColl='${c.id}';showPage('pg-sentences');renderSentMgmt()"
+        return `<div onclick="_sentActiveColl='${c.id}';window._skipSentCollReset=true;showPage('pg-sentences')"
           style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;
             border:1.5px solid var(--border);border-radius:14px;cursor:pointer;
             transition:border-color 0.18s,box-shadow 0.18s,transform 0.18s;
@@ -11983,7 +12076,65 @@ function renderFC() {
   const prog   = DB.progress || {};
   const totalRounds = Object.values(prog).reduce((s,p)=>s+(p.rounds||0),0);
   const streak = slime.streak || 1;
+  const expMax = [100,500,2000,99999][Math.min(slime.stage,3)];
+  const expPct = Math.min(100, Math.round((slime.exp / expMax) * 100));
 
+  // ── 모바일 전용 UI ──
+  if (window.innerWidth <= 600) {
+    body.style.cssText = 'display:flex;flex-direction:column;min-height:calc(100vh - 56px);background:#dde8f7;padding:0;';
+    body.innerHTML = `
+      <div class="fc-mobile-header">
+        <div class="fc-mobile-progress-row">
+          <span class="fc-mobile-progress-label">${fcIdx+1}/${fcWords.length} Words</span>
+          <div class="fc-mobile-progress-bar">
+            <div class="fc-mobile-progress-fill" style="width:${pct}%;background:linear-gradient(90deg,${col.a},${col.b})"></div>
+          </div>
+          <div class="fc-mobile-slime-pin">${buildMiniSlimeSVG(slime.stage, 36)}</div>
+        </div>
+      </div>
+      <div class="fc-mobile-card">
+        <div class="fc-mobile-card-label">
+          <span>Vocabulary Card</span>
+          <button onclick="speak('${esc(w.en)}')" style="width:30px;height:30px;border-radius:50%;border:none;background:#f0f4fb;cursor:pointer;color:#7ea8cc;display:flex;align-items:center;justify-content:center">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          </button>
+        </div>
+        <div class="fc-mobile-word">${w.en}</div>
+        ${w.pronunciation ? `<div class="fc-mobile-pron">${w.pronunciation}</div>` : ''}
+        <div class="fc-mobile-ko">${w.ko}</div>
+        ${w.example
+          ? `<div class="fc-mobile-example" style="border-left:3px solid ${col.b}">• ${w.example}</div>`
+          : '<div style="flex:1"></div>'}
+      </div>
+      <div class="fc-mobile-btns">
+        <button class="fc-mobile-btn-know" onclick="fcKnow()">알아요<br><span style="font-size:11px;opacity:0.65;font-weight:400">(I know)</span></button>
+        <button class="fc-mobile-btn-dont" onclick="fcDontKnow()">몰라요<br><span style="font-size:11px;opacity:0.7;font-weight:400">(I don't know)</span></button>
+      </div>
+      <div class="fc-mobile-bottombar">
+        <div class="fc-mobile-bottombar-side" onclick="fcPrev()">
+          <svg class="fc-mobile-bottombar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+          <span class="fc-mobile-bottombar-lbl">이전</span>
+        </div>
+        <div class="fc-mobile-bottombar-center">
+          <div class="fc-mobile-bottombar-slime" data-slime-main="1" onclick="onSlimeClick(event)">${slimeSVGHtml}</div>
+          <div class="fc-mobile-lv">LV. ${slime.stage+1}</div>
+          <div class="fc-mobile-xp">+2 XP</div>
+          <div class="fc-mobile-xpbar"><div class="fc-mobile-xpfill" style="width:${expPct}%;background:linear-gradient(90deg,${col.a},${col.b})"></div></div>
+        </div>
+        <label class="fc-mobile-bottombar-side" style="cursor:pointer">
+          <input type="checkbox" ${isChecked?'checked':''} style="display:none" onchange="fcToggleCheck('${wordKey}','${bookId}',this.checked)">
+          <svg class="fc-mobile-bottombar-icon" viewBox="0 0 24 24" fill="none" stroke="${isChecked?'#f87171':'#7ea8cc'}" stroke-width="2" stroke-linecap="round">
+            ${isChecked ? '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>' : '<polyline points="20 6 9 17 4 12"/>'}
+          </svg>
+          <span class="fc-mobile-bottombar-lbl" style="color:${isChecked?'#f87171':'#7ea8cc'}">${isChecked?'미암기':'암기'}</span>
+        </label>
+      </div>
+    `;
+    if (document.getElementById('fc-auto-speak')?.checked) speak(w.en);
+    return;
+  }
+
+  body.style.cssText = '';
   body.innerHTML = `
     <div class="slime-two-col" style="display:grid;grid-template-columns:1fr 280px;gap:20px;max-width:900px;margin:0 auto;align-items:stretch">
 
@@ -12055,21 +12206,21 @@ function renderFC() {
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
           <button onclick="fcKnow()"
             style="padding:16px;border-radius:16px;border:none;cursor:pointer;
-            background:#1a2d4a;color:#fff;
-            font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;
-            transition:all 0.18s;box-shadow:0 4px 16px rgba(26,45,74,0.3)"
-            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(26,45,74,0.4)'"
-            onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(26,45,74,0.3)'">
-            알아요 <span style="font-size:12px;opacity:0.6;display:block;font-weight:400">(I know)</span>
-          </button>
-          <button onclick="fcDontKnow()"
-            style="padding:16px;border-radius:16px;border:none;cursor:pointer;
             background:linear-gradient(135deg,${col.a},${col.b});color:#1a3a2a;
             font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;
             transition:all 0.18s;box-shadow:0 4px 16px rgba(110,231,183,0.35)"
             onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(110,231,183,0.5)'"
             onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(110,231,183,0.35)'">
-            몰라요 <span style="font-size:12px;opacity:0.65;display:block;font-weight:400">(I don't know)</span>
+            알아요 <span style="font-size:12px;opacity:0.65;display:block;font-weight:400">(I know)</span>
+          </button>
+          <button onclick="fcDontKnow()"
+            style="padding:16px;border-radius:16px;border:none;cursor:pointer;
+            background:#1a2d4a;color:#fff;
+            font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;
+            transition:all 0.18s;box-shadow:0 4px 16px rgba(26,45,74,0.3)"
+            onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 24px rgba(26,45,74,0.4)'"
+            onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(26,45,74,0.3)'">
+            몰라요 <span style="font-size:12px;opacity:0.6;display:block;font-weight:400">(I don't know)</span>
           </button>
         </div>
 
@@ -12112,7 +12263,7 @@ function renderFC() {
           display:flex;flex-direction:column;align-items:center">
           <div style="font-size:14px;font-weight:700;color:#1a2d4a;margin-bottom:14px;align-self:flex-start">My Slime</div>
           <div style="animation:slimeBob 3s ease-in-out infinite;cursor:pointer"
-            onclick="onSlimeClick(event)" title="클릭해봐요!">
+            data-slime-main="1" onclick="onSlimeClick(event)" title="클릭해봐요!">
             ${slimeSVGHtml}
           </div>
           <div style="font-size:13px;font-weight:700;color:#1a2d4a;margin-top:8px">${slime.slimeName||'내 슬라임'}</div>
@@ -12156,8 +12307,8 @@ function fcKnow() {
     window._fcChecked.delete(wordKey);
     localStorage.setItem('wl_check_'+bookId, JSON.stringify([...window._fcChecked]));
   }
-  setSlimeMood('happy', 1500);
-  fcNext();
+  setSlimeMood('sparkle', 900);
+  setTimeout(() => fcNext(), 600);
 }
 
 // 몰라요 버튼
@@ -12167,8 +12318,8 @@ function fcDontKnow() {
   if (!window._fcChecked) window._fcChecked = new Set();
   window._fcChecked.add(wordKey);
   localStorage.setItem('wl_check_'+bookId, JSON.stringify([...window._fcChecked]));
-  setSlimeMood('sad', 1500);
-  fcNext();
+  setSlimeMood('tears', 900);
+  setTimeout(() => fcNext(), 600);
 }
 function fcToggleCheck(wordKey, bookId, checked) {
   const checkKey = 'wl_check_' + bookId;
@@ -13295,17 +13446,29 @@ async function fvpAiTranslate() {
     <div style="font-size:12px;margin-top:8px">AI가 내용을 분석 중...</div>
   </div>`;
 
-  const typeKr  = isWord ? '단어' : '문장';
   const koLabel = isWord ? '뜻' : '해석';
 
   // ── 1단계: AI가 자유 형식에서 항목을 추출 + 번역 (JSON 반환)
-  const extractPrompt = `아래 텍스트에서 영어 ${typeKr}를 모두 추출하고, 각각에 한국어 ${koLabel}을 달아 JSON 배열로만 반환하세요.
+  const extractPrompt = isWord
+    ? `아래 텍스트에서 영어 단어와 구(phrase)를 모두 추출하고, 각각에 한국어 뜻을 달아 JSON 배열로만 반환하세요.
 반환 형식: [{"en":"...","ko":"..."}]
 규칙:
 - 중복 제거, 빈 항목 제외
 - 한국어는 순수 한글만 사용 (한자/중국어/일본어 절대 금지)
-- ${isWord ? '단어 또는 구(phrase) 단위로 추출. 문장 전체는 포함하지 마세요.' : '완전한 영어 문장 단위로 추출. 단어 하나만 있는 항목은 포함하지 마세요.'}
-- 번호, 쉼표로 구분된 목록, 탭 구분, 문장 안에 섞인 것 모두 인식
+- 단어 또는 구(phrase) 단위로 추출. 문장 전체는 포함하지 마세요.
+- 번호, 쉼표로 구분된 목록, 탭 구분 모두 인식
+- JSON 외 다른 텍스트 출력 금지
+
+텍스트:
+${raw}`
+    : `아래 텍스트에 있는 영어 항목을 전부 추출하고, 각각에 한국어 해석을 달아 JSON 배열로만 반환하세요.
+반환 형식: [{"en":"...","ko":"..."}]
+규칙:
+- 줄바꿈, 번호, 쉼표, 탭으로 구분된 모든 항목을 각각 하나의 en으로 추출
+- 단어 하나든 짧은 구든 긴 문장이든 무조건 포함 (길이로 거르지 말 것)
+- 영어 문장이면 자연스러운 한국어 번역, 단어나 구이면 한국어 뜻을 ko에 입력
+- 중복 제거, 빈 항목 제외
+- 한국어는 순수 한글만 사용 (한자/중국어/일본어 절대 금지)
 - JSON 외 다른 텍스트 출력 금지
 
 텍스트:
