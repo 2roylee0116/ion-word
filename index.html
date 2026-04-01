@@ -1200,6 +1200,17 @@ body.student-mode { background: #e8f0f8; }
   #quiz-setup-bar .toggle-wrap,#quiz-setup-bar button{width:100% !important;min-width:unset !important;box-sizing:border-box}
 }
 @media print{.sidebar,.topbar,#modal-bg,.toast{display:none !important}.main{margin-left:0 !important}.content{padding:0 !important}}
+.fav-toggle{display:flex;align-items:center;gap:6px;flex-shrink:0;cursor:pointer;padding:4px 2px;border-radius:8px;background:none;border:none;transition:opacity 0.15s}
+.fav-toggle:hover{opacity:0.8}
+.fav-track{width:28px;height:16px;border-radius:20px;position:relative;transition:background 0.2s;flex-shrink:0}
+.fav-track.on{background:#3b82f6}
+.fav-track.off{background:#cbd5e1}
+.fav-thumb{width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;top:2px;transition:left 0.2s}
+.fav-track.on .fav-thumb{left:14px}
+.fav-track.off .fav-thumb{left:2px}
+.fav-label{font-size:11px;font-weight:600;white-space:nowrap}
+.fav-track.on+.fav-label{color:#3b82f6}
+.fav-track.off+.fav-label{color:#94a3b8}
 
 
   .modal{padding:20px 16px;max-height:85vh}
@@ -1348,12 +1359,12 @@ body.student-mode { background: #e8f0f8; }
 
         <!-- 즐겨찾기 -->
         <div class="section-head" style="margin-top:4px">
-          <div><div class="section-title">즐겨찾기</div><div class="section-sub">북마크한 단어장 · 문장집 · 클릭하면 이동</div></div>
+          <div><div class="section-title">즐겨찾기</div><div class="section-sub">북마크한 단어장 컬렉션 · 문장집 컬렉션 · 클릭하면 이동</div></div>
         </div>
         <div style="margin-bottom:8px">
-          <div style="font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.04em;margin:6px 0 4px">단어장</div>
+          <div style="font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.04em;margin:6px 0 4px">단어장 컬렉션</div>
           <div id="dash-word-collections"></div>
-          <div style="font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.04em;margin:10px 0 4px">문장집</div>
+          <div style="font-size:11px;font-weight:600;color:var(--t3);letter-spacing:0.04em;margin:10px 0 4px">문장집 컬렉션</div>
           <div id="dash-sent-collections"></div>
         </div>
 
@@ -4395,23 +4406,33 @@ window.addEventListener('popstate', function(e) {
 const _RECENT_KEY_W = () => 'ion_recent_word_' + (currentUser?.id||'');
 const _RECENT_KEY_S = () => 'ion_recent_sent_' + (currentUser?.id||'');
 
-// ── 즐겨찾기 헬퍼 ──
-const _FAV_KEY_W = () => 'ion_fav_word_' + (currentUser?.id||'');
-const _FAV_KEY_S = () => 'ion_fav_sent_' + (currentUser?.id||'');
+// ── 즐겨찾기 헬퍼 (컬렉션 단위) ──
+const _FAV_KEY_W = () => 'ion_fav_wcoll_' + (currentUser?.id||'');
+const _FAV_KEY_S = () => 'ion_fav_scoll_' + (currentUser?.id||'');
 function _getFavIds(type) {
+  if (!currentUser?.id) return [];
   const key = type === 'word' ? _FAV_KEY_W() : _FAV_KEY_S();
   try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
 }
 function _isFav(type, id) { return _getFavIds(type).includes(id); }
 function _toggleFav(type, id) {
+  if (!currentUser?.id) return;
   const key = type === 'word' ? _FAV_KEY_W() : _FAV_KEY_S();
   const ids = _getFavIds(type);
   const idx = ids.indexOf(id);
   if (idx >= 0) ids.splice(idx, 1); else ids.push(id);
   localStorage.setItem(key, JSON.stringify(ids));
 }
-function toggleFavWord(id) { _toggleFav('word', id); renderDashboard(); renderLibrary(); }
-function toggleFavSent(id) { _toggleFav('sent', id); renderDashboard(); renderSentMgmt(); }
+function toggleFavWordColl(id) { _toggleFav('word', id); renderDashboard(); renderLibrary(); }
+function toggleFavSentColl(id) { _toggleFav('sent', id); renderDashboard(); renderSentMgmt(); }
+function toggleFavWord(id) { toggleFavWordColl(id); }
+function toggleFavSent(id) { toggleFavSentColl(id); }
+function _favToggleHTML(type, id, fn) {
+  const on = _isFav(type, id);
+  return `<button class="fav-toggle" onclick="event.stopPropagation();${fn}('${id}')" title="${on?'즐겨찾기 해제':'즐겨찾기 추가'}">
+    <div class="fav-track ${on?'on':'off'}"><div class="fav-thumb"></div></div>
+  </button>`;
+}
 const _RECENT_MAX = 20;
 
 function _trackRecentOpen(type, id) {
@@ -4445,70 +4466,70 @@ async function renderDashboard() {
   const avgScore = allScores.length ? Math.round(allScores.reduce((a,b)=>a+b,0)/allScores.length) : 0;
   const today = new Date().toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'});
 
-  // ── 즐겨찾기 (단어장 / 문장집 분리) ──
+  // ── 즐겨찾기 (단어장 컬렉션 / 문장집 컬렉션) ──
   const favWordIds = _getFavIds('word');
   const favSentIds = _getFavIds('sent');
   const wordColEl = document.getElementById('dash-word-collections');
   const sentColEl = document.getElementById('dash-sent-collections');
 
-  const favWordBooks = DB.books.filter(b => favWordIds.includes(b.id) && (!q || b.name.toLowerCase().includes(q)));
-  const favSentBooks = (DB_sentBooks||[]).filter(b => favSentIds.includes(b.id) && (!q || b.name.toLowerCase().includes(q)));
+  const favWordColls = (DB.collections||[]).filter(c => favWordIds.includes(c.id) && (!q || c.name.toLowerCase().includes(q)));
+  const favSentColls = (DB_sentColls||[]).filter(c => favSentIds.includes(c.id) && (!q || c.name.toLowerCase().includes(q)));
 
-  // 즐겨찾기 단어장 카드 렌더
+  // 즐겨찾기 단어장 컬렉션 카드 렌더
   if (wordColEl) {
-    if (!favWordBooks.length) {
-      wordColEl.innerHTML = `<div style="color:var(--t3);font-size:13px;padding:6px 0 2px">즐겨찾기한 단어장이 없습니다. 단어장 목록에서 북마크 버튼을 눌러 추가하세요.</div>`;
+    if (!favWordColls.length) {
+      wordColEl.innerHTML = `<div style="color:var(--t3);font-size:13px;padding:6px 0 2px">즐겨찾기한 단어장 컬렉션이 없습니다. 단어장 라이브러리에서 컬렉션의 토글을 켜서 추가하세요.</div>`;
     } else {
-      wordColEl.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0 8px">${favWordBooks.map(b => {
-        const wc = b.wordCount ?? b.words?.length ?? 0;
-        const coll = (DB.collections||[]).find(c => c.id === b.collectionId);
-        return `<div onclick="openTeacherWordView('${b.id}')"
+      wordColEl.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0 8px">${favWordColls.map(c => {
+        const bookCount = (DB.books||[]).filter(b => b.collectionId === c.id).length;
+        const icon = c.icon || '📁';
+        return `<div onclick="libActiveCollId='${c.id}';showPage('pg-library');renderLibrary()"
           style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;
             border:1.5px solid var(--border);border-radius:14px;cursor:pointer;
             transition:border-color 0.18s,box-shadow 0.18s,transform 0.18s;
             box-shadow:0 1px 6px rgba(15,23,42,0.05);min-width:180px;max-width:260px;position:relative"
           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(15,23,42,0.09)';this.style.borderColor='var(--blue)'"
           onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(15,23,42,0.05)';this.style.borderColor='var(--border)'">
-          <div style="width:34px;height:34px;border-radius:10px;background:var(--blue-dim);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">📖</div>
+          <div style="width:34px;height:34px;border-radius:10px;background:var(--blue-dim);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">${icon}</div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.name}</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:2px">${wc}개 단어${coll ? ' · 📁' + coll.name : ''}</div>
+            <div style="font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.name}</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:2px">단어장 ${bookCount}개</div>
           </div>
-          <button onclick="event.stopPropagation();toggleFavWord('${b.id}')"
+          <button onclick="event.stopPropagation();toggleFavWordColl('${c.id}')"
             style="flex-shrink:0;background:none;border:none;cursor:pointer;padding:5px 7px;line-height:1;
               color:var(--blue2);border-radius:8px;transition:color 0.15s"
             onmouseover="this.style.background='var(--blue-dim)'" onmouseout="this.style.background='none'"
-            title="즐겨찾기 해제"><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--blue2)" stroke="var(--blue2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+            title="즐겨찾기 해제">${_favToggleHTML('word',c.id,'toggleFavWordColl')}</button>
         </div>`;
       }).join('')}</div>`;
     }
   }
 
-  // 즐겨찾기 문장집 카드 렌더
+  // 즐겨찾기 문장집 컬렉션 카드 렌더
   if (sentColEl) {
-    if (!favSentBooks.length) {
-      sentColEl.innerHTML = `<div style="color:var(--t3);font-size:13px;padding:6px 0 2px">즐겨찾기한 문장집이 없습니다. 문장집 목록에서 북마크 버튼을 눌러 추가하세요.</div>`;
+    if (!favSentColls.length) {
+      sentColEl.innerHTML = `<div style="color:var(--t3);font-size:13px;padding:6px 0 2px">즐겨찾기한 문장집 컬렉션이 없습니다. 문장집 목록에서 컬렉션의 토글을 켜서 추가하세요.</div>`;
     } else {
-      sentColEl.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0 8px">${favSentBooks.map(b => {
-        const cnt = b.item_count ?? (DB_sentItems?.[b.id]||[]).length;
-        const coll = (DB_sentColls||[]).find(c => c.id === b.collection_id);
-        return `<div onclick="openTeacherSentView('${b.id}')"
+      sentColEl.innerHTML = `<div style="display:flex;flex-wrap:wrap;gap:10px;padding:4px 0 8px">${favSentColls.map(c => {
+        const bookCount = (DB_sentBooks||[]).filter(b => b.collection_id === c.id).length;
+        const icon = c.icon || '📂';
+        return `<div onclick="_sentActiveColl='${c.id}';showPage('pg-sentences');renderSentMgmt()"
           style="display:flex;align-items:center;gap:10px;padding:12px 16px;background:#fff;
             border:1.5px solid var(--border);border-radius:14px;cursor:pointer;
             transition:border-color 0.18s,box-shadow 0.18s,transform 0.18s;
             box-shadow:0 1px 6px rgba(15,23,42,0.05);min-width:180px;max-width:260px;position:relative"
           onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px rgba(15,23,42,0.09)';this.style.borderColor='var(--blue)'"
           onmouseout="this.style.transform='';this.style.boxShadow='0 1px 6px rgba(15,23,42,0.05)';this.style.borderColor='var(--border)'">
-          <div style="width:34px;height:34px;border-radius:10px;background:var(--lavender-dim,#ede9fe);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">💬</div>
+          <div style="width:34px;height:34px;border-radius:10px;background:var(--lavender-dim,#ede9fe);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">${icon}</div>
           <div style="flex:1;min-width:0">
-            <div style="font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.name}</div>
-            <div style="font-size:11px;color:var(--t3);margin-top:2px">${cnt}개 문장${coll ? ' · 📂' + coll.name : ''}</div>
+            <div style="font-size:13px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c.name}</div>
+            <div style="font-size:11px;color:var(--t3);margin-top:2px">문장집 ${bookCount}개</div>
           </div>
-          <button onclick="event.stopPropagation();toggleFavSent('${b.id}')"
+          <button onclick="event.stopPropagation();toggleFavSentColl('${c.id}')"
             style="flex-shrink:0;background:none;border:none;cursor:pointer;padding:5px 7px;line-height:1;
               color:var(--blue2);border-radius:8px;transition:color 0.15s"
             onmouseover="this.style.background='var(--blue-dim)'" onmouseout="this.style.background='none'"
-            title="즐겨찾기 해제"><svg width="15" height="15" viewBox="0 0 24 24" fill="var(--blue2)" stroke="var(--blue2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></button>
+            title="즐겨찾기 해제">${_favToggleHTML('sent',c.id,'toggleFavSentColl')}</button>
         </div>`;
       }).join('')}</div>`;
     }
@@ -5364,6 +5385,7 @@ function renderSentMgmt() {
                 }
                 <div style="font-size:11px;color:var(--t3);margin-top:2px">${cnt}개 문장집</div>
               </div>
+              ${!_sentCollEditMode ? `${_favToggleHTML('sent',c.id,'toggleFavSentColl')}` : ''}
             </div>
           </div>`;
         }).join('')}
@@ -5465,19 +5487,6 @@ function sentBookListHTML(b, draggable) {
     <!-- 버튼들 -->
     ${_sentEditMode ? `` : `
     <div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
-      <button onclick="event.stopPropagation();toggleFavSent('${b.id}')"
-        title="${_isFav('sent',b.id) ? '즐겨찾기 해제' : '즐겨찾기 추가'}"
-        style="background:none;border:none;cursor:pointer;padding:5px 7px;line-height:1;flex-shrink:0;
-          color:${_isFav('sent',b.id)?'var(--blue2)':'#cbd5e1'};
-          transition:color 0.15s;border-radius:8px"
-        onmouseover="this.style.color='var(--blue2)';this.style.background='var(--blue-dim)'"
-        onmouseout="this.style.color='${_isFav('sent',b.id)?'var(--blue2)':'#cbd5e1'}';this.style.background='none'"
-        ><svg width="15" height="15" viewBox="0 0 24 24"
-          fill="${_isFav('sent',b.id)?'var(--blue2)':'none'}"
-          stroke="${_isFav('sent',b.id)?'var(--blue2)':'currentColor'}"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg></button>
       <select onchange="event.stopPropagation();sentMoveBookColl('${b.id}',this.value||null);this.blur()"
         style="font-size:11px;border:1px solid var(--border);border-radius:6px;padding:2px 6px;background:var(--surface2);color:var(--t2);cursor:pointer;outline:none;max-width:120px"
         onclick="event.stopPropagation()">
@@ -8918,6 +8927,7 @@ function renderLibrary() {
                 }
                 <div style="font-size:11px;color:var(--t3);margin-top:2px">${cnt}개 단어장 · ${wc}단어</div>
               </div>
+              ${!_libCollEditMode ? `${_favToggleHTML('word',c.id,'toggleFavWordColl')}` : ''}
             </div>
           </div>`;
         }).join('')}
@@ -9126,19 +9136,6 @@ function bookListHTML(b, draggable) {
     <!-- 버튼들 -->
     ${_libEditMode ? `` : `
     <div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
-      <button onclick="event.stopPropagation();toggleFavWord('${b.id}')"
-        title="${_isFav('word',b.id) ? '즐겨찾기 해제' : '즐겨찾기 추가'}"
-        style="background:none;border:none;cursor:pointer;padding:5px 7px;line-height:1;flex-shrink:0;
-          color:${_isFav('word',b.id)?'var(--blue2)':'#cbd5e1'};
-          transition:color 0.15s;border-radius:8px"
-        onmouseover="this.style.color='var(--blue2)';this.style.background='var(--blue-dim)'"
-        onmouseout="this.style.color='${_isFav('word',b.id)?'var(--blue2)':'#cbd5e1'}';this.style.background='none'"
-        ><svg width="15" height="15" viewBox="0 0 24 24"
-          fill="${_isFav('word',b.id)?'var(--blue2)':'none'}"
-          stroke="${_isFav('word',b.id)?'var(--blue2)':'currentColor'}"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg></button>
       ${collSelect}
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;min-width:240px">
         <button onclick="bookMakeTest('${b.id}')"
@@ -11616,7 +11613,7 @@ function _makeOverlayHeader(opts) {
   const slime = getSlimeData();
   const slimeCol = getSlimeColor(slime.colorId);
   return `
-    <div style="background:#fff;border-bottom:1.5px solid ${col.b}25;padding:0 36px 0 220px;height:66px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(15,23,42,0.06)">
+    <div style="background:#fff;border-bottom:1.5px solid ${col.b}25;padding:0 max(12px,min(36px,3vw)) 0 max(12px,min(220px,4vw));height:66px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(15,23,42,0.06);overflow:hidden">
       <div style="display:flex;align-items:center;gap:18px">
         <button onclick="${opts.backFn}" style="display:flex;align-items:center;gap:7px;padding:9px 18px;background:none;border:1.5px solid ${col.b}40;border-radius:22px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:${col.dark};cursor:pointer;transition:all 0.15s;white-space:nowrap" onmouseover="this.style.background='${col.a}20'" onmouseout="this.style.background='none'">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>${opts.backLabel}
@@ -11669,7 +11666,7 @@ function _makeOverlayHeader(opts) {
         </div>
       </div>
     </div>
-    ${opts.row2HTML ? `<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:12px 180px 12px 220px;display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:54px">${opts.row2HTML}</div>` : ''}
+    ${opts.row2HTML ? `<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:12px max(16px,min(180px,4vw)) 12px max(16px,min(220px,4vw));display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:54px;flex-wrap:wrap;overflow-x:hidden">${opts.row2HTML}</div>` : ''}
   `;
 }
 
@@ -11801,45 +11798,44 @@ async function openStudentWordView(bookId) {
 
   // 탭 컨트롤 row2
   const row2 = `
-    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px">
+    <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px;flex-wrap:wrap;row-gap:8px">
 
       <!-- 좌: 보기 + 가리기 -->
-      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;row-gap:6px">
 
         <!-- 그룹1: 보기 방식 -->
-        <div style="display:flex;align-items:center;gap:8px">
+        <div style="display:flex;align-items:center;gap:6px">
           <span style="font-size:11px;font-weight:600;color:#b0c4d8;white-space:nowrap">보기</span>
           <div style="display:flex;background:var(--surface2);border-radius:10px;padding:3px;border:1px solid #dde8f2">
-            <button id="wv-mode-list" onclick="wvSetMode('list')" style="padding:6px 14px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:${col.b};color:#fff">목록</button>
-            <button id="wv-mode-card" onclick="wvSetMode('card')" style="padding:6px 14px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:none;color:#7ea8cc">카드</button>
+            <button id="wv-mode-list" onclick="wvSetMode('list')" style="padding:5px 12px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:${col.b};color:#fff;white-space:nowrap">목록</button>
+            <button id="wv-mode-card" onclick="wvSetMode('card')" style="padding:5px 12px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:none;color:#7ea8cc;white-space:nowrap">카드</button>
           </div>
         </div>
 
         <!-- 구분선 -->
-        <div style="width:1px;height:24px;background:var(--border);flex-shrink:0"></div>
+        <div style="width:1px;height:22px;background:var(--border);flex-shrink:0"></div>
 
         <!-- 그룹2: 가리기 -->
-        <div style="display:flex;align-items:center;gap:8px">
+        <div style="display:flex;align-items:center;gap:6px">
           <span style="font-size:11px;font-weight:600;color:#b0c4d8;white-space:nowrap">가리기</span>
-          <div id="wv-hide-btns" style="display:flex;gap:6px">
-            <button id="wv-ko-btn" onclick="wvToggleKo()" style="padding:6px 14px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#7ea8cc;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='${col.b}';this.style.color='${col.dark}'" onmouseout="this.style.borderColor='#dde8f2';this.style.color='#7ea8cc'">뜻 가리기</button>
-            <button id="wv-en-btn" onclick="wvToggleEn()" style="padding:6px 14px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#7ea8cc;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='${col.b}';this.style.color='${col.dark}'" onmouseout="this.style.borderColor='#dde8f2';this.style.color='#7ea8cc'">영어 가리기</button>
+          <div id="wv-hide-btns" style="display:flex;gap:5px">
+            <button id="wv-ko-btn" onclick="wvToggleKo()" style="padding:5px 11px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#7ea8cc;cursor:pointer;transition:all 0.15s;white-space:nowrap" onmouseover="this.style.borderColor='${col.b}';this.style.color='${col.dark}'" onmouseout="this.style.borderColor='#dde8f2';this.style.color='#7ea8cc'">뜻 가리기</button>
+            <button id="wv-en-btn" onclick="wvToggleEn()" style="padding:5px 11px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#7ea8cc;cursor:pointer;transition:all 0.15s;white-space:nowrap" onmouseover="this.style.borderColor='${col.b}';this.style.color='${col.dark}'" onmouseout="this.style.borderColor='#dde8f2';this.style.color='#7ea8cc'">영어 가리기</button>
           </div>
         </div>
 
       </div>
 
       <!-- 우: 학습 이동 -->
-      <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;row-gap:5px">
         <span style="font-size:11px;font-weight:600;color:#b0c4d8;white-space:nowrap">학습</span>
-        <button onclick="document.getElementById('word-view-overlay').remove();openStudentStudy('${bookId}')" style="padding:6px 16px;background:linear-gradient(135deg,${col.a},${col.b});border:none;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:${col.dark};cursor:pointer;transition:all 0.15s;box-shadow:0 2px 8px ${col.b}30" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">암기</button>
-        <button onclick="openQuizTypePopup('${bookId}','choice')" style="padding:6px 16px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='${col.b}';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='#dde8f2';this.style.transform=''">객관식</button>
-        <button onclick="openQuizTypePopup('${bookId}','input')" style="padding:6px 16px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='${col.b}';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='#dde8f2';this.style.transform=''">주관식</button>
-        <button onclick="openWordPrintStudio('${bookId}')" style="padding:6px 14px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#16a34a;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:4px" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
+        <button onclick="document.getElementById('word-view-overlay').remove();openStudentStudy('${bookId}')" style="padding:5px 13px;background:linear-gradient(135deg,${col.a},${col.b});border:none;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:${col.dark};cursor:pointer;transition:all 0.15s;box-shadow:0 2px 8px ${col.b}30;white-space:nowrap" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">암기</button>
+        <button onclick="openQuizTypePopup('${bookId}','choice')" style="padding:5px 13px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s;white-space:nowrap" onmouseover="this.style.borderColor='${col.b}';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='#dde8f2';this.style.transform=''">퀴즈</button>
+        <button onclick="openWordPrintStudio('${bookId}')" style="padding:5px 11px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#16a34a;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:4px;white-space:nowrap" onmouseover="this.style.transform='translateY(-1px)'" onmouseout="this.style.transform=''">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
           프린트
         </button>
-        <button onclick="document.getElementById('word-view-overlay').remove();bookMakeTest('${bookId}')" style="padding:6px 16px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s" onmouseover="this.style.borderColor='var(--blue)';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='#dde8f2';this.style.transform=''">시험지</button>
+        <button onclick="document.getElementById('word-view-overlay').remove();bookMakeTest('${bookId}')" style="padding:5px 13px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s;white-space:nowrap" onmouseover="this.style.borderColor='${col.b}';this.style.transform='translateY(-1px)'" onmouseout="this.style.borderColor='#dde8f2';this.style.transform=''">시험지</button>
       </div>
 
     </div>
@@ -16323,31 +16319,31 @@ async function openTeacherWordView(bookId) {
 
   // ── 오버레이 생성 ─────────────────────────────────
   const ov = _createOverlay('teacher-word-overlay');
-  const row2 = `<div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:12px">
-    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-      <div id="twe-view-grp" style="display:flex;align-items:center;gap:8px">
+  const row2 = `<div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:8px;flex-wrap:wrap;row-gap:8px">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;row-gap:6px">
+      <div id="twe-view-grp" style="display:flex;align-items:center;gap:6px">
         <span style="font-size:11px;font-weight:600;color:#b0c4d8;white-space:nowrap">보기</span>
         <div style="display:flex;background:var(--surface2);border-radius:10px;padding:3px;border:1px solid #dde8f2">
-          <button id="twe-v-list" onclick="tweSetView('list')" style="padding:6px 14px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:${bColor};color:#fff">목록</button>
-          <button id="twe-v-card" onclick="tweSetView('card')" style="padding:6px 14px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:none;color:#7ea8cc">카드</button>
+          <button id="twe-v-list" onclick="tweSetView('list')" style="padding:5px 12px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:${bColor};color:#fff;white-space:nowrap">목록</button>
+          <button id="twe-v-card" onclick="tweSetView('card')" style="padding:5px 12px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;background:none;color:#7ea8cc;white-space:nowrap">카드</button>
         </div>
       </div>
-      <div style="width:1px;height:24px;background:var(--border)"></div>
-      <div id="twe-hide-grp" style="display:flex;align-items:center;gap:8px">
+      <div style="width:1px;height:22px;background:var(--border)"></div>
+      <div id="twe-hide-grp" style="display:flex;align-items:center;gap:6px">
         <span style="font-size:11px;font-weight:600;color:#b0c4d8;white-space:nowrap">가리기</span>
-        <button id="twe-ko-btn" onclick="tweToggleKo()" style="padding:6px 14px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#7ea8cc;cursor:pointer;transition:all 0.15s">뜻 가리기</button>
-        <button id="twe-en-btn" onclick="tweToggleEn()" style="padding:6px 14px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#7ea8cc;cursor:pointer;transition:all 0.15s">영어 가리기</button>
+        <button id="twe-ko-btn" onclick="tweToggleKo()" style="padding:5px 11px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#7ea8cc;cursor:pointer;transition:all 0.15s;white-space:nowrap">뜻 가리기</button>
+        <button id="twe-en-btn" onclick="tweToggleEn()" style="padding:5px 11px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#7ea8cc;cursor:pointer;transition:all 0.15s;white-space:nowrap">영어 가리기</button>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;flex-wrap:wrap">
-      <button id="twe-edit-btn" onclick="tweToggleEdit()" style="padding:6px 16px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#7ea8cc;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>편집</button>
-      <div style="width:1px;height:24px;background:var(--border)"></div>
+    <div style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;row-gap:5px">
+      <button id="twe-edit-btn" onclick="tweToggleEdit()" style="padding:5px 13px;background:none;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#7ea8cc;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:5px;white-space:nowrap"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>편집</button>
+      <div style="width:1px;height:22px;background:var(--border)"></div>
       <span style="font-size:11px;font-weight:600;color:#b0c4d8;white-space:nowrap">학습</span>
-      <button onclick="document.getElementById('teacher-word-overlay').remove();openBookStudy('${bookId}')" style="padding:6px 16px;background:linear-gradient(135deg,${bColor}cc,${bColor});border:none;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer;transition:all 0.15s;box-shadow:0 2px 8px ${bColor}40">암기</button>
-      <button onclick="openStudentQuizPopup('${bookId}')" style="padding:6px 16px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s">퀴즈</button>
-      <div style="width:1px;height:24px;background:var(--border)"></div>
-      <button onclick="openWordPrintStudio('${bookId}')" style="padding:6px 14px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#16a34a;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:4px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>프린트</button>
-      <button onclick="bookMakeTest('${bookId}')" style="padding:6px 16px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s">시험지</button>
+      <button onclick="document.getElementById('teacher-word-overlay').remove();openBookStudy('${bookId}')" style="padding:5px 13px;background:linear-gradient(135deg,${bColor}cc,${bColor});border:none;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#fff;cursor:pointer;transition:all 0.15s;box-shadow:0 2px 8px ${bColor}40;white-space:nowrap">암기</button>
+      <button onclick="openStudentQuizPopup('${bookId}')" style="padding:5px 13px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s;white-space:nowrap">퀴즈</button>
+      <div style="width:1px;height:22px;background:var(--border)"></div>
+      <button onclick="openWordPrintStudio('${bookId}')" style="padding:5px 11px;background:#f0fdf4;border:1.5px solid #86efac;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#16a34a;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:4px;white-space:nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>프린트</button>
+      <button onclick="bookMakeTest('${bookId}')" style="padding:5px 13px;background:#fff;border:1.5px solid #dde8f2;border-radius:20px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#1e3a5f;cursor:pointer;transition:all 0.15s;white-space:nowrap">시험지</button>
     </div>
   </div>`;
 
