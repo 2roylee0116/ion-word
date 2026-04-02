@@ -940,6 +940,68 @@ body.student-mode { background: #e8f0f8; }
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 @keyframes auraRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
+/* ══ 모바일 하단 슬라임 패널 ══ */
+@media(max-width:600px){
+  /* fc/quiz 페이지: 하단 패널을 위해 body-inner를 flex column으로 */
+  .mobile-slime-page{display:flex;flex-direction:column;height:calc(100vh - 56px)}
+  .mobile-slime-scroll{flex:1;overflow-y:auto;padding-bottom:4px}
+  /* 하단 패널 */
+  .mobile-slime-panel{
+    flex-shrink:0;
+    background:#fff;
+    border-top:1.5px solid #e8eef7;
+    padding:10px 14px 14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    box-shadow:0 -4px 16px rgba(15,40,80,0.07);
+  }
+  .mobile-slime-panel.quiz-dark{
+    background:#0f1628;
+    border-top-color:rgba(255,255,255,0.08);
+  }
+  .msp-char{
+    width:64px;height:64px;flex-shrink:0;
+    position:relative;cursor:pointer;
+  }
+  .msp-char .msp-anim{animation:slimeBob 2.5s ease-in-out infinite}
+  .msp-bubble{
+    position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+    background:#1a2d4a;color:#fff;
+    font-size:10px;font-weight:700;
+    padding:4px 10px;border-radius:10px;
+    white-space:nowrap;pointer-events:none;
+    opacity:0;transition:opacity .2s;z-index:10;
+  }
+  .msp-bubble::after{
+    content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
+    width:0;height:0;
+    border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid #1a2d4a;
+  }
+  .msp-bubble.show{opacity:1}
+  .msp-info{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+  .msp-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .msp-name{font-size:13px;font-weight:700;color:#1a2d4a}
+  .msp-name.qm{color:#a78bfa}
+  .msp-lv{font-size:10px;font-weight:700;background:#f0fdf7;color:#047857;border-radius:6px;padding:2px 8px;border:1px solid #a7f3d0;white-space:nowrap}
+  .msp-lv.qm{background:rgba(167,139,250,.12);color:#6d28d9;border-color:#c4b5fd}
+  .msp-xp-row{display:flex;align-items:center;gap:6px}
+  .msp-xp-track{flex:1;height:5px;background:#e8eef7;border-radius:99px;overflow:hidden}
+  .msp-xp-track.qm{background:rgba(196,181,253,.25)}
+  .msp-xp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#6ee7b7,#10b981);transition:width .4s ease}
+  .msp-xp-fill.qm{background:linear-gradient(90deg,#a78bfa,#7c3aed)}
+  .msp-xp-num{font-size:10px;font-weight:700;color:#7ea8cc;white-space:nowrap}
+  .msp-chips{display:flex;gap:5px;flex-wrap:wrap}
+  .msp-chip{font-size:10px;font-weight:700;border-radius:6px;padding:3px 8px;display:flex;align-items:center;gap:3px}
+  .msp-chip.streak{background:rgba(251,191,36,.15);color:#92400e}
+  .msp-chip.score{background:rgba(16,185,129,.15);color:#065f46}
+  .msp-chip.pct{background:rgba(99,102,241,.13);color:#3730a3}
+  .msp-chip.xpgain{background:rgba(110,231,183,.15);color:#047857}
+  .msp-chip.qm-score{background:rgba(139,92,246,.13);color:#4c1d95}
+  /* 모바일에서 기존 우측 슬라임 패널 숨김 */
+  .mobile-hide-slime-panel{display:none !important}
+}
+
 /* ── 슬라임 홈 레이아웃 ── */
 .slime-home-wrap {
   display:grid;
@@ -11983,6 +12045,9 @@ function _closeLearningOverlay() { _closeStudyOverlay(); }
 
 
 async function startFC() {
+  // 모바일 카운터 리셋
+  window._mspKnowCount = 0;
+  window._mspXPGain    = 0;
   const id=document.getElementById('fc-sel').value;
   if(!id){document.getElementById('fc-body').innerHTML=emptyHTML('단어장을 선택하세요');return;}
   const book=getBookForUser(id);
@@ -12049,11 +12114,19 @@ function renderFC() {
   const totalRounds = Object.values(prog).reduce((s,p)=>s+(p.rounds||0),0);
   const streak = slime.streak || 1;
 
-  body.innerHTML = `
-    <div class="slime-two-col" style="display:grid;grid-template-columns:1fr 280px;gap:20px;max-width:900px;margin:0 auto;align-items:stretch">
+  // XP 관련 계산
+  const xpMax  = [100,500,2000,99999][Math.min(slime.stage,3)];
+  const xpPct  = Math.min(100, Math.round((slime.exp / xpMax) * 100));
+  const isMobile = window.innerWidth <= 600;
 
-      <!-- ── 좌: 단어 카드 ── -->
-      <div style="display:flex;flex-direction:column;gap:14px">
+  body.innerHTML = `
+    <div class="${isMobile ? 'mobile-slime-page' : 'slime-two-col'}"
+      style="${isMobile ? '' : 'display:grid;grid-template-columns:1fr 280px;gap:20px;max-width:900px;margin:0 auto;align-items:stretch'}">
+
+      <!-- ── 단어 카드 영역 ── -->
+      <div class="${isMobile ? 'mobile-slime-scroll' : ''}"
+        style="${isMobile ? '' : 'display:flex;flex-direction:column;gap:14px'}">
+        <div style="display:flex;flex-direction:column;gap:14px;${isMobile ? 'padding:0' : ''}">
 
         <!-- 진행바 헤더 -->
         <div style="background:#fff;border-radius:16px;padding:14px 20px;
@@ -12072,7 +12145,7 @@ function renderFC() {
         <!-- 메인 단어 카드 -->
         <div style="background:#fff;border-radius:20px;padding:32px 32px 24px;
           box-shadow:0 4px 24px rgba(15,40,80,0.08);border:1px solid #e8eef7;
-          min-height:320px;flex:1;display:flex;flex-direction:column;position:relative">
+          min-height:${isMobile?'200px':'320px'};flex:1;display:flex;flex-direction:column;position:relative">
 
           <!-- 카드 타입 뱃지 -->
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
@@ -12089,27 +12162,27 @@ function renderFC() {
           </div>
 
           <!-- 영어 단어 -->
-          <div style="font-family:'Fraunces',serif;font-size:52px;font-weight:900;
+          <div style="font-family:'Fraunces',serif;font-size:${isMobile?'40px':'52px'};font-weight:900;
             color:#1a2d4a;letter-spacing:-2px;line-height:1;margin-bottom:6px;text-align:center">
             ${w.en}
           </div>
 
           <!-- 발음기호 (있으면) -->
-          <div style="font-size:16px;color:#7ea8cc;text-align:center;margin-bottom:16px;
+          <div style="font-size:${isMobile?'13px':'16px'};color:#7ea8cc;text-align:center;margin-bottom:${isMobile?'10px':'16px'};
             font-family:'JetBrains Mono',monospace">
             ${w.pronunciation || ''}
           </div>
 
           <!-- 한국어 뜻 -->
-          <div style="font-size:22px;font-weight:700;color:#1a2d4a;text-align:center;margin-bottom:20px">
+          <div style="font-size:${isMobile?'18px':'22px'};font-weight:700;color:#1a2d4a;text-align:center;margin-bottom:${isMobile?'12px':'20px'}">
             ${w.ko}
           </div>
 
           <!-- 예문들 -->
           ${w.example ? `
-          <div style="flex:1;padding:14px 18px;background:#f8fafb;border-radius:12px;
+          <div style="flex:1;padding:${isMobile?'10px 14px':'14px 18px'};background:#f8fafb;border-radius:12px;
             border-left:4px solid ${col.b}">
-            <div style="font-size:13px;color:#475569;line-height:1.7;font-style:italic">
+            <div style="font-size:${isMobile?'12px':'13px'};color:#475569;line-height:1.7;font-style:italic">
               • ${w.example}
             </div>
           </div>` : '<div style="flex:1"></div>'}
@@ -12154,20 +12227,21 @@ function renderFC() {
           </label>
         </div>
 
-      </div>
+        </div><!-- inner flex -->
+      </div><!-- scroll area -->
 
-      <!-- ── 우: 슬라임 패널 ── -->
-      <div style="display:flex;flex-direction:column;gap:14px">
+      <!-- ── 우: 슬라임 패널 (데스크탑 전용) ── -->
+      <div class="mobile-hide-slime-panel" style="display:flex;flex-direction:column;gap:14px">
 
         <!-- 레벨 바 -->
         <div style="background:#fff;border-radius:16px;padding:16px 18px;
           box-shadow:0 2px 12px rgba(15,40,80,0.06);border:1px solid #e8eef7">
           <div style="font-size:12px;font-weight:700;color:#7ea8cc;margin-bottom:8px">
-            LV. ${slime.stage+1} <span style="font-weight:400">(${slime.exp.toLocaleString()} / ${(slime.stage<3?[100,500,2000,99999][slime.stage]:99999).toLocaleString()} XP)</span>
+            LV. ${slime.stage+1} <span style="font-weight:400">(${slime.exp.toLocaleString()} / ${xpMax.toLocaleString()} XP)</span>
           </div>
           <div style="height:8px;background:#e8eef7;border-radius:99px;overflow:hidden">
             <div style="height:100%;background:linear-gradient(90deg,${col.a},${col.b});
-              border-radius:99px;width:${Math.min(100,Math.round((slime.exp/([100,500,2000,99999][Math.min(slime.stage,3)]))*100))}%"></div>
+              border-radius:99px;width:${xpPct}%"></div>
           </div>
         </div>
 
@@ -12205,9 +12279,34 @@ function renderFC() {
           </div>
         </div>
 
-
-
       </div>
+
+      <!-- ── 하단 슬라임 패널 (모바일 전용) ── -->
+      ${isMobile ? `
+      <div class="mobile-slime-panel" id="fc-mobile-panel">
+        <div class="msp-char" onclick="_mspBounce('fc-msp-char')" title="클릭해봐요!">
+          <div class="msp-bubble" id="fc-msp-bubble"></div>
+          <div class="msp-anim" id="fc-msp-char" data-slime-main="1">
+            ${buildSlimeSVG(slime.stage, 64)}
+          </div>
+        </div>
+        <div class="msp-info">
+          <div class="msp-top">
+            <span class="msp-name">${slime.slimeName||'내 슬라임'}</span>
+            <span class="msp-lv">Lv. ${slime.stage+1}</span>
+          </div>
+          <div class="msp-xp-row">
+            <div class="msp-xp-track"><div class="msp-xp-fill" id="fc-msp-xp" style="width:${xpPct}%"></div></div>
+            <span class="msp-xp-num">${slime.exp.toLocaleString()} / ${xpMax.toLocaleString()} XP</span>
+          </div>
+          <div class="msp-chips">
+            <div class="msp-chip streak">🔥 ${streak}일</div>
+            <div class="msp-chip score" id="fc-msp-score">✓ ${fcIdx} / ${fcWords.length}</div>
+            <div class="msp-chip xpgain" id="fc-msp-xpgain">+0 XP</div>
+          </div>
+        </div>
+      </div>` : ''}
+
     </div>
   `;
   if (document.getElementById('fc-auto-speak')?.checked) speak(w.en);
@@ -12221,6 +12320,8 @@ function fcKnow() {
     window._fcChecked.delete(wordKey);
     localStorage.setItem('wl_check_'+bookId, JSON.stringify([...window._fcChecked]));
   }
+  // 모바일 하단 패널 표정 업데이트
+  if (window.innerWidth <= 600) _mspReact('fc', 'know');
   setSlimeMood('sparkle', 900);
   setTimeout(() => fcNext(), 600);
 }
@@ -12232,6 +12333,8 @@ function fcDontKnow() {
   if (!window._fcChecked) window._fcChecked = new Set();
   window._fcChecked.add(wordKey);
   localStorage.setItem('wl_check_'+bookId, JSON.stringify([...window._fcChecked]));
+  // 모바일 하단 패널 표정 업데이트
+  if (window.innerWidth <= 600) _mspReact('fc', 'dont');
   setSlimeMood('tears', 900);
   setTimeout(() => fcNext(), 600);
 }
@@ -12243,6 +12346,89 @@ function fcToggleCheck(wordKey, bookId, checked) {
   localStorage.setItem(checkKey, JSON.stringify([...window._fcChecked]));
   // 라벨/배경 즉시 업데이트
   renderFC();
+}
+
+/* ── 모바일 하단 슬라임 공통 헬퍼 ── */
+if (!window._mspKnowCount) window._mspKnowCount = 0;
+if (!window._mspXPGain)    window._mspXPGain    = 0;
+
+function _mspBounce(elId) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.style.transition = 'transform .08s';
+  el.style.transform  = 'scale(1.2,.85)';
+  setTimeout(()=>{ el.style.transform='scale(.9,1.15)'; },80);
+  setTimeout(()=>{ el.style.transform='scale(1.06,.96)'; },160);
+  setTimeout(()=>{ el.style.transform='scale(1,1)'; el.style.transition=''; },240);
+}
+
+function _mspShowBubble(bubbleId, msg, color) {
+  const bbl = document.getElementById(bubbleId);
+  if (!bbl) return;
+  bbl.textContent = msg;
+  bbl.style.background = color || '#1a2d4a';
+  bbl.style.setProperty('border-top-color', color || '#1a2d4a');
+  bbl.classList.add('show');
+  setTimeout(()=>{ bbl.classList.remove('show'); }, 1600);
+}
+
+function _mspReact(prefix, type) {
+  const charEl   = document.getElementById(prefix+'-msp-char');
+  const scoreEl  = document.getElementById(prefix+'-msp-score');
+  const xpEl     = document.getElementById(prefix+'-msp-xp');
+  const xpNumEl  = document.querySelector('#'+prefix+'-mobile-panel .msp-xp-num');
+  const xpgainEl = document.getElementById(prefix+'-msp-xpgain');
+  const slime    = getSlimeData();
+
+  if (type === 'know' || type === 'correct') {
+    window._mspKnowCount = (window._mspKnowCount||0) + 1;
+    window._mspXPGain    = (window._mspXPGain||0) + 2;
+    _mspBounce(prefix+'-msp-char');
+    _mspShowBubble(prefix+'-msp-bubble',
+      type==='know' ? '✦ 알아요! +2 XP' : '✦ 정답! +2 XP', '#10b981');
+    if (scoreEl) scoreEl.textContent = '✓ '+window._mspKnowCount+' / '+fcWords.length;
+    if (xpgainEl) xpgainEl.textContent = '+'+window._mspXPGain+' XP';
+    // XP 바 애니메이션
+    if (xpEl) {
+      const xpMax = [100,500,2000,99999][Math.min(slime.stage,3)];
+      const newPct = Math.min(100, Math.round(((slime.exp+window._mspXPGain)/xpMax)*100));
+      xpEl.style.width = newPct+'%';
+    }
+    // 표정: 기쁨 (입꼬리 업)
+    _mspSetMouth(prefix+'-msp-char', 'happy');
+    setTimeout(()=>_mspSetMouth(prefix+'-msp-char','normal'), 1600);
+  } else {
+    // 몰라요 / 오답
+    if (scoreEl && prefix==='quiz') {
+      const pct = window._mspKnowCount > 0 ? Math.round(window._mspKnowCount/(quizIdx+1)*100) : 0;
+      scoreEl.textContent = Math.round(pct)+'%';
+    }
+    // 흔들기
+    if (charEl) {
+      charEl.style.transition='transform .1s';
+      charEl.style.transform='translateX(-6px)';
+      setTimeout(()=>{ charEl.style.transform='translateX(6px)'; },100);
+      setTimeout(()=>{ charEl.style.transform='translateX(-3px)'; },200);
+      setTimeout(()=>{ charEl.style.transform='translateX(0)'; charEl.style.transition=''; },300);
+    }
+    _mspShowBubble(prefix+'-msp-bubble',
+      prefix==='fc' ? '😢 몰라요...' : '😢 오답이에요...', '#475569');
+    _mspSetMouth(prefix+'-msp-char', 'sad');
+    setTimeout(()=>_mspSetMouth(prefix+'-msp-char','normal'), 1600);
+  }
+}
+
+function _mspSetMouth(elId, mood) {
+  // SVG 내부 path를 직접 교체 (buildSlimeSVG 재호출 없이 가볍게)
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const paths = el.querySelectorAll('path[data-mouth]');
+  // data-mouth 속성으로 마킹된 요소가 없으면 SVG 구조에서 마지막 path 추정
+  const target = paths.length ? paths[0] : el.querySelector('svg path:last-of-type');
+  if (!target) return;
+  if (mood === 'happy')  { target.setAttribute('d','M20 44 Q32 54 44 44'); target.setAttribute('stroke','#047857'); }
+  else if (mood === 'sad') { target.setAttribute('d','M20 50 Q32 43 44 50'); target.setAttribute('stroke','#dc2626'); }
+  else                   { target.setAttribute('d','M22 46 Q32 52 42 46'); target.setAttribute('stroke','#047857'); }
 }
 
 function flipFC(){document.getElementById('fc-card').classList.toggle('flipped');}
@@ -12430,6 +12616,9 @@ function _launchQuizFromView(bookId, mode, dir) {
 }
 
 async function startQuiz(){
+  // 모바일 카운터 리셋
+  window._mspKnowCount = 0;
+  window._mspXPGain    = 0;
   const id=document.getElementById('quiz-sel').value;
   if(!id){showToast('단어장을 선택하세요.','error');return;}
   const book=getBookForUser(id);
@@ -12596,12 +12785,22 @@ function renderQuiz(){
     ${nextBtn}
   `;
 
-  body.innerHTML=`<div class="quiz-container slime-two-col" style="display:grid;grid-template-columns:1fr 280px;gap:24px;max-width:940px;margin:0 auto;align-items:stretch">
+  const isMobileQ = window.innerWidth <= 600;
+  const xpMaxQ = [100,500,2000,99999][Math.min(slimeQ.stage,3)];
+  const xpPctQ = Math.min(100, Math.round((slimeQ.exp / xpMaxQ) * 100));
+  const streakQ = slimeQ.streak || 1;
+
+  body.innerHTML=`<div class="${isMobileQ ? 'mobile-slime-page quiz-container' : 'quiz-container slime-two-col'}"
+    style="${isMobileQ ? '' : 'display:grid;grid-template-columns:1fr 280px;gap:24px;max-width:940px;margin:0 auto;align-items:stretch'}">
+
+    <!-- ── 문제 영역 ── -->
+    <div class="${isMobileQ ? 'mobile-slime-scroll' : ''}"
+      style="${isMobileQ ? '' : 'display:flex;flex-direction:column;gap:14px'}">
     <div style="display:flex;flex-direction:column;gap:14px">
     <div style="display:flex;align-items:center;gap:10px;
       background:${colorDefQ.b}12;border:1.5px solid ${colorDefQ.b}30;border-radius:16px;padding:10px 16px">
       <div style="width:30px;height:30px;flex-shrink:0;animation:slimeBob 2.5s ease-in-out infinite">
-        ${buildSlimeSVG(slimeQ.stage,30)}
+        ${buildMiniSlimeSVG(slimeQ.stage,30)}
       </div>
       <div style="flex:1">
         <div style="height:6px;background:rgba(0,0,0,0.07);border-radius:99px;overflow:hidden">
@@ -12623,17 +12822,18 @@ function renderQuiz(){
     </div>
     ${optsHTML}
     </div>
+    </div>
 
-    <!-- ── 우: 슬라임 패널 ── -->
-    <div style="display:flex;flex-direction:column;gap:14px">
+    <!-- ── 우: 슬라임 패널 (데스크탑 전용) ── -->
+    <div class="mobile-hide-slime-panel" style="display:flex;flex-direction:column;gap:14px">
       <div style="background:#fff;border-radius:16px;padding:16px 18px;
         box-shadow:0 2px 12px rgba(15,40,80,0.06);border:1px solid #e8eef7">
         <div style="font-size:12px;font-weight:700;color:#7ea8cc;margin-bottom:8px">
-          LV. ${slimeQ.stage+1} <span style="font-weight:400">(${slimeQ.exp.toLocaleString()} / ${(slimeQ.stage<3?[100,500,2000,99999][slimeQ.stage]:99999).toLocaleString()} XP)</span>
+          LV. ${slimeQ.stage+1} <span style="font-weight:400">(${slimeQ.exp.toLocaleString()} / ${xpMaxQ.toLocaleString()} XP)</span>
         </div>
         <div style="height:8px;background:#e8eef7;border-radius:99px;overflow:hidden">
           <div style="height:100%;background:linear-gradient(90deg,${colorDefQ.a},${colorDefQ.b});
-            border-radius:99px;width:${Math.min(100,Math.round((slimeQ.exp/([100,500,2000,99999][Math.min(slimeQ.stage,3)]))*100))}%"></div>
+            border-radius:99px;width:${xpPctQ}%"></div>
         </div>
       </div>
       <div style="background:#fff;border-radius:20px;padding:20px;
@@ -12667,6 +12867,32 @@ function renderQuiz(){
       </div>
     </div>
 
+    <!-- ── 하단 슬라임 패널 (모바일 전용) ── -->
+    ${isMobileQ ? `
+    <div class="mobile-slime-panel quiz-dark" id="quiz-mobile-panel">
+      <div class="msp-char" onclick="_mspBounce('quiz-msp-char')" title="클릭해봐요!">
+        <div class="msp-bubble" id="quiz-msp-bubble"></div>
+        <div class="msp-anim" id="quiz-msp-char" data-slime-main="1">
+          ${buildSlimeSVG(slimeQ.stage, 64)}
+        </div>
+      </div>
+      <div class="msp-info">
+        <div class="msp-top">
+          <span class="msp-name qm">${slimeQ.slimeName||'내 슬라임'}</span>
+          <span class="msp-lv qm">Lv. ${slimeQ.stage+1}</span>
+        </div>
+        <div class="msp-xp-row">
+          <div class="msp-xp-track qm"><div class="msp-xp-fill qm" id="quiz-msp-xp" style="width:${xpPctQ}%"></div></div>
+          <span class="msp-xp-num" style="color:#c4b5fd">${slimeQ.exp.toLocaleString()} / ${xpMaxQ.toLocaleString()} XP</span>
+        </div>
+        <div class="msp-chips">
+          <div class="msp-chip streak">🔥 ${streakQ}일</div>
+          <div class="msp-chip qm-score" id="quiz-msp-score">✓ ${quizScore} / ${quizWords.length}</div>
+          <div class="msp-chip pct" id="quiz-msp-pct">${quizIdx>0?Math.round(quizScore/quizIdx*100):0}%</div>
+        </div>
+      </div>
+    </div>` : ''}
+
   </div>`;
   if(mode==='input') setTimeout(()=>document.getElementById('quiz-inp')?.focus(),80);
   if(mode==='essay') setTimeout(()=>document.getElementById('quiz-essay')?.focus(),80);
@@ -12681,7 +12907,13 @@ function answerChoice(btn,selId,corrId){
     btn.classList.add('correct');quizScore++;
     fb.className='quiz-feedback correct-fb';
     fb.innerHTML='✅ 정답! 슬라임이 기뻐해요 🎉';
+    if(window.innerWidth<=600) _mspReact('quiz','correct');
     setSlimeMood('happy', 2000);
+    // 퀴즈 하단 칩 업데이트
+    const sc=document.getElementById('quiz-msp-score');
+    const pc=document.getElementById('quiz-msp-pct');
+    if(sc) sc.textContent='✓ '+quizScore+' / '+quizWords.length;
+    if(pc&&quizIdx>=0) pc.textContent=Math.round(quizScore/(quizIdx+1)*100)+'%';
   } else {
     btn.classList.add('wrong');
     const cw=quizWords.find(w=>String(w.id)===corrId);
@@ -12690,7 +12922,10 @@ function answerChoice(btn,selId,corrId){
     fb.className='quiz-feedback wrong-fb';
     fb.innerHTML=`❌ 오답 — 정답: <strong>${dir==='en2ko'?cw.ko:cw.en}</strong>`;
     quizWrong.push(cw);
+    if(window.innerWidth<=600) _mspReact('quiz','wrong');
     setSlimeMood('sad', 2000);
+    const pc=document.getElementById('quiz-msp-pct');
+    if(pc&&quizIdx>=0) pc.textContent=Math.round(quizScore/(quizIdx+1)*100)+'%';
   }
   document.getElementById('qnext').style.display='inline-flex';
 }
@@ -12706,12 +12941,20 @@ function checkInput(wid, dir, mode){
     quizScore++;
     fb.className='quiz-feedback correct-fb';
     fb.innerHTML='✅ 정답! <strong>'+(dir==='en2ko'?w.ko:w.en)+'</strong>';
+    if(window.innerWidth<=600) _mspReact('quiz','correct');
     setSlimeMood('happy', 2000);
+    const sc=document.getElementById('quiz-msp-score');
+    const pc=document.getElementById('quiz-msp-pct');
+    if(sc) sc.textContent='✓ '+quizScore+' / '+quizWords.length;
+    if(pc&&quizIdx>=0) pc.textContent=Math.round(quizScore/(quizIdx+1)*100)+'%';
   } else {
     fb.className='quiz-feedback wrong-fb';
     fb.innerHTML='❌ 오답 — 정답: <strong>'+(dir==='en2ko'?w.ko:w.en)+'</strong>';
     quizWrong.push(w);
+    if(window.innerWidth<=600) _mspReact('quiz','wrong');
     setSlimeMood('sad', 2000);
+    const pc=document.getElementById('quiz-msp-pct');
+    if(pc&&quizIdx>=0) pc.textContent=Math.round(quizScore/(quizIdx+1)*100)+'%';
   }
   document.getElementById('qnext').style.display='inline-flex';
 }
