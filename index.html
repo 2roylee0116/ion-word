@@ -1051,32 +1051,6 @@ body.student-mode { background: #e8f0f8; }
 
 /* ── 문장학습 퀴즈 기본(데스크탑) ── */
 .sent-study-slime-header  { display: none; }
-
-/* ── 빈칸/배열 학습 모바일 슬라임 헤더: 크기 고정 ── */
-.sent-study-slime-header {
-  height: 80px !important;
-  min-height: 80px !important;
-  max-height: 80px !important;
-  overflow: hidden !important;
-  flex-shrink: 0 !important;
-}
-/* 슬라임 캐릭터 wrapper: 절대 크기 고정 */
-[data-slime-main="1"] {
-  width: 64px !important;
-  height: 64px !important;
-  flex-shrink: 0 !important;
-  overflow: hidden !important;
-}
-[data-slime-main="1"] > div {
-  width: 64px !important;
-  height: 64px !important;
-  overflow: hidden !important;
-}
-[data-slime-main="1"] svg {
-  width: 64px !important;
-  height: 64px !important;
-  display: block !important;
-}
 .sent-study-progress-bar-wrap { display: flex; }
 .sent-study-right-panel   { display: flex; }
 .slime-home-wrap {
@@ -4526,21 +4500,13 @@ function setSlimeMood(mood, duration = 2000) {
   });
   slimeEls.forEach((el, idx) => {
     el.innerHTML = _safeSVG(newSVG, 'md' + Date.now() + idx);
-    // SVG를 컨테이너 크기에 맞게 강제 고정 (레이아웃 밀림 방지)
-    const svgEl = el.querySelector('svg');
-    if (svgEl) {
-      svgEl.style.width = '100%';
-      svgEl.style.height = '100%';
-      svgEl.style.display = 'block';
-    }
-    // bounce 애니메이션 — overflow:hidden 안에서만 동작, 컨테이너 크기 불변
-    const innerDiv = el.querySelector('div') || el;
-    innerDiv.style.transition = 'transform 0.08s';
-    innerDiv.style.transform = 'scale(1.1, 0.9)';
-    setTimeout(() => { innerDiv.style.transform = 'scale(0.92, 1.1)'; }, 80);
-    setTimeout(() => { innerDiv.style.transform = 'scale(1.04, 0.97)'; }, 160);
-    setTimeout(() => { innerDiv.style.transform = 'scale(0.98, 1.02)'; }, 240);
-    setTimeout(() => { innerDiv.style.transform = 'scale(1, 1)'; innerDiv.style.transition = ''; }, 320);
+    // bounce 애니메이션
+    el.style.transition = 'transform 0.08s';
+    el.style.transform = 'scale(1.22, 0.82)';
+    setTimeout(() => { el.style.transform = 'scale(0.88, 1.18)'; }, 80);
+    setTimeout(() => { el.style.transform = 'scale(1.08, 0.94)'; }, 160);
+    setTimeout(() => { el.style.transform = 'scale(0.97, 1.03)'; }, 240);
+    setTimeout(() => { el.style.transform = 'scale(1, 1)'; el.style.transition = ''; }, 320);
     // sparkle일 때 파티클 — 슬라임 몸통 근처에서 터짐
     if (mood === 'sparkle') {
       const box = el.parentElement;
@@ -4581,12 +4547,6 @@ function setSlimeMood(mood, duration = 2000) {
       });
       slimeEls.forEach((el, idx) => {
         el.innerHTML = _safeSVG(normalSVG, 'nr' + Date.now() + idx);
-        const svgEl = el.querySelector('svg');
-        if (svgEl) {
-          svgEl.style.width = '100%';
-          svgEl.style.height = '100%';
-          svgEl.style.display = 'block';
-        }
       });
     }, duration);
   }
