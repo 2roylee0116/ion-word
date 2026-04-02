@@ -4381,6 +4381,15 @@ function showPage(id, addHistory = true) {
     window._skipSentCollReset = false;
     if (!window._skipSentReset) sentShowMgmtView();
     window._skipSentReset = false;
+    // 핵심단어/문법 컬럼 존재 여부 1회 체크 (선생님만)
+    if (currentUser?.role === 'teacher' && !window._sentKwColChecked) {
+      window._sentKwColChecked = true;
+      sb.from('sentence_books').select('key_words,key_grammar').limit(1).then(({error}) => {
+        if (error && (error.message?.includes('key_words') || error.message?.includes('column'))) {
+          showToast('💡 핵심단어/문법 영구저장을 위해 Supabase에서 아래 SQL을 실행하세요:\nALTER TABLE sentence_books ADD COLUMN IF NOT EXISTS key_words text;\nALTER TABLE sentence_books ADD COLUMN IF NOT EXISTS key_grammar text;', 'info', 8000);
+        }
+      }).catch(()=>{});
+    }
 
     if (DB_sentBooks && DB_sentBooks.length > 0 && DB_sentColls && DB_sentColls.length >= 0) {
       if (!window._skipSentRender) renderSentMgmt();
@@ -5310,11 +5319,20 @@ async function loadSentenceBooks() {
         }
       } catch(e2) { console.warn('문장 개수 집계 실패 (무시):', e2.message); }
     }
+    // 핵심단어/문법 — Supabase → localStorage 자동 동기화
+    DB_sentBooks.forEach(b => {
+      if (b.key_words) localStorage.setItem('ion_kw_' + b.id, b.key_words);
+      if (b.key_grammar) localStorage.setItem('ion_kg_' + b.id, b.key_grammar);
+    });
   } catch(e) { console.warn('sentence_books 로드 실패:', e.message); DB_sentBooks = []; }
 }
 
-async function loadSentenceItems(bookId) {
-  if (DB_sentItems[bookId]) return DB_sentItems[bookId];
+async function loadSentenceItems(bookId, forceRefresh) {
+  if (DB_sentItems[bookId] && !forceRefresh) {
+    // 캐시 반환 시에도 sort_order 기준 정렬 보장
+    DB_sentItems[bookId].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+    return DB_sentItems[bookId];
+  }
   try {
     const { data, error } = await sb.from('sentence_items').select('*').eq('book_id', bookId).order('sort_order', {ascending:true});
     if (error) {
@@ -5938,12 +5956,12 @@ async function createSentColl() {
   } catch(e) { showToast('오류: ' + e.message, 'error'); }
 }
 
-async function loadSentEditorById(id) {
+async function loadSentEditorById(id, forceRefresh) {
   const body   = document.getElementById('sent-editor-body');
   const delBtn = document.getElementById('sent-del-sel-btn');
   if (!body || !id) return;
   body.innerHTML = '<div style="padding:20px;text-align:center;color:var(--t3)">불러오는 중...</div>';
-  const items = await loadSentenceItems(id);
+  const items = await loadSentenceItems(id, forceRefresh);
   if (delBtn) delBtn.style.display = 'none';
   const selCountEl = document.getElementById('sent-sel-count');
   if (selCountEl) selCountEl.textContent = '0';
@@ -6178,8 +6196,10 @@ async function sentSaveSortOrder(bookId) {
   }
   // DB 캐시 순서 업데이트
   if (DB_sentItems[bookId]) {
-    const order = [...document.querySelectorAll('#sent-table-body tr')].map(tr => tr.dataset.id);
-    DB_sentItems[bookId].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    const order = [...document.querySelectorAll('#sent-table-body tr')].map(tr => String(tr.dataset.id));
+    DB_sentItems[bookId].sort((a, b) => order.indexOf(String(a.id)) - order.indexOf(String(b.id)));
+    // sort_order 값도 동기화
+    DB_sentItems[bookId].forEach((item, i) => { item.sort_order = i + 1; });
   }
 }
 
@@ -6756,7 +6776,8 @@ async function saveSentAssign(bookId) {
 
 // ── 학생: 문장학습 ────────────────────────────────────────
 // ═══════════════════════════════════════════════════════════
-// 문장학습 — 핵심단어/핵심문법 데이터 저장/로드 (localStorage fallback)
+// 문장학습 — 핵심단어/핵심문법 데이터 저장/로드
+// Supabase sentence_books 테이블 key_words/key_grammar 컬럼 우선, localStorage fallback
 // ═══════════════════════════════════════════════════════════
 let _sstActiveBook = null;
 let _sstActiveTab  = 'view';
@@ -6770,8 +6791,25 @@ function sentKwTab(tab) {
   if (gTab) { gTab.style.background = tab==='grammar' ? 'var(--blue)' : 'none'; gTab.style.color = tab==='grammar' ? '#fff' : 'var(--t2)'; }
 }
 
-function sentLoadEditorKeyData(bookId) {
+async function sentLoadEditorKeyData(bookId) {
   if (!bookId) return;
+  // 1순위: Supabase에서 로드
+  try {
+    const { data, error } = await sb.from('sentence_books').select('key_words,key_grammar').eq('id', bookId).single();
+    if (!error && data) {
+      const kw = data.key_words || localStorage.getItem('ion_kw_' + bookId) || '';
+      const kg = data.key_grammar || localStorage.getItem('ion_kg_' + bookId) || '';
+      const kwInput = document.getElementById('sent-kw-input');
+      const kgInput = document.getElementById('sent-kg-input');
+      if (kwInput) kwInput.value = kw;
+      if (kgInput) kgInput.value = kg;
+      // Supabase에 있으면 localStorage에도 동기화
+      if (data.key_words) localStorage.setItem('ion_kw_' + bookId, data.key_words);
+      if (data.key_grammar) localStorage.setItem('ion_kg_' + bookId, data.key_grammar);
+      return;
+    }
+  } catch(e) { /* fallback */ }
+  // 2순위: localStorage fallback
   const kw = localStorage.getItem('ion_kw_' + bookId) || '';
   const kg = localStorage.getItem('ion_kg_' + bookId) || '';
   const kwInput = document.getElementById('sent-kw-input');
@@ -6780,18 +6818,34 @@ function sentLoadEditorKeyData(bookId) {
   if (kgInput) kgInput.value = kg;
 }
 
-function sentSaveKeyData(type) {
+async function sentSaveKeyData(type) {
   const bookId = window._sentEditorBookId;
   if (!bookId) { showToast('문장집을 먼저 선택하세요', 'error'); return; }
   const inputId = type === 'words' ? 'sent-kw-input' : 'sent-kg-input';
-  const key = type === 'words' ? 'ion_kw_' + bookId : 'ion_kg_' + bookId;
   const val = document.getElementById(inputId)?.value || '';
-  localStorage.setItem(key, val);
-  showToast(type === 'words' ? '핵심단어 저장 완료 ✅' : '핵심문법 저장 완료 ✅', 'success');
+  const lsKey = type === 'words' ? 'ion_kw_' + bookId : 'ion_kg_' + bookId;
+  // localStorage 항상 저장 (fallback 보장)
+  localStorage.setItem(lsKey, val);
+  // Supabase 저장 시도
+  try {
+    const col = type === 'words' ? 'key_words' : 'key_grammar';
+    const { error } = await sb.from('sentence_books').update({ [col]: val }).eq('id', bookId);
+    if (error) throw error;
+    showToast(type === 'words' ? '핵심단어 저장 완료 ✅' : '핵심문법 저장 완료 ✅', 'success');
+  } catch(e) {
+    // Supabase 컬럼 없어도 localStorage에는 저장됨
+    showToast(type === 'words' ? '핵심단어 저장 완료 ✅' : '핵심문법 저장 완료 ✅', 'success');
+    console.warn('핵심단어/문법 Supabase 저장 실패 (localStorage에 저장됨):', e.message);
+  }
+  // DB_sentBooks 캐시에도 반영
+  const b = DB_sentBooks.find(b => b.id === bookId);
+  if (b) { if (type === 'words') b.key_words = val; else b.key_grammar = val; }
 }
 
 function sentGetKeyWords(bookId) {
-  const raw = localStorage.getItem('ion_kw_' + bookId) || '';
+  // DB_sentBooks 캐시 우선 (Supabase에서 로드된 경우), localStorage fallback
+  const cached = DB_sentBooks.find(b => b.id === bookId);
+  const raw = (cached?.key_words) || localStorage.getItem('ion_kw_' + bookId) || '';
   if (!raw.trim()) return [];
   return raw.trim().split('\n').map(line => {
     line = line.trim();
@@ -6800,7 +6854,6 @@ function sentGetKeyWords(bookId) {
     const parts = line.split(/\s*[\/|\t]\s*|\s*:\s*(?=[^\s])|\s+-\s+/).map(p => p.trim());
     // 최소 2개 (영어+뜻)
     if (parts.length < 2 && line.includes(' ')) {
-      // 첫 단어를 영어로, 나머지를 뜻으로
       const spaceIdx = line.indexOf(' ');
       return { en: line.slice(0, spaceIdx), ko: line.slice(spaceIdx+1).trim(), example: '' };
     }
@@ -6809,7 +6862,8 @@ function sentGetKeyWords(bookId) {
 }
 
 function sentGetKeyGrammar(bookId) {
-  const raw = localStorage.getItem('ion_kg_' + bookId) || '';
+  const cached = DB_sentBooks.find(b => b.id === bookId);
+  const raw = (cached?.key_grammar) || localStorage.getItem('ion_kg_' + bookId) || '';
   if (!raw.trim()) return [];
   return raw.trim().split('===').map(block => {
     const lines = block.trim().split('\n').map(l => l.trim()).filter(Boolean);
@@ -12426,33 +12480,6 @@ function _mspReact(prefix, type) {
 
     _mspDraw('sparkle');
     _mspBounce(prefix+'-msp-char');
-    // 모바일 패널 반짝이 파티클
-    if (charEl) {
-      const box = charEl.parentElement;
-      if (box) {
-        box.style.position = 'relative';
-        const pColors = ['#fbbf24','#a78bfa','#34d399','#fbbf24','#a78bfa'];
-        const pOffsets = [
-          {l:'32%',t:'28%',tx:'-14px',ty:'-18px'},
-          {l:'58%',t:'26%',tx:' 14px',ty:'-20px'},
-          {l:'26%',t:'52%',tx:'-16px',ty:'  8px'},
-          {l:'64%',t:'50%',tx:' 16px',ty:' 10px'},
-          {l:'46%',t:'20%',tx:' -2px',ty:'-22px'},
-        ];
-        pOffsets.forEach((pos,i)=>{
-          const p = document.createElement('span');
-          p.textContent = '✦';
-          p.style.cssText = `position:absolute;pointer-events:none;font-size:11px;color:${pColors[i]};left:${pos.l};top:${pos.t};opacity:1;transition:none;z-index:10;`;
-          box.appendChild(p);
-          setTimeout(()=>{
-            p.style.transition = 'transform 0.5s ease-out,opacity 0.5s ease-out';
-            p.style.transform  = `translate(${pos.tx},${pos.ty}) scale(0.2)`;
-            p.style.opacity    = '0';
-          }, 20);
-          setTimeout(()=>p.remove(), 560);
-        });
-      }
-    }
     _mspShowBubble(prefix+'-msp-bubble',
       type==='know' ? '✦ 알아요! +2 XP' : '✦ 정답! +2 XP', '#10b981');
 
@@ -12466,7 +12493,7 @@ function _mspReact(prefix, type) {
     }
     setTimeout(()=>_mspDraw('normal'), 1800);
   } else {
-    _mspDraw(prefix === 'fc' ? 'tears' : 'sad');
+    _mspDraw('tears');
     // 좌우 흔들기
     if (charEl) {
       charEl.style.transition='transform .1s';
@@ -13988,10 +14015,10 @@ async function fvpCreate() {
       if (error) throw error;
       const newBook = { ...data, name, id: bookId };
       DB_sentBooks.unshift(newBook);
-      for (const si of sentItems) {
-        await sb.from('sentence_items').insert({ id: si.id, book_id: bookId, en: si.en, ko: si.ko });
+      for (const [_si, si] of sentItems.entries()) {
+        await sb.from('sentence_items').insert({ id: si.id, book_id: bookId, en: si.en, ko: si.ko, sort_order: _si + 1 });
       }
-      DB_sentItems[bookId] = sentItems;
+      DB_sentItems[bookId] = sentItems.map((s,i)=>({...s,sort_order:i+1}));
       showToast(`"${name}" 문장집 생성 완료 (${sentItems.length}개 문장)`, 'success');
       fvpReset();
       renderSentMgmt?.();
@@ -14141,9 +14168,9 @@ async function fvaSave() {
       const { data, error } = await sb.from('sentence_books').insert({ id: bookId, name, owner_id: currentUser.id, collection_id: null }).select().single();
       if (error) throw error;
       DB_sentBooks.unshift({ ...data, name, id: bookId });
-      const sentItems = _fvaItems.map(it => ({ id: crypto.randomUUID(), book_id: bookId, en: it.en, ko: it.ko }));
+      const sentItems = _fvaItems.map((it, i) => ({ id: crypto.randomUUID(), book_id: bookId, en: it.en, ko: it.ko, sort_order: i + 1 }));
       for (const si of sentItems) {
-        await sb.from('sentence_items').insert({ id: si.id, book_id: bookId, en: si.en, ko: si.ko });
+        await sb.from('sentence_items').insert({ id: si.id, book_id: bookId, en: si.en, ko: si.ko, sort_order: si.sort_order });
       }
       DB_sentItems[bookId] = sentItems;
       showToast(`"${name}" 문장집 저장 완료 (${sentItems.length}개 문장)`, 'success');
@@ -16091,9 +16118,9 @@ async function fvDoCreateSentBook() {
     const { data, error } = await sb.from('sentence_books').insert({ id: bookId, name, owner_id: currentUser.id, collection_id: null }).select().single();
     if (error) throw error;
     DB_sentBooks.unshift({ ...data, name, id: bookId });
-    const sentItems = items.map(it => ({ id: crypto.randomUUID(), book_id: bookId, en: it.en, ko: it.ko }));
+    const sentItems = items.map((it, i) => ({ id: crypto.randomUUID(), book_id: bookId, en: it.en, ko: it.ko, sort_order: i + 1 }));
     for (const si of sentItems) {
-      await sb.from('sentence_items').insert({ id: si.id, book_id: bookId, en: si.en, ko: si.ko });
+      await sb.from('sentence_items').insert({ id: si.id, book_id: bookId, en: si.en, ko: si.ko, sort_order: si.sort_order });
     }
     DB_sentItems[bookId] = sentItems;
     closeModal();
@@ -16109,9 +16136,10 @@ async function fvDoAppendSentBook(bookId) {
   try {
     if (!DB_sentItems[bookId]) await loadSentenceItems(bookId);
     const existing = DB_sentItems[bookId] || [];
-    const newItems = items.map(it => ({ id: crypto.randomUUID(), book_id: bookId, en: it.en, ko: it.ko }));
+    const startOrder = (existing.length || 0) + 1;
+    const newItems = items.map((it, i) => ({ id: crypto.randomUUID(), book_id: bookId, en: it.en, ko: it.ko, sort_order: startOrder + i }));
     for (const si of newItems) {
-      await sb.from('sentence_items').insert({ id: si.id, book_id: bookId, en: si.en, ko: si.ko });
+      await sb.from('sentence_items').insert({ id: si.id, book_id: bookId, en: si.en, ko: si.ko, sort_order: si.sort_order });
     }
     DB_sentItems[bookId] = [...existing, ...newItems];
     closeModal();
@@ -16818,7 +16846,18 @@ async function openTeacherSentView(bookId) {
       </div>
       <div style="height:40px"></div>
     </div>`;
-    const kw=localStorage.getItem('ion_kw_'+bookId)||''; const kg=localStorage.getItem('ion_kg_'+bookId)||'';
+    // 핵심단어/문법: Supabase 우선, localStorage fallback
+    const _bCache=DB_sentBooks.find(b=>b.id===bookId);
+    let kw=(_bCache?.key_words)||localStorage.getItem('ion_kw_'+bookId)||'';
+    let kg=(_bCache?.key_grammar)||localStorage.getItem('ion_kg_'+bookId)||'';
+    // Supabase에서 아직 캐시에 없으면 비동기 로드
+    if(!_bCache?.key_words && !_bCache?.key_grammar){
+      sb.from('sentence_books').select('key_words,key_grammar').eq('id',bookId).single().then(({data})=>{
+        if(!data) return;
+        if(data.key_words){kw=data.key_words;localStorage.setItem('ion_kw_'+bookId,kw);const el=document.getElementById('tse-kw-input');if(el)el.value=kw;}
+        if(data.key_grammar){kg=data.key_grammar;localStorage.setItem('ion_kg_'+bookId,kg);const el=document.getElementById('tse-kg-input');if(el)el.value=kg;}
+      }).catch(()=>{});
+    }
     const kwEl=document.getElementById('tse-kw-input'); const kgEl=document.getElementById('tse-kg-input');
     if(kwEl) kwEl.value=kw; if(kgEl) kgEl.value=kg;
     tseInitDrag(bookId);
@@ -16915,10 +16954,19 @@ async function openTeacherSentView(bookId) {
     if(w){w.style.background=tab==='words'?bColor:'none';w.style.color=tab==='words'?'#fff':'#7ea8cc';}
     if(g){g.style.background=tab==='grammar'?bColor:'none';g.style.color=tab==='grammar'?'#fff':'#7ea8cc';}
   };
-  window.tseSaveKw = function(type,bid) {
-    const key=type==='words'?'ion_kw_'+bid:'ion_kg_'+bid;
+  window.tseSaveKw = async function(type,bid) {
+    const lsKey=type==='words'?'ion_kw_'+bid:'ion_kg_'+bid;
     const val=document.getElementById(type==='words'?'tse-kw-input':'tse-kg-input')?.value||'';
-    localStorage.setItem(key,val); showToast(type==='words'?'핵심단어 저장 완료 ✅':'핵심문법 저장 완료 ✅','success');
+    localStorage.setItem(lsKey,val);
+    try {
+      const col = type==='words'?'key_words':'key_grammar';
+      const {error} = await sb.from('sentence_books').update({[col]:val}).eq('id',bid);
+      if(error) throw error;
+    } catch(e) { console.warn('핵심단어/문법 Supabase 저장 실패 (localStorage에 저장됨):', e.message); }
+    // DB_sentBooks 캐시 반영
+    const _b=DB_sentBooks.find(b=>b.id===bid);
+    if(_b){if(type==='words')_b.key_words=val;else _b.key_grammar=val;}
+    showToast(type==='words'?'핵심단어 저장 완료 ✅':'핵심문법 저장 완료 ✅','success');
   };
   window.tseToggleKo = function() { koHidden=!koHidden; const b=document.getElementById('tse-ko-btn'); if(b){b.textContent=koHidden?'해석 보기':'해석 가리기';b.style.background=koHidden?bColor+'18':'none';b.style.borderColor=koHidden?bColor:'#dde8f2';b.style.color=koHidden?bColor:'#7ea8cc';} renderView(); };
   window.tseToggleEn = function() { enHidden=!enHidden; const b=document.getElementById('tse-en-btn'); if(b){b.textContent=enHidden?'문장 보기':'문장 가리기';b.style.background=enHidden?bColor+'18':'none';b.style.borderColor=enHidden?bColor:'#dde8f2';b.style.color=enHidden?bColor:'#7ea8cc';} renderView(); };
