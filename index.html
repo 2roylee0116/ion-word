@@ -4386,7 +4386,7 @@ function showPage(id, addHistory = true) {
       window._sentKwColChecked = true;
       sb.from('sentence_books').select('key_words,key_grammar').limit(1).then(({error}) => {
         if (error && (error.message?.includes('key_words') || error.message?.includes('column'))) {
-          showToast('💡 핵심단어/문법 영구저장을 위해 Supabase에서 아래 SQL을 실행하세요:\nALTER TABLE sentence_books ADD COLUMN IF NOT EXISTS key_words text;\nALTER TABLE sentence_books ADD COLUMN IF NOT EXISTS key_grammar text;', 'info', 8000);
+          showToast('⚠️ Supabase에 key_words/key_grammar 컬럼이 없습니다. SQL을 실행해주세요.', 'error', 7000);
         }
       }).catch(()=>{});
     }
@@ -6914,6 +6914,17 @@ async function openSentStudyBook(bookId) {
   const slime = getSlimeData();
   const col = getSlimeColor(slime.colorId);
 
+  // 핵심단어/문법 미리 로드 (탭 클릭 시 즉시 표시되도록)
+  if (!b?.key_words && !b?.key_grammar) {
+    try {
+      const { data } = await sb.from('sentence_books').select('key_words,key_grammar').eq('id', bookId).single();
+      if (data) {
+        if (data.key_words)  { localStorage.setItem('ion_kw_' + bookId, data.key_words);  if (b) b.key_words  = data.key_words; }
+        if (data.key_grammar){ localStorage.setItem('ion_kg_' + bookId, data.key_grammar); if (b) b.key_grammar = data.key_grammar; }
+      }
+    } catch(e) {}
+  }
+
   // 오버레이로 열기
   const prev = document.getElementById('sent-book-overlay');
   if (prev) prev.remove();
@@ -7149,14 +7160,27 @@ function sstToggleKo() {
 
 // ── 핵심단어 탭 ───────────────────────────────────────────
 // ── 핵심단어 패널 렌더 (문장공부 오버레이 안) ────────────
-function renderSstWordsInPanel() {
+async function renderSstWordsInPanel() {
   const panel = document.getElementById('sst-panel-words');
   if (!panel) return;
   const bookId = _sstActiveBook;
-  const words = sentGetKeyWords(bookId);
   const b = DB_sentBooks.find(b => b.id === bookId);
   const slime = getSlimeData();
   const col = getSlimeColor(slime.colorId);
+
+  // 캐시에 key_words 없으면 Supabase에서 로드 시도
+  if (!b?.key_words && !localStorage.getItem('ion_kw_' + bookId)) {
+    panel.innerHTML = '<div style="padding:32px;text-align:center;color:var(--t3)">불러오는 중...</div>';
+    try {
+      const { data } = await sb.from('sentence_books').select('key_words,key_grammar').eq('id', bookId).single();
+      if (data) {
+        if (data.key_words)  { localStorage.setItem('ion_kw_' + bookId, data.key_words);  if (b) b.key_words  = data.key_words; }
+        if (data.key_grammar){ localStorage.setItem('ion_kg_' + bookId, data.key_grammar); if (b) b.key_grammar = data.key_grammar; }
+      }
+    } catch(e) {}
+  }
+
+  const words = sentGetKeyWords(bookId);
 
   if (!words.length) {
     panel.innerHTML = '<div class="empty"><div class="empty-icon" style="font-size:36px">🔑</div><div class="empty-title">핵심단어가 없어요</div><div class="empty-sub">선생님이 핵심단어를 등록하면 여기에 나타납니다</div></div>';
@@ -7241,13 +7265,25 @@ function renderSstWordsInPanel() {
 }
 
 // renderSstGrammarInPanel (패널 버전)
-function renderSstGrammarInPanel() {
+async function renderSstGrammarInPanel() {
   const panel = document.getElementById('sst-panel-grammar');
   if (!panel) return;
   const bookId = _sstActiveBook;
+  const b = DB_sentBooks.find(b => b.id === bookId);
+
+  // 캐시에 key_grammar 없으면 Supabase에서 로드 시도
+  if (!b?.key_grammar && !localStorage.getItem('ion_kg_' + bookId)) {
+    panel.innerHTML = '<div style="padding:32px;text-align:center;color:var(--t3)">불러오는 중...</div>';
+    try {
+      const { data } = await sb.from('sentence_books').select('key_words,key_grammar').eq('id', bookId).single();
+      if (data) {
+        if (data.key_words)  { localStorage.setItem('ion_kw_' + bookId, data.key_words);  if (b) b.key_words  = data.key_words; }
+        if (data.key_grammar){ localStorage.setItem('ion_kg_' + bookId, data.key_grammar); if (b) b.key_grammar = data.key_grammar; }
+      }
+    } catch(e) {}
+  }
+
   const items = sentGetKeyGrammar(bookId);
-  const slime = getSlimeData();
-  const col = getSlimeColor(slime.colorId);
 
   if (!items.length) {
     panel.innerHTML = '<div class="empty"><div class="empty-icon" style="font-size:36px">📐</div><div class="empty-title">핵심문법이 없어요</div><div class="empty-sub">선생님이 핵심문법을 등록하면 여기에 나타납니다</div></div>';
@@ -7269,9 +7305,8 @@ function renderSstGrammarInPanel() {
 }
 
 // ── 핵심단어 오버레이 ─────────────────────────────────────
-function openSstWordsOverlay() {
+async function openSstWordsOverlay() {
   const bookId = _sstActiveBook;
-  const words = sentGetKeyWords(bookId);
   const b = DB_sentBooks.find(b => b.id === bookId);
   const slime = getSlimeData();
   const col = getSlimeColor(slime.colorId);
@@ -7279,6 +7314,18 @@ function openSstWordsOverlay() {
   const prev = document.getElementById('sst-words-overlay');
   if (prev) prev.remove();
 
+  // 캐시에 key_words 없으면 Supabase 로드
+  if (!b?.key_words && !localStorage.getItem('ion_kw_' + bookId)) {
+    try {
+      const { data } = await sb.from('sentence_books').select('key_words,key_grammar').eq('id', bookId).single();
+      if (data) {
+        if (data.key_words)  { localStorage.setItem('ion_kw_' + bookId, data.key_words);  if (b) b.key_words  = data.key_words; }
+        if (data.key_grammar){ localStorage.setItem('ion_kg_' + bookId, data.key_grammar); if (b) b.key_grammar = data.key_grammar; }
+      }
+    } catch(e) {}
+  }
+
+  const words = sentGetKeyWords(bookId);
   if (!words.length) {
     // 패널에 빈 상태 표시
     const panel = document.getElementById('sst-panel-words');
@@ -7403,10 +7450,22 @@ function openSstWordsOverlay() {
 }
 
 // ── 핵심문법 오버레이 ─────────────────────────────────────
-function renderSstGrammarOverlay() {
+async function renderSstGrammarOverlay() {
   const bookId = _sstActiveBook;
-  const items = sentGetKeyGrammar(bookId);
   const b = DB_sentBooks.find(b => b.id === bookId);
+
+  // 캐시에 key_grammar 없으면 Supabase 로드
+  if (!b?.key_grammar && !localStorage.getItem('ion_kg_' + bookId)) {
+    try {
+      const { data } = await sb.from('sentence_books').select('key_words,key_grammar').eq('id', bookId).single();
+      if (data) {
+        if (data.key_words)  { localStorage.setItem('ion_kw_' + bookId, data.key_words);  if (b) b.key_words  = data.key_words; }
+        if (data.key_grammar){ localStorage.setItem('ion_kg_' + bookId, data.key_grammar); if (b) b.key_grammar = data.key_grammar; }
+      }
+    } catch(e) {}
+  }
+
+  const items = sentGetKeyGrammar(bookId);
   const slime = getSlimeData();
   const col = getSlimeColor(slime.colorId);
 
@@ -17530,12 +17589,12 @@ function showModal(html){
 function closeModal(){document.getElementById('modal-bg').classList.remove('open');}
 
 let toastTimer;
-function showToast(msg, type=''){
+function showToast(msg, type='', duration=3000){
   const el=document.getElementById('toast-el');
   el.textContent=msg; el.className='toast'+(type?' '+type:'');
   el.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.remove('show'),3000);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),duration);
 }
 
 function emptyHTML(msg){return`<div class="empty"><div class="empty-icon">📭</div><div class="empty-title">${msg}</div></div>`;}
