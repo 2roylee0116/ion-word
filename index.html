@@ -940,25 +940,31 @@ body.student-mode { background: #e8f0f8; }
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 @keyframes auraRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
-/* ══ 모바일 하단 슬라임 패널 ══ */
+/* ══ 모바일 하단 슬라임 패널 (fixed 방식) ══ */
+.mobile-slime-panel{display:none} /* 기본: 숨김 */
 @media(max-width:600px){
-  /* fc/quiz 페이지: 하단 패널을 위해 body-inner를 flex column으로 */
-  .mobile-slime-page{display:flex;flex-direction:column;height:calc(100vh - 56px)}
-  .mobile-slime-scroll{flex:1;overflow-y:auto;padding-bottom:4px}
-  /* 하단 패널 */
+  /* 하단 패널 공간 확보 */
+  #fc-body,
+  #quiz-body{
+    padding-bottom:88px !important;
+  }
+  /* 하단 패널: fixed */
   .mobile-slime-panel{
-    flex-shrink:0;
+    display:flex !important;
+    position:fixed;
+    left:0;right:0;bottom:0;
+    z-index:100;
     background:#fff;
     border-top:1.5px solid #e8eef7;
-    padding:10px 14px 14px;
-    display:flex;
+    padding:8px 14px 12px;
     align-items:center;
     gap:12px;
-    box-shadow:0 -4px 16px rgba(15,40,80,0.07);
+    box-shadow:0 -4px 20px rgba(15,40,80,0.10);
   }
   .mobile-slime-panel.quiz-dark{
     background:#0f1628;
     border-top-color:rgba(255,255,255,0.08);
+    box-shadow:0 -4px 20px rgba(0,0,0,0.3);
   }
   .msp-char{
     width:64px;height:64px;flex-shrink:0;
@@ -966,12 +972,12 @@ body.student-mode { background: #e8f0f8; }
   }
   .msp-char .msp-anim{animation:slimeBob 2.5s ease-in-out infinite}
   .msp-bubble{
-    position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+    position:absolute;top:-32px;left:50%;transform:translateX(-50%);
     background:#1a2d4a;color:#fff;
     font-size:10px;font-weight:700;
     padding:4px 10px;border-radius:10px;
     white-space:nowrap;pointer-events:none;
-    opacity:0;transition:opacity .2s;z-index:10;
+    opacity:0;transition:opacity .2s;z-index:110;
   }
   .msp-bubble::after{
     content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);
@@ -12120,13 +12126,11 @@ function renderFC() {
   const isMobile = window.innerWidth <= 600;
 
   body.innerHTML = `
-    <div class="${isMobile ? 'mobile-slime-page' : 'slime-two-col'}"
+    <div class="${isMobile ? '' : 'slime-two-col'}"
       style="${isMobile ? '' : 'display:grid;grid-template-columns:1fr 280px;gap:20px;max-width:900px;margin:0 auto;align-items:stretch'}">
 
       <!-- ── 단어 카드 영역 ── -->
-      <div class="${isMobile ? 'mobile-slime-scroll' : ''}"
-        style="${isMobile ? '' : 'display:flex;flex-direction:column;gap:14px'}">
-        <div style="display:flex;flex-direction:column;gap:14px;${isMobile ? 'padding:0' : ''}">
+      <div style="display:flex;flex-direction:column;gap:14px">
 
         <!-- 진행바 헤더 -->
         <div style="background:#fff;border-radius:16px;padding:14px 20px;
@@ -12227,8 +12231,7 @@ function renderFC() {
           </label>
         </div>
 
-        </div><!-- inner flex -->
-      </div><!-- scroll area -->
+      </div><!-- 단어 카드 영역 끝 -->
 
       <!-- ── 우: 슬라임 패널 (데스크탑 전용) ── -->
       <div class="mobile-hide-slime-panel" style="display:flex;flex-direction:column;gap:14px">
@@ -12790,12 +12793,11 @@ function renderQuiz(){
   const xpPctQ = Math.min(100, Math.round((slimeQ.exp / xpMaxQ) * 100));
   const streakQ = slimeQ.streak || 1;
 
-  body.innerHTML=`<div class="${isMobileQ ? 'mobile-slime-page quiz-container' : 'quiz-container slime-two-col'}"
+  body.innerHTML=`<div class="${isMobileQ ? 'quiz-container' : 'quiz-container slime-two-col'}"
     style="${isMobileQ ? '' : 'display:grid;grid-template-columns:1fr 280px;gap:24px;max-width:940px;margin:0 auto;align-items:stretch'}">
 
     <!-- ── 문제 영역 ── -->
-    <div class="${isMobileQ ? 'mobile-slime-scroll' : ''}"
-      style="${isMobileQ ? '' : 'display:flex;flex-direction:column;gap:14px'}">
+    <div style="display:flex;flex-direction:column;gap:14px">
     <div style="display:flex;flex-direction:column;gap:14px">
     <div style="display:flex;align-items:center;gap:10px;
       background:${colorDefQ.b}12;border:1.5px solid ${colorDefQ.b}30;border-radius:16px;padding:10px 16px">
