@@ -925,11 +925,6 @@ body.student-mode { background: #e8f0f8; }
   30%{transform:translateY(-12px) scaleX(0.93) scaleY(1.1)}
   60%{transform:translateY(-5px) scaleX(1.03) scaleY(0.97)}
 }
-@keyframes slimeBobFixed {
-  0%,100%{transform:translateY(0)}
-  30%{transform:translateY(-6px)}
-  60%{transform:translateY(-2px)}
-}
 @keyframes slimeWiggle {
   0%,100%{transform:rotate(0deg)}
   20%{transform:rotate(-5deg) scale(1.04)}
@@ -1039,7 +1034,10 @@ body.student-mode { background: #e8f0f8; }
   }
 }
 
-/* ── 슬라임 홈 레이아웃 ── */
+/* ── 문장학습 퀴즈 기본(데스크탑) ── */
+.sent-study-slime-header  { display: none; }
+.sent-study-progress-bar-wrap { display: flex; }
+.sent-study-right-panel   { display: flex; }
 .slime-home-wrap {
   display:grid;
   grid-template-columns:340px 1fr;
@@ -7840,7 +7838,7 @@ function renderSentStudyCard() {
       <div style="display:flex;flex-direction:column;gap:16px">
 
         <!-- 모바일 슬라임 진행 헤더 (데스크탑에선 숨김) -->
-        <div class="sent-study-slime-header" style="display:none;background:#fff;border-radius:18px;
+        <div class="sent-study-slime-header" style="background:#fff;border-radius:18px;
           padding:14px 16px;box-shadow:0 2px 12px rgba(30,58,95,0.07);border:1px solid #dde8f2;
           align-items:center;gap:14px">
 
@@ -7855,12 +7853,11 @@ function renderSentStudyCard() {
               <div style="position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);
                 width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid #1a2d4a"></div>
             </div>
-            <div style="width:64px;height:64px;overflow:hidden;display:flex;align-items:center;justify-content:center">
-              <div style="animation:slimeBobFixed 2.5s ease-in-out infinite;width:60px;height:60px;
-                display:flex;align-items:center;justify-content:center;flex-shrink:0"
-                onmouseenter="document.getElementById('sst-slime-bubble').style.opacity='1'"
-                onmouseleave="document.getElementById('sst-slime-bubble').style.opacity='0'"
-                ontouchstart="document.getElementById('sst-slime-bubble').style.opacity='1'"
+            <div style="animation:slimeBob 2.5s ease-in-out infinite;width:64px;height:64px;
+              display:flex;align-items:center;justify-content:center"
+              onmouseenter="document.getElementById('sst-slime-bubble').style.opacity='1'"
+              onmouseleave="document.getElementById('sst-slime-bubble').style.opacity='0'"
+              ontouchstart="document.getElementById('sst-slime-bubble').style.opacity='1'"
               ontouchend="setTimeout(()=>document.getElementById('sst-slime-bubble').style.opacity='0',1200)">
               ${buildMiniSlimeSVG(slime.stage, 60)}
             </div>
@@ -7907,7 +7904,7 @@ function renderSentStudyCard() {
         <!-- 데스크탑 진행바 -->
         <div class="sent-study-progress-bar-wrap" style="background:#fff;border-radius:16px;padding:14px 20px;
           box-shadow:0 2px 12px rgba(30,58,95,0.06);border:1px solid #dde8f2;
-          display:flex;align-items:center;gap:14px">
+          align-items:center;gap:14px">
           <span style="font-size:12px;font-weight:700;color:#7ea8cc;white-space:nowrap">${_sentStudyIdx+1}/${total} Sentences</span>
           <div style="flex:1;height:8px;background:#e8f0f8;border-radius:99px;overflow:hidden">
             <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${col.a},${col.b});
@@ -7962,7 +7959,7 @@ function renderSentStudyCard() {
       </div>
 
       <!-- ── 우: 슬라임 패널 (데스크탑) ── -->
-      <div class="sent-study-right-panel" style="display:flex;flex-direction:column;gap:14px">
+      <div class="sent-study-right-panel" style="flex-direction:column;gap:14px">
 
         <!-- 레벨 바 -->
         <div style="background:#fff;border-radius:16px;padding:16px 18px;
