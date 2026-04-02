@@ -962,11 +962,7 @@ body.student-mode { background: #e8f0f8; }
     box-shadow:0 -4px 20px rgba(15,40,80,0.10);
     min-height:90px;
   }
-  .mobile-slime-panel.quiz-dark{
-    background:#0f1628;
-    border-top-color:rgba(255,255,255,0.08);
-    box-shadow:0 -4px 20px rgba(0,0,0,0.3);
-  }
+
   .msp-char{
     width:80px;height:80px;flex-shrink:0;
     position:relative;cursor:pointer;
@@ -996,14 +992,10 @@ body.student-mode { background: #e8f0f8; }
   .msp-info{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
   .msp-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
   .msp-name{font-size:13px;font-weight:700;color:#1a2d4a}
-  .msp-name.qm{color:#a78bfa}
   .msp-lv{font-size:10px;font-weight:700;background:#f0fdf7;color:#047857;border-radius:6px;padding:2px 8px;border:1px solid #a7f3d0;white-space:nowrap}
-  .msp-lv.qm{background:rgba(167,139,250,.12);color:#6d28d9;border-color:#c4b5fd}
   .msp-xp-row{display:flex;align-items:center;gap:6px}
   .msp-xp-track{flex:1;height:5px;background:#e8eef7;border-radius:99px;overflow:hidden}
-  .msp-xp-track.qm{background:rgba(196,181,253,.25)}
   .msp-xp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,#6ee7b7,#10b981);transition:width .4s ease}
-  .msp-xp-fill.qm{background:linear-gradient(90deg,#a78bfa,#7c3aed)}
   .msp-xp-num{font-size:10px;font-weight:700;color:#7ea8cc;white-space:nowrap}
   .msp-chips{display:flex;gap:5px;flex-wrap:wrap}
   .msp-chip{font-size:10px;font-weight:700;border-radius:6px;padding:3px 8px;display:flex;align-items:center;gap:3px}
@@ -1011,7 +1003,6 @@ body.student-mode { background: #e8f0f8; }
   .msp-chip.score{background:rgba(16,185,129,.15);color:#065f46}
   .msp-chip.pct{background:rgba(99,102,241,.13);color:#3730a3}
   .msp-chip.xpgain{background:rgba(110,231,183,.15);color:#047857}
-  .msp-chip.qm-score{background:rgba(139,92,246,.13);color:#4c1d95}
   /* 모바일에서 기존 우측 슬라임 패널 숨김 */
   .mobile-hide-slime-panel{display:none !important}
 }
@@ -12900,7 +12891,7 @@ function renderQuiz(){
 
     <!-- ── 하단 슬라임 패널 (모바일 전용) ── -->
     ${isMobileQ ? `
-    <div class="mobile-slime-panel quiz-dark" id="quiz-mobile-panel">
+    <div class="mobile-slime-panel" id="quiz-mobile-panel">
       <div class="msp-char" onclick="_mspBounce('quiz-msp-char')" title="클릭해봐요!">
         <div class="msp-bubble" id="quiz-msp-bubble"></div>
         <div class="msp-anim" id="quiz-msp-char">
@@ -12909,16 +12900,16 @@ function renderQuiz(){
       </div>
       <div class="msp-info">
         <div class="msp-top">
-          <span class="msp-name qm">${slimeQ.slimeName||'내 슬라임'}</span>
-          <span class="msp-lv qm">Lv. ${slimeQ.stage+1}</span>
+          <span class="msp-name">${slimeQ.slimeName||'내 슬라임'}</span>
+          <span class="msp-lv">Lv. ${slimeQ.stage+1}</span>
         </div>
         <div class="msp-xp-row">
-          <div class="msp-xp-track qm"><div class="msp-xp-fill qm" id="quiz-msp-xp" style="width:${xpPctQ}%"></div></div>
-          <span class="msp-xp-num" style="color:#c4b5fd">${slimeQ.exp.toLocaleString()} / ${xpMaxQ.toLocaleString()} XP</span>
+          <div class="msp-xp-track"><div class="msp-xp-fill" id="quiz-msp-xp" style="width:${xpPctQ}%"></div></div>
+          <span class="msp-xp-num" >${slimeQ.exp.toLocaleString()} / ${xpMaxQ.toLocaleString()} XP</span>
         </div>
         <div class="msp-chips">
           <div class="msp-chip streak">🔥 ${streakQ}일</div>
-          <div class="msp-chip qm-score" id="quiz-msp-score">✓ ${quizScore} / ${quizWords.length}</div>
+          <div class="msp-chip score" id="quiz-msp-score">✓ ${quizScore} / ${quizWords.length}</div>
           <div class="msp-chip pct" id="quiz-msp-pct">${quizIdx>0?Math.round(quizScore/quizIdx*100):0}%</div>
         </div>
       </div>
