@@ -12403,7 +12403,8 @@ function renderFC() {
 
       <!-- ── 하단 슬라임 패널 (모바일 전용) ── -->
       ${isMobile ? `
-      <div class="mobile-slime-panel" id="fc-mobile-panel">
+      <div class="mobile-slime-panel" id="fc-mobile-panel"
+        style="background:${col.light};border-top:2px solid ${col.a};">
         <div class="msp-char" onclick="_mspBounce('fc-msp-char')" title="클릭해봐요!">
           <div class="msp-bubble" id="fc-msp-bubble"></div>
           <div class="msp-anim" id="fc-msp-char">
@@ -12412,17 +12413,19 @@ function renderFC() {
         </div>
         <div class="msp-info">
           <div class="msp-top">
-            <span class="msp-name">${slime.slimeName||'내 슬라임'}</span>
-            <span class="msp-lv">Lv. ${slime.stage+1}</span>
+            <span class="msp-name" style="color:${col.dark};">${slime.slimeName||'내 슬라임'}</span>
+            <span class="msp-lv" style="background:${col.b};color:#fff;border:none;">Lv. ${slime.stage+1}</span>
           </div>
           <div class="msp-xp-row">
-            <div class="msp-xp-track"><div class="msp-xp-fill" id="fc-msp-xp" style="width:${xpPct}%"></div></div>
-            <span class="msp-xp-num">${slime.exp.toLocaleString()} / ${xpMax.toLocaleString()} XP</span>
+            <div class="msp-xp-track" style="background:rgba(0,0,0,0.08);">
+              <div class="msp-xp-fill" id="fc-msp-xp" style="width:${xpPct}%;background:${col.b};"></div>
+            </div>
+            <span class="msp-xp-num" style="color:${col.dark};">${slime.exp.toLocaleString()} / ${xpMax.toLocaleString()} XP</span>
           </div>
           <div class="msp-chips">
             <div class="msp-chip streak">🔥 ${streak}일</div>
-            <div class="msp-chip score" id="fc-msp-score">✓ ${fcIdx} / ${fcWords.length}</div>
-            <div class="msp-chip xpgain" id="fc-msp-xpgain">+0 XP</div>
+            <div class="msp-chip score" id="fc-msp-score" style="background:${col.a}40;color:${col.dark};">✓ ${fcIdx} / ${fcWords.length}</div>
+            <div class="msp-chip xpgain" id="fc-msp-xpgain" style="background:${col.a}40;color:${col.dark};">+0 XP</div>
           </div>
         </div>
       </div>` : ''}
@@ -13009,7 +13012,8 @@ function renderQuiz(){
 
     <!-- ── 하단 슬라임 패널 (모바일 전용) ── -->
     ${isMobileQ ? `
-    <div class="mobile-slime-panel" id="quiz-mobile-panel">
+    <div class="mobile-slime-panel" id="quiz-mobile-panel"
+      style="background:${colorDefQ.light};border-top:2px solid ${colorDefQ.a};">
       <div class="msp-char" onclick="_mspBounce('quiz-msp-char')" title="클릭해봐요!">
         <div class="msp-bubble" id="quiz-msp-bubble"></div>
         <div class="msp-anim" id="quiz-msp-char">
@@ -13018,17 +13022,19 @@ function renderQuiz(){
       </div>
       <div class="msp-info">
         <div class="msp-top">
-          <span class="msp-name">${slimeQ.slimeName||'내 슬라임'}</span>
-          <span class="msp-lv">Lv. ${slimeQ.stage+1}</span>
+          <span class="msp-name" style="color:${colorDefQ.dark};">${slimeQ.slimeName||'내 슬라임'}</span>
+          <span class="msp-lv" style="background:${colorDefQ.b};color:#fff;border:none;">Lv. ${slimeQ.stage+1}</span>
         </div>
         <div class="msp-xp-row">
-          <div class="msp-xp-track"><div class="msp-xp-fill" id="quiz-msp-xp" style="width:${xpPctQ}%"></div></div>
-          <span class="msp-xp-num" >${slimeQ.exp.toLocaleString()} / ${xpMaxQ.toLocaleString()} XP</span>
+          <div class="msp-xp-track" style="background:rgba(0,0,0,0.08);">
+            <div class="msp-xp-fill" id="quiz-msp-xp" style="width:${xpPctQ}%;background:${colorDefQ.b};"></div>
+          </div>
+          <span class="msp-xp-num" style="color:${colorDefQ.dark};">${slimeQ.exp.toLocaleString()} / ${xpMaxQ.toLocaleString()} XP</span>
         </div>
         <div class="msp-chips">
           <div class="msp-chip streak">🔥 ${streakQ}일</div>
-          <div class="msp-chip score" id="quiz-msp-score">✓ ${quizScore} / ${quizWords.length}</div>
-          <div class="msp-chip pct" id="quiz-msp-pct">${quizIdx>0?Math.round(quizScore/quizIdx*100):0}%</div>
+          <div class="msp-chip score" id="quiz-msp-score" style="background:${colorDefQ.a}40;color:${colorDefQ.dark};">✓ ${quizScore} / ${quizWords.length}</div>
+          <div class="msp-chip pct" id="quiz-msp-pct" style="background:${colorDefQ.a}40;color:${colorDefQ.dark};">${quizIdx>0?Math.round(quizScore/quizIdx*100):0}%</div>
         </div>
       </div>
     </div>` : ''}
