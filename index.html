@@ -12426,6 +12426,33 @@ function _mspReact(prefix, type) {
 
     _mspDraw('sparkle');
     _mspBounce(prefix+'-msp-char');
+    // 모바일 패널 반짝이 파티클
+    if (charEl) {
+      const box = charEl.parentElement;
+      if (box) {
+        box.style.position = 'relative';
+        const pColors = ['#fbbf24','#a78bfa','#34d399','#fbbf24','#a78bfa'];
+        const pOffsets = [
+          {l:'32%',t:'28%',tx:'-14px',ty:'-18px'},
+          {l:'58%',t:'26%',tx:' 14px',ty:'-20px'},
+          {l:'26%',t:'52%',tx:'-16px',ty:'  8px'},
+          {l:'64%',t:'50%',tx:' 16px',ty:' 10px'},
+          {l:'46%',t:'20%',tx:' -2px',ty:'-22px'},
+        ];
+        pOffsets.forEach((pos,i)=>{
+          const p = document.createElement('span');
+          p.textContent = '✦';
+          p.style.cssText = `position:absolute;pointer-events:none;font-size:11px;color:${pColors[i]};left:${pos.l};top:${pos.t};opacity:1;transition:none;z-index:10;`;
+          box.appendChild(p);
+          setTimeout(()=>{
+            p.style.transition = 'transform 0.5s ease-out,opacity 0.5s ease-out';
+            p.style.transform  = `translate(${pos.tx},${pos.ty}) scale(0.2)`;
+            p.style.opacity    = '0';
+          }, 20);
+          setTimeout(()=>p.remove(), 560);
+        });
+      }
+    }
     _mspShowBubble(prefix+'-msp-bubble',
       type==='know' ? '✦ 알아요! +2 XP' : '✦ 정답! +2 XP', '#10b981');
 
@@ -12439,7 +12466,7 @@ function _mspReact(prefix, type) {
     }
     setTimeout(()=>_mspDraw('normal'), 1800);
   } else {
-    _mspDraw('tears');
+    _mspDraw(prefix === 'fc' ? 'tears' : 'sad');
     // 좌우 흔들기
     if (charEl) {
       charEl.style.transition='transform .1s';
