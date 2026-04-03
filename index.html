@@ -1046,6 +1046,17 @@ body.student-mode { background: #e8f0f8; }
   /* 모바일 슬라임 진행 헤더 */
   .sent-study-slime-header {
     display: flex !important;
+    /* 정답/오답 애니메이션 시 헤더 크기 고정 */
+    min-height: 0 !important;
+    overflow: visible !important;
+    contain: layout !important;
+  }
+  /* 헤더 내 슬라임 wrapper 고정 크기 */
+  .sent-study-slime-header [data-slime-main] {
+    width: 72px !important;
+    height: 72px !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
   }
 }
 
@@ -4500,13 +4511,15 @@ function setSlimeMood(mood, duration = 2000) {
   });
   slimeEls.forEach((el, idx) => {
     el.innerHTML = _safeSVG(newSVG, 'md' + Date.now() + idx);
-    // bounce 애니메이션
-    el.style.transition = 'transform 0.08s';
-    el.style.transform = 'scale(1.22, 0.82)';
-    setTimeout(() => { el.style.transform = 'scale(0.88, 1.18)'; }, 80);
-    setTimeout(() => { el.style.transform = 'scale(1.08, 0.94)'; }, 160);
-    setTimeout(() => { el.style.transform = 'scale(0.97, 1.03)'; }, 240);
-    setTimeout(() => { el.style.transform = 'scale(1, 1)'; el.style.transition = ''; }, 320);
+    // bounce 애니메이션 — SVG 자식에만 적용해 레이아웃(헤더 크기) 변화 방지
+    const svgEl = el.querySelector('svg') || el;
+    svgEl.style.transformOrigin = 'center center';
+    svgEl.style.transition = 'transform 0.08s';
+    svgEl.style.transform = 'scale(1.22, 0.82)';
+    setTimeout(() => { svgEl.style.transform = 'scale(0.88, 1.18)'; }, 80);
+    setTimeout(() => { svgEl.style.transform = 'scale(1.08, 0.94)'; }, 160);
+    setTimeout(() => { svgEl.style.transform = 'scale(0.97, 1.03)'; }, 240);
+    setTimeout(() => { svgEl.style.transform = 'scale(1, 1)'; svgEl.style.transition = ''; }, 320);
     // sparkle일 때 파티클 — 슬라임 몸통 근처에서 터짐
     if (mood === 'sparkle') {
       const box = el.parentElement;
@@ -7853,7 +7866,7 @@ function renderSentStudyCard() {
       align-items:center;gap:14px;margin-bottom:12px">
 
           <!-- 슬라임 캐릭터 (클릭 가능) -->
-          <div style="flex-shrink:0;cursor:pointer;position:relative"
+          <div style="flex-shrink:0;cursor:pointer;position:relative;width:72px;height:72px"
             onclick="onSlimeClick(event)" data-slime-main="1" title="클릭!">
             <!-- 감정 말풍선 -->
             <div id="sst-slime-bubble" style="position:absolute;top:-28px;left:50%;transform:translateX(-50%);
@@ -7864,7 +7877,8 @@ function renderSentStudyCard() {
                 width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid #1a2d4a"></div>
             </div>
             <div style="animation:slimeBob 2.5s ease-in-out infinite;width:64px;height:64px;
-              display:flex;align-items:center;justify-content:center"
+              display:flex;align-items:center;justify-content:center;overflow:hidden;
+              transform-origin:center center"
               onmouseenter="document.getElementById('sst-slime-bubble').style.opacity='1'"
               onmouseleave="document.getElementById('sst-slime-bubble').style.opacity='0'"
               ontouchstart="document.getElementById('sst-slime-bubble').style.opacity='1'"
@@ -12254,21 +12268,15 @@ function _openStudyOverlay(type, bookId) {
 
   if (type === 'flashcard') {
     document.getElementById('fc-sel').value = bookId;
-    loadBookWords(bookId).then(() => {
-      startFC();
-      setTimeout(() => {
-        const src = document.getElementById(srcId);
-        if (src && loBody) loBody.appendChild(src);
-      }, 250);
+    startFC().then(() => {
+      const src = document.getElementById(srcId);
+      if (src && loBody) loBody.appendChild(src);
     });
   } else {
     document.getElementById('quiz-sel').value = bookId;
-    loadBookWords(bookId).then(() => {
-      startQuiz();
-      setTimeout(() => {
-        const src = document.getElementById(srcId);
-        if (src && loBody) loBody.appendChild(src);
-      }, 250);
+    startQuiz().then(() => {
+      const src = document.getElementById(srcId);
+      if (src && loBody) loBody.appendChild(src);
     });
   }
 }
