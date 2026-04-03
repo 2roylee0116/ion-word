@@ -1610,7 +1610,11 @@ body.student-mode { background: #e8f0f8; }
                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                붙여넣기+AI번역
              </button>
-              <button class="btn btn-success btn-sm" onclick="sentSaveBook(window._sentEditorBookId)"
+              <button class="btn btn-secondary btn-sm" onclick="sentFixSortOrder(window._sentEditorBookId)" title="현재 편집기 행 순서대로 번호를 재저장합니다">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+                순서 재저장
+              </button>
+             <button class="btn btn-success btn-sm" onclick="sentSaveBook(window._sentEditorBookId)"
                 style="background:var(--green);color:white;border-color:var(--green)">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                 저장
@@ -2578,21 +2582,11 @@ async function loadDB() {
       const isAdmin = currentUser.isAdmin === true;
 
       // 단어장/컬렉션/파일: 항상 본인 것만 (owner_id = uid)
-      // 학생 목록: admin → 전체, 일반 → teacher_id = uid 인 학생만
-      // progress: admin → 전체, 일반 → 본인 학생들 것만
-
-      // 로컬에 저장된 연결 학생 ID도 포함
-      const localLinkKey = 'ion_teacher_students_' + uid;
-      const localLinkedIds = JSON.parse(localStorage.getItem(localLinkKey) || '[]');
+      // 학생 목록: admin → 전체, 일반 → teacher_id = uid 인 학생만 (Supabase만 신뢰)
 
       let usersQuery;
       if (isAdmin) {
         usersQuery = sb.from('profiles').select('*');
-      } else if (localLinkedIds.length > 0) {
-        // teacher_id 기반 + 로컬 연결 ID 기반 합산
-        // Supabase OR: teacher_id = uid 이거나 id IN (localIds)
-        usersQuery = sb.from('profiles').select('*').eq('role', 'student')
-          .or(`teacher_id.eq.${uid},id.in.(${localLinkedIds.join(',')})`);
       } else {
         usersQuery = sb.from('profiles').select('*').eq('role', 'student').eq('teacher_id', uid);
       }
@@ -2752,6 +2746,9 @@ async function loadDB() {
     loadGroqKeyFromDB();
     // 문장집 백그라운드 미리 로드 (탭 전환 시 빠른 표시용)
     loadSentenceBooks().catch(()=>{});
+
+    // 즐겨찾기 Supabase에서 로드
+    await _loadFavFromDB();
 
   } catch(e) {
     console.error('loadDB 오류:', e);
@@ -4615,25 +4612,42 @@ window.addEventListener('popstate', function(e) {
 const _RECENT_KEY_W = () => 'ion_recent_word_' + (currentUser?.id||'');
 const _RECENT_KEY_S = () => 'ion_recent_sent_' + (currentUser?.id||'');
 
-// ── 즐겨찾기 헬퍼 (컬렉션 단위) ──
-const _FAV_KEY_W = () => 'ion_fav_wcoll_' + (currentUser?.id||'');
-const _FAV_KEY_S = () => 'ion_fav_scoll_' + (currentUser?.id||'');
+// ── 즐겨찾기 헬퍼 (컬렉션 단위) — Supabase profiles 저장 ──
+// 메모리 캐시 (로그인 시 profiles에서 로드)
+let _favCache = { word: [], sent: [] };
+
+async function _loadFavFromDB() {
+  if (!currentUser?.id) return;
+  try {
+    const { data } = await sb.from('profiles').select('fav_word_colls,fav_sent_colls').eq('id', currentUser.id).single();
+    if (data) {
+      try { _favCache.word = JSON.parse(data.fav_word_colls || '[]'); } catch(e) { _favCache.word = []; }
+      try { _favCache.sent = JSON.parse(data.fav_sent_colls || '[]'); } catch(e) { _favCache.sent = []; }
+    }
+  } catch(e) { _favCache = { word: [], sent: [] }; }
+}
+
+async function _saveFavToDB(type) {
+  if (!currentUser?.id) return;
+  const col = type === 'word' ? 'fav_word_colls' : 'fav_sent_colls';
+  const val = JSON.stringify(_favCache[type]);
+  await sb.from('profiles').update({ [col]: val }).eq('id', currentUser.id);
+}
+
 function _getFavIds(type) {
-  if (!currentUser?.id) return [];
-  const key = type === 'word' ? _FAV_KEY_W() : _FAV_KEY_S();
-  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
+  return _favCache[type] || [];
 }
 function _isFav(type, id) { return _getFavIds(type).includes(id); }
-function _toggleFav(type, id) {
+async function _toggleFav(type, id) {
   if (!currentUser?.id) return;
-  const key = type === 'word' ? _FAV_KEY_W() : _FAV_KEY_S();
   const ids = _getFavIds(type);
   const idx = ids.indexOf(id);
   if (idx >= 0) ids.splice(idx, 1); else ids.push(id);
-  localStorage.setItem(key, JSON.stringify(ids));
+  _favCache[type] = ids;
+  await _saveFavToDB(type);
 }
-function toggleFavWordColl(id) { _toggleFav('word', id); renderDashboard(); renderLibrary(); }
-function toggleFavSentColl(id) { _toggleFav('sent', id); renderDashboard(); renderSentMgmt(); }
+async function toggleFavWordColl(id) { await _toggleFav('word', id); renderDashboard(); renderLibrary(); }
+async function toggleFavSentColl(id) { await _toggleFav('sent', id); renderDashboard(); renderSentMgmt(); }
 function toggleFavWord(id) { toggleFavWordColl(id); }
 function toggleFavSent(id) { toggleFavSentColl(id); }
 function _favToggleHTML(type, id, fn) {
@@ -6272,6 +6286,30 @@ async function sentSaveSortOrder(bookId) {
 }
 
 
+async function sentFixSortOrder(bookId) {
+  if (!bookId) return;
+  const rows = document.querySelectorAll('#sent-table-body tr');
+  if (!rows.length) { showToast('편집기에 문장이 없습니다.', 'error'); return; }
+  showToast('순서 재저장 중...', 'info');
+  const updates = [];
+  rows.forEach((tr, i) => {
+    const id = tr.dataset.id;
+    if (id && !id.startsWith('new_')) updates.push({ id, sort_order: i + 1 });
+  });
+  for (const u of updates) {
+    await sb.from('sentence_items').update({ sort_order: u.sort_order }).eq('id', u.id).catch(()=>{});
+  }
+  // 캐시 동기화
+  if (DB_sentItems[bookId]) {
+    const order = [...rows].map(tr => String(tr.dataset.id));
+    DB_sentItems[bookId].sort((a, b) => order.indexOf(String(a.id)) - order.indexOf(String(b.id)));
+    DB_sentItems[bookId].forEach((item, i) => { item.sort_order = i + 1; });
+  }
+  // 행 번호 UI 갱신
+  sentRenumber();
+  showToast(`${updates.length}개 문장 순서가 저장됐습니다.`, 'success');
+}
+
 function sentToggleAll(master) {
   document.querySelectorAll('.sent-chk').forEach(c => c.checked = master.checked);
   sentOnCheckChange();
@@ -6982,16 +7020,26 @@ async function openSentStudyBook(bookId) {
   const slime = getSlimeData();
   const col = getSlimeColor(slime.colorId);
 
-  // 핵심단어/문법 미리 로드 (탭 클릭 시 즉시 표시되도록)
+  // 핵심단어/문법 + 문장 아이템 병렬 미리 로드 (탭 클릭 시 즉시 표시되도록)
+  const prefetchPromises = [];
+
   if (!b?.key_words && !b?.key_grammar) {
-    try {
-      const { data } = await sb.from('sentence_books').select('key_words,key_grammar').eq('id', bookId).single();
-      if (data) {
-        if (data.key_words)  { localStorage.setItem('ion_kw_' + bookId, data.key_words);  if (b) b.key_words  = data.key_words; }
-        if (data.key_grammar){ localStorage.setItem('ion_kg_' + bookId, data.key_grammar); if (b) b.key_grammar = data.key_grammar; }
-      }
-    } catch(e) {}
+    prefetchPromises.push(
+      sb.from('sentence_books').select('key_words,key_grammar').eq('id', bookId).single().then(({data}) => {
+        if (data) {
+          if (data.key_words)  { localStorage.setItem('ion_kw_' + bookId, data.key_words);  if (b) b.key_words  = data.key_words; }
+          if (data.key_grammar){ localStorage.setItem('ion_kg_' + bookId, data.key_grammar); if (b) b.key_grammar = data.key_grammar; }
+        }
+      }).catch(()=>{})
+    );
   }
+
+  // sentence_items 미리 캐시
+  if (!DB_sentItems[bookId]) {
+    prefetchPromises.push(loadSentenceItems(bookId));
+  }
+
+  await Promise.all(prefetchPromises);
 
   // 오버레이로 열기
   const prev = document.getElementById('sent-book-overlay');
@@ -7338,6 +7386,8 @@ async function renderSstGrammarInPanel() {
   if (!panel) return;
   const bookId = _sstActiveBook;
   const b = DB_sentBooks.find(b => b.id === bookId);
+  const slime = getSlimeData();
+  const col = getSlimeColor(slime.colorId);
 
   // 캐시에 key_grammar 없으면 Supabase에서 로드 시도
   if (!b?.key_grammar && !localStorage.getItem('ion_kg_' + bookId)) {
@@ -7363,10 +7413,10 @@ async function renderSstGrammarInPanel() {
       ${items.map((it, i) => `
         <div style="background:#fff;border-radius:16px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.04)">
           <div style="padding:14px 20px;background:linear-gradient(135deg,${col.a}15,${col.b}10);border-bottom:1.5px solid ${col.b}30;display:flex;align-items:center;gap:10px">
-            <span style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,${col.a},${col.b});display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:${col.dark};flex-shrink:0">${i+1}</span>
-            <div style="font-size:15px;font-weight:800;color:var(--t1)">${it.title}</div>
+            <span style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,${col.a},${col.b});display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:${col.dark};flex-shrink:0">${i+1}</span>
+            <div style="font-size:17px;font-weight:800;color:var(--t1)">${it.title}</div>
           </div>
-          <div style="padding:16px 20px">${(function(desc){ return desc.split('\n').map(function(line){ if(!line.trim()) return '<div style="height:6px"></div>'; if(/^(예[):]|Ex[):])/i.test(line.trim())) return '<div style="margin:8px 0;padding:10px 14px;background:var(--surface2);border-radius:10px;border-left:3px solid '+col.b+';font-family:\'JetBrains Mono\',monospace;font-size:13px;color:var(--t2);line-height:1.6">'+line+'</div>'; return '<div style="font-size:14px;color:var(--t2);line-height:1.7">'+line+'</div>'; }).join(''); })(it.desc)}</div>
+          <div style="padding:16px 20px">${(function(desc){ return desc.split('\n').map(function(line){ if(!line.trim()) return '<div style="height:6px"></div>'; if(/^(예[):]|Ex[):])/i.test(line.trim())) return '<div style="margin:8px 0;padding:10px 14px;background:var(--surface2);border-radius:10px;border-left:3px solid '+col.b+';font-family:\'JetBrains Mono\',monospace;font-size:15px;color:var(--t2);line-height:1.6">'+line+'</div>'; return '<div style="font-size:16px;color:var(--t2);line-height:1.7">'+line+'</div>'; }).join(''); })(it.desc)}</div>
         </div>`).join('')}
     </div>
   `;
@@ -7569,7 +7619,7 @@ async function renderSstGrammarOverlay() {
               <div style="font-size:15px;font-weight:800;color:var(--t1)">${it.title}</div>
             </div>
             <div style="padding:16px 20px">
-              ${(function(desc){ return desc.split('\n').map(function(line){ if(!line.trim()) return '<div style="height:6px"></div>'; if(/^(예[):]|Ex[):])/i.test(line.trim())) return '<div style="margin:8px 0;padding:10px 14px;background:var(--surface2);border-radius:10px;border-left:3px solid '+col.b+';font-family:\'JetBrains Mono\',monospace;font-size:13px;color:var(--t2);line-height:1.6">'+line+'</div>'; return '<div style="font-size:14px;color:var(--t2);line-height:1.7">'+line+'</div>'; }).join(''); })(it.desc)}
+              ${(function(desc){ return desc.split('\n').map(function(line){ if(!line.trim()) return '<div style="height:6px"></div>'; if(/^(예[):]|Ex[):])/i.test(line.trim())) return '<div style="margin:8px 0;padding:10px 14px;background:var(--surface2);border-radius:10px;border-left:3px solid '+col.b+';font-family:\'JetBrains Mono\',monospace;font-size:15px;color:var(--t2);line-height:1.6">'+line+'</div>'; return '<div style="font-size:16px;color:var(--t2);line-height:1.7">'+line+'</div>'; }).join(''); })(it.desc)}
             </div>
           </div>`).join('')}
       </div>
@@ -7607,8 +7657,8 @@ function renderSstGrammar() {
       ${items.map((it, i) => `
         <div style="background:#fff;border-radius:16px;border:1.5px solid var(--border);overflow:hidden;box-shadow:0 2px 8px rgba(15,23,42,0.04)">
           <div style="padding:14px 20px;background:linear-gradient(135deg,${col.a}15,${col.b}10);border-bottom:1.5px solid ${col.b}30;display:flex;align-items:center;gap:10px">
-            <span style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,${col.a},${col.b});display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:${col.dark};flex-shrink:0">${i+1}</span>
-            <div style="font-size:15px;font-weight:800;color:var(--t1)">${it.title}</div>
+            <span style="width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,${col.a},${col.b});display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:${col.dark};flex-shrink:0">${i+1}</span>
+            <div style="font-size:17px;font-weight:800;color:var(--t1)">${it.title}</div>
           </div>
           <div style="padding:16px 20px">
             ${it.desc.split('\n').map(line => {
@@ -10975,21 +11025,11 @@ async function doLinkStudents() {
       .in('id', ids);
     if (fetchErr) throw fetchErr;
 
-    // teacher_id 업데이트 시도 (실패해도 로컬에는 연결)
-    let dbSaved = false;
-    try {
-      const { error: upErr } = await sb.from('profiles')
-        .update({ teacher_id: currentUser.id })
-        .in('id', ids);
-      if (!upErr) dbSaved = true;
-      else console.warn('teacher_id DB 업데이트 실패:', upErr.message);
-    } catch(e2) { console.warn('teacher_id update 예외:', e2.message); }
-
-    // 로컬 스토리지에 연결 정보 저장 (DB 컬럼 없을 때 fallback)
-    const linkKey = 'ion_teacher_students_' + currentUser.id;
-    const existing = new Set(JSON.parse(localStorage.getItem(linkKey) || '[]'));
-    ids.forEach(id => existing.add(id));
-    localStorage.setItem(linkKey, JSON.stringify([...existing]));
+    // teacher_id DB 업데이트 (실패 시 사용자에게 알림)
+    const { error: upErr } = await sb.from('profiles')
+      .update({ teacher_id: currentUser.id })
+      .in('id', ids);
+    if (upErr) throw new Error('학생 연결 저장 실패: ' + upErr.message);
 
     // DB.users에 즉시 반영
     (newStudents || []).forEach(s => {
@@ -11022,18 +11062,12 @@ async function doLinkStudents() {
 async function unlinkStudent(uid, name) {
   if (!confirm('"' + name + '" 학생을 내 목록에서 제거할까요?\n계정은 삭제되지 않습니다.')) return;
 
-  // 1. 로컬 스토리지에서 즉시 제거 (DB 관계없이 반드시 실행)
-  const linkKey = 'ion_teacher_students_' + currentUser.id;
-  const existing = new Set(JSON.parse(localStorage.getItem(linkKey) || '[]'));
-  existing.delete(uid);
-  localStorage.setItem(linkKey, JSON.stringify([...existing]));
-
-  // 2. DB teacher_id 제거 시도 (실패해도 로컬은 이미 제거됨)
+  // 1. DB teacher_id 제거
   try {
     await sb.from('profiles').update({ teacher_id: null }).eq('id', uid);
-  } catch(e) { console.warn('teacher_id 제거 실패 (무시):', e.message); }
+  } catch(e) { showToast('연결 해제 저장 실패: ' + e.message, 'error'); return; }
 
-  // 3. 메모리에서 즉시 제거
+  // 2. 메모리에서 즉시 제거
   DB.users = DB.users.filter(u => u.id !== uid);
   showToast('"' + name + '" 학생 연결이 해제됐습니다.', 'success');
   renderStudentsMgmt();
