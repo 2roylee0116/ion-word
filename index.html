@@ -174,24 +174,33 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-he
 }
 
 .sidebar-head{
-  padding:22px 16px 18px;
+  padding:28px 16px 20px;
+  border-bottom:none;
+}
+
+.sidebar-brand{display:flex;align-items:center;gap:12px;margin-bottom:0;}
+
+.sidebar-userinfo{
+  padding:20px 24px 16px;
   border-bottom:1px solid var(--sb-bd);
 }
 
-.sidebar-brand{display:flex;align-items:center;gap:12px;margin-bottom:20px}
-
 .sidebar-mark{
-  width:36px;height:36px;flex-shrink:0;
+  width:42px;height:42px;flex-shrink:0;
   background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);
-  border-radius:10px;
+  border-radius:13px;
   display:flex;align-items:center;justify-content:center;
-  font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:#fff;
-  box-shadow:0 4px 14px rgba(59,130,246,0.5);
+  font-family:'Fraunces',serif;font-size:24px;font-weight:900;color:#fff;
+  box-shadow:0 6px 22px rgba(37,99,235,0.52),0 2px 6px rgba(37,99,235,0.2);
 }
 
 .sidebar-title{
-  font-family:'Fraunces',serif;font-size:19px;font-weight:900;
-  color:#fff;letter-spacing:-0.3px;line-height:1;
+  font-family:'Fraunces',serif;font-size:24px;font-weight:900;
+  color:#ffffff;letter-spacing:-1px;line-height:1;
+}
+.sidebar-subtext{
+  font-size:15px;font-weight:400;
+  color:rgba(255,255,255,0.45);margin-top:0;letter-spacing:0;
 }
 
 .user-chip{
@@ -204,23 +213,33 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-he
 .avatar-teacher{background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a1a1a}
 .avatar-student{background:linear-gradient(135deg,#10b981,#059669);color:#fff}
 
-.user-info-name{font-size:13px;font-weight:600;color:rgba(255,255,255,0.9)}
-.user-info-role{font-size:11px;color:var(--sb-t);margin-top:1px}
+.user-info-name{font-size:13px;font-weight:600;color:#ffffff}
+.user-info-role{font-size:11px;color:#ffffff;margin-top:1px}
 
 .sidebar-nav{padding:12px 12px;flex:1}
 
 .nav-group-label{
-  padding:16px 8px 6px;font-size:9.5px;font-weight:700;
+  padding:28px 8px 7px;font-size:9.5px;font-weight:700;
   color:rgba(255,255,255,0.18);letter-spacing:2.5px;text-transform:uppercase;
 }
-.nav-group-label:first-child{padding-top:4px}
+.nav-group-label:first-child{padding-top:8px}
+
+/* 학생 사이드바 그룹 레이블 — 참고 파일 스타일 */
+.nav-group-label-item{
+  display:flex;align-items:center;
+  width:100%;padding:10px 12px 6px;
+  font-family:'Outfit',sans-serif;font-size:14px;font-weight:400;
+  color:rgba(255,255,255,0.55);letter-spacing:-0.1px;
+  margin-bottom:1px;margin-top:20px;
+}
+.nav-group-label-item:first-child{margin-top:4px}
 
 .nav-item{
   display:flex;align-items:center;gap:11px;
-  width:100%;padding:9px 12px;
+  width:100%;padding:10px 12px;
   border:none;background:none;
-  font-family:'Outfit',sans-serif;font-size:13px;font-weight:400;
-  color:var(--sb-t);cursor:pointer;transition:all 0.15s;
+  font-family:'Outfit',sans-serif;font-size:14px;font-weight:400;
+  color:rgba(255,255,255,0.6);cursor:pointer;transition:all 0.15s;
   text-align:left;border-radius:9px;position:relative;margin-bottom:1px;
   letter-spacing:-0.1px;
 }
@@ -249,23 +268,34 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-he
 .logout-btn:hover{border-color:rgba(239,68,68,0.35);color:#fca5a5;background:rgba(239,68,68,0.07)}
 
 /* ════ MAIN ════ */
-.main{margin-left:240px;min-height:100vh;background:#e8f0f8}
+.main{margin-left:240px;min-height:100vh;background:#f8f9fa}
 
 .topbar{
   background:#ffffff;
-  border-bottom:1px solid var(--border);
-  padding:0 32px;height:58px;
+  border-bottom:1px solid #eaeff6;
+  padding:0 32px;height:64px;
   display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:50;
+  box-shadow:0 1px 0 #eaeff6,0 2px 8px rgba(15,23,42,0.04);
 }
 .topbar-left{display:flex;align-items:center;gap:12px}
-.topbar-title{font-size:15px;font-weight:700;letter-spacing:-0.3px;color:var(--t1)}
+.topbar-title{font-size:20px;font-weight:800;letter-spacing:-0.5px;color:#0f172a}
 .topbar-crumb{font-size:13px;color:var(--t2)}
 .topbar-right{display:flex;align-items:center;gap:8px}
+.topbar-search{
+  display:flex;align-items:center;gap:9px;
+  background:#f1f5f9;border:1px solid #e2e8f0;border-radius:24px;
+  padding:0 18px;height:40px;min-width:220px;
+  transition:all 0.15s;
+}
+.topbar-search:focus-within{background:#fff;border-color:#93c5fd;box-shadow:0 0 0 3px rgba(147,197,253,0.2)}
+.topbar-search svg{color:#94a3b8;flex-shrink:0}
+.topbar-search input{border:none;background:none;outline:none;font-size:13px;color:#334155;width:100%;font-family:inherit}
+.topbar-search input::placeholder{color:#94a3b8}
 
 .content{padding:20px 32px 36px}
 .page{display:none}
-.page.active{display:block;background:#e8f0f8;min-height:calc(100vh - 58px);margin:-20px -32px -36px;padding:20px 32px 36px}
+.page.active{display:block;background:#f8f9fa;min-height:calc(100vh - 58px);margin:-20px -32px -36px;padding:20px 32px 36px}
 
 /* ════ BUTTONS ════ */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 18px;border-radius:10px;
@@ -307,7 +337,8 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-he
 /* ════ BOOK CARDS ════ */
 .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 /* 학생 단어장 카드 - 더 넓은 간격 */
-#mybooks-grid.cards-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+#mybooks-grid.cards-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
+#sent-books-grid-student.cards-grid{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
 .book-card{background:#fff;border:1.5px solid var(--border);border-radius:var(--r);padding:18px;
   cursor:default;transition:all 0.2s cubic-bezier(0.34,1.1,0.64,1);position:relative;box-shadow:var(--sh)}
 .book-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:var(--sh-b)}
@@ -805,18 +836,18 @@ input:checked+.toggle-slider:before{transform:translateX(18px)}
 }
 /* 브랜드 마크 */
 .student-mode .sidebar-mark {
-  background: #2a5298 !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-  border-radius: 8px;
+  background: linear-gradient(135deg,#3b82f6 0%,#2563eb 100%) !important;
+  box-shadow: 0 6px 22px rgba(37,99,235,0.52),0 2px 6px rgba(37,99,235,0.2) !important;
+  border-radius: 13px !important;
 }
 /* 브랜드 타이틀 */
 .student-mode .sidebar-title {
-  font-family:'Outfit',sans-serif !important;
-  font-weight:800 !important;
+  font-family:'Fraunces',serif !important;
+  font-weight:900 !important;
   color:#ffffff !important;
   background:none !important;
   -webkit-text-fill-color:#ffffff !important;
-  letter-spacing:-0.5px;
+  letter-spacing:-1px !important;
 }
 /* 유저 칩 */
 .student-mode .user-chip {
@@ -829,6 +860,7 @@ input:checked+.toggle-slider:before{transform:translateX(18px)}
 
 /* nav 그룹 레이블 */
 .student-mode .nav-group-label { color:rgba(255,255,255,0.28); }
+.student-mode .nav-group-label-item { color:rgba(255,255,255,0.38); }
 
 /* nav 아이템 기본 */
 .student-mode .nav-item {
@@ -874,22 +906,23 @@ input:checked+.toggle-slider:before{transform:translateX(18px)}
 }
 
 /* 학생 메인 영역 배경 */
-.student-mode .main { background: #e8f0f8; }
-body.student-mode { background: #e8f0f8; }
+.student-mode .main { background: #f8f9fa; }
+body.student-mode { background: #f8f9fa; }
 .student-mode .topbar {
   background: #ffffff !important;
-  border-bottom: 1px solid var(--border) !important;
-  box-shadow: none;
+  border-bottom: 1px solid #eaeff6 !important;
+  box-shadow: 0 1px 0 #eaeff6,0 2px 8px rgba(15,23,42,0.04) !important;
 }
-.student-mode .topbar-title { color: #1e3a5f; font-weight:700; }
+.student-mode .topbar-title { color: #0f172a; font-weight:800; }
 
 /* 학생 topbar 우측 버튼들 */
 .student-topbar-btn {
-  width:36px;height:36px;border-radius:10px;border:none;background:rgba(30,58,95,0.06);
+  width:40px;height:40px;border-radius:10px;border:none;background:none;
   display:flex;align-items:center;justify-content:center;cursor:pointer;
-  font-size:17px;transition:all 0.15s;position:relative;flex-shrink:0;
+  font-size:17px;transition:background 0.15s;position:relative;flex-shrink:0;
+  color:#1e3a5f;
 }
-.student-topbar-btn:hover { background:rgba(30,58,95,0.12); transform:translateY(-1px); }
+.student-topbar-btn:hover { background:#f1f5f9; }
 .student-topbar-notif-dot {
   position:absolute;top:5px;right:5px;width:7px;height:7px;
   border-radius:50%;background:#ef4444;border:1.5px solid #fff;
@@ -1124,7 +1157,7 @@ body.student-mode { background: #e8f0f8; }
 
 /* EXP 바 */
 .exp-track {
-  background:#e8f0f8;
+  background:#f8f9fa;
   border-radius:99px;height:8px;
   margin-bottom:5px;overflow:hidden;
 }
@@ -1216,7 +1249,7 @@ body.student-mode { background: #e8f0f8; }
 .slime-evo-stage {
   text-align:center;padding:12px 6px;
   border-radius:14px;
-  border:1.5px solid #e8f0f8;
+  border:1.5px solid #f8f9fa;
   background:#f8fafb;
   position:relative;transition:all 0.2s;
 }
@@ -1256,7 +1289,7 @@ body.student-mode { background: #e8f0f8; }
 }
 .slime-mission-progress { flex:1; }
 .slime-mission-label { font-size:12px;font-weight:600;color:#1e3a5f;margin-bottom:4px; }
-.slime-mission-bar { height:4px;background:#e8f0f8;border-radius:2px;overflow:hidden; }
+.slime-mission-bar { height:4px;background:#f8f9fa;border-radius:2px;overflow:hidden; }
 .slime-mission-fill { height:100%;border-radius:2px;transition:width 1s cubic-bezier(0.34,1.2,0.64,1); }
 .slime-mission-reward {
   font-size:11px;font-weight:700;
@@ -1270,7 +1303,7 @@ body.student-mode { background: #e8f0f8; }
 .slime-badge-item {
   text-align:center;padding:10px 4px;
   border-radius:12px;
-  border:1.5px solid #e8f0f8;
+  border:1.5px solid #f8f9fa;
   background:#f8fafb;
   transition:all 0.2s;cursor:default;
 }
@@ -1387,24 +1420,22 @@ body.student-mode { background: #e8f0f8; }
 <div id="app-shell">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-head">
-      <div class="sidebar-brand">
+      <div class="sidebar-brand" onclick="showPage(currentUser?.role==='teacher'?'pg-dashboard':'pg-slime-home')" style="cursor:pointer;transition:opacity 0.15s" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">
         <div class="sidebar-mark">I</div>
         <div class="sidebar-title">ION Word</div>
       </div>
-      <div class="user-chip" id="user-chip">
-        <div class="user-avatar avatar-teacher" id="user-avatar">T</div>
-        <div>
-          <div class="user-info-name" id="user-name-display">선생님</div>
-          <div class="user-info-role" id="user-role-display">관리자</div>
-        </div>
-      </div>
+      <div id="user-avatar" style="display:none"></div>
+    </div>
+
+    <div class="sidebar-userinfo">
+      <div class="sidebar-subtext" id="user-chip"><span id="user-name-display">—</span> · <span id="user-role-display">—</span> <span id="user-level-display" style="display:none;margin-left:4px;font-size:10px;font-weight:700;background:rgba(255,255,255,0.15);border-radius:5px;padding:1px 6px;vertical-align:middle;letter-spacing:0.3px;color:#ffffff"></span></div>
     </div>
 
     <nav class="sidebar-nav" id="sidebar-nav"></nav>
 
     <div class="sidebar-bottom">
-      <button class="logout-btn" onclick="openApiKeyModal();updateQuotaBadge();" style="margin-bottom:8px;border-color:var(--border);color:var(--text-muted)">⚙️ AI 키 설정</button>
-      <button class="logout-btn" onclick="doLogout()">🚪 로그아웃</button>
+      <button class="logout-btn" onclick="openApiKeyModal();updateQuotaBadge();" style="margin-bottom:8px;border-color:var(--border);color:var(--text-muted)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><circle cx="12" cy="10" r="3"/></svg>AI Setting</button>
+      <button class="logout-btn" onclick="doLogout()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:8px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</button>
     </div>
   </aside>
 
@@ -1419,7 +1450,7 @@ body.student-mode { background: #e8f0f8; }
           style="display:none;background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;color:var(--text);font-size:20px;line-height:1;margin-right:8px">
           ☰
         </button>
-        <div class="topbar-title" id="topbar-title">대시보드</div>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
       </div>
       <div class="topbar-right" id="topbar-right"></div>
     </div>
@@ -3885,59 +3916,51 @@ function buildStudentTopbar() {
   const col = getSlimeColor(slime.colorId);
 
   right.innerHTML = `
-    <div style="display:flex;align-items:center;gap:6px;position:relative">
-
-      <!-- 알림 버튼 -->
-      <button class="student-topbar-btn" id="st-notif-btn"
-        onclick="stToggleNotif()"
-        title="알림"
-        style="color:${col.dark}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-        </svg>
-        <span class="student-topbar-notif-dot" id="st-notif-dot" style="display:none"></span>
-      </button>
-
-      <!-- 알림 드롭다운 -->
-      <div id="st-notif-panel" style="display:none;position:absolute;top:calc(100% + 8px);right:0;
-        min-width:280px;background:#fff;border:1.5px solid #dde8f2;border-radius:16px;
-        box-shadow:0 8px 32px rgba(30,58,95,0.14);z-index:600;overflow:hidden;animation:fadeUp 0.15s ease both">
-        <div style="padding:12px 16px;border-bottom:1px solid var(--surface2);display:flex;align-items:center;justify-content:space-between">
-          <div style="font-size:13px;font-weight:700;color:#1e3a5f">알림</div>
-          <button onclick="stCloseAll()" style="font-size:11px;color:#7ea8cc;background:none;border:none;cursor:pointer">모두 닫기</button>
-        </div>
-        <div id="st-notif-list" style="max-height:280px;overflow-y:auto;padding:8px 0">
-          <div style="padding:20px;text-align:center;color:#b0c4d8;font-size:13px">새 알림이 없어요 🌱</div>
-        </div>
-        <div style="padding:10px 16px;border-top:1px solid var(--surface2);text-align:center">
-          <button onclick="showPage('pg-messages');stCloseAll()"
-            style="font-size:12px;font-weight:600;color:${col.dark};background:none;border:none;cursor:pointer">
-            📬 쪽지함 열기
-          </button>
-        </div>
+    <div style="display:flex;align-items:center;gap:20px;position:relative">
+      <!-- 검색바 -->
+      <div class="topbar-search">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input placeholder="검색..." type="text">
       </div>
-
-      <!-- 설정 버튼 -->
-      <button class="student-topbar-btn" onclick="stOpenSettings()"
-        title="설정"
-        style="color:${col.dark}">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-        </svg>
-      </button>
-
-      <!-- 프로필 버튼 -->
-      <button class="student-topbar-btn" id="st-profile-btn"
-        onclick="stToggleProfile()"
-        title="프로필"
-        style="width:36px;height:36px;border-radius:10px;overflow:hidden;padding:0;
-          border:2px solid ${col.b}50;background:${col.a}20">
-        <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center">
-          ${buildMiniSlimeSVG(slime.stage, 28, {colorId:slime.colorId,eyeStyle:slime.eyeStyle,accessory:slime.accessory})}
+      <!-- 아이콘 그룹 -->
+      <div style="display:flex;align-items:center;gap:4px">
+        <!-- 알림 -->
+        <button class="student-topbar-btn" id="st-notif-btn" onclick="stToggleNotif()" title="알림">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span class="student-topbar-notif-dot" id="st-notif-dot" style="display:none"></span>
+        </button>
+        <!-- 알림 드롭다운 -->
+        <div id="st-notif-panel" style="display:none;position:absolute;top:calc(100% + 8px);right:0;
+          min-width:280px;background:#fff;border:1.5px solid #dde8f2;border-radius:16px;
+          box-shadow:0 8px 32px rgba(30,58,95,0.14);z-index:600;overflow:hidden;animation:fadeUp 0.15s ease both">
+          <div style="padding:12px 16px;border-bottom:1px solid var(--surface2);display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:13px;font-weight:700;color:#1e3a5f">알림</div>
+            <button onclick="stCloseAll()" style="font-size:11px;color:#7ea8cc;background:none;border:none;cursor:pointer">모두 닫기</button>
+          </div>
+          <div id="st-notif-list" style="max-height:280px;overflow-y:auto;padding:8px 0">
+            <div style="padding:20px;text-align:center;color:#b0c4d8;font-size:13px">새 알림이 없어요 🌱</div>
+          </div>
+          <div style="padding:10px 16px;border-top:1px solid var(--surface2);text-align:center">
+            <button onclick="showPage('pg-messages');stCloseAll()" style="font-size:12px;font-weight:600;color:#1e3a5f;background:none;border:none;cursor:pointer">📬 쪽지함 열기</button>
+          </div>
         </div>
-      </button>
+        <!-- 설정 -->
+        <button class="student-topbar-btn" onclick="stOpenSettings()" title="설정">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+        <!-- 슬라임 프로필 -->
+        <button id="st-profile-btn" onclick="stToggleProfile()" title="프로필"
+          style="width:40px;height:40px;border-radius:50%;overflow:hidden;padding:0;border:2px solid #e2e8f0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.15s"
+          onmouseover="this.style.borderColor='#93c5fd'" onmouseout="this.style.borderColor='#e2e8f0'">
+          ${buildMiniSlimeSVG(slime.stage, 32, {colorId:slime.colorId,eyeStyle:slime.eyeStyle,accessory:slime.accessory})}
+        </button>
+      </div>
 
       <!-- 프로필 드롭다운 -->
       <div id="st-profile-panel" class="student-profile-menu" style="display:none">
@@ -4122,17 +4145,9 @@ function initApp() {
     // 학생: 슬라임 미니 아바타 + EXP 바 추가
     const slime = getSlimeData();
     const colorDef = getSlimeColor(slime.colorId);
-    const av = document.getElementById('user-avatar');
-    av.innerHTML = buildMiniSlimeSVG(slime.stage, 36, {colorId:slime.colorId,eyeStyle:slime.eyeStyle,accessory:slime.accessory});
-    av.style.cssText = 'width:36px;height:36px;border-radius:9px;overflow:visible;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;padding:0;animation:slimeBob 3s ease-in-out infinite';
-    // 유저칩 아래 EXP 미니바
+    // 사이드바 아바타/EXP바 제거됨 — skip
     const chip = document.getElementById('user-chip');
     let expBarEl = document.getElementById('sidebar-exp-bar');
-    if (!expBarEl && chip) {
-      expBarEl = document.createElement('div');
-      expBarEl.id = 'sidebar-exp-bar';
-      chip.parentElement.insertBefore(expBarEl, chip.nextSibling);
-    }
     if (expBarEl) {
       const stage = slime.stage;
       const prevExp = stage>0?SLIME_STAGES[stage-1].expNeeded:0;
@@ -4149,6 +4164,9 @@ function initApp() {
           </div>
         </div>`;
     }
+    // 레벨 뱃지 표시 (학생)
+    const lvEl = document.getElementById('user-level-display');
+    if (lvEl) { lvEl.textContent = 'Lv.' + (slime.stage + 1); lvEl.style.display = 'inline'; }
     applySlimeTheme();
     buildStudentTopbar();
   } else {
@@ -4157,17 +4175,9 @@ function initApp() {
     // 선생님은 항상 마스터 슬라임 (stage 3)
     if (slime.stage < 3) { slime.stage = 3; saveSlimeData(slime); }
     const colorDef = getSlimeColor(slime.colorId);
-    const av = document.getElementById('user-avatar');
-    av.innerHTML = buildMiniSlimeSVG(3, 36, {colorId:slime.colorId, eyeStyle:slime.eyeStyle, accessory:slime.accessory});
-    av.style.cssText = 'width:36px;height:36px;border-radius:9px;overflow:visible;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:transparent;padding:0;animation:slimeBob 3s ease-in-out infinite';
-    // 사이드바 EXP 바 (마스터 - MAX)
+    // 사이드바 아바타/EXP바 제거됨 — skip
     const chip = document.getElementById('user-chip');
     let expBarEl = document.getElementById('sidebar-exp-bar');
-    if (!expBarEl && chip) {
-      expBarEl = document.createElement('div');
-      expBarEl.id = 'sidebar-exp-bar';
-      chip.parentElement.insertBefore(expBarEl, chip.nextSibling);
-    }
     if (expBarEl) {
       expBarEl.innerHTML = `
         <div style="margin-top:8px;padding:0 2px">
@@ -4180,6 +4190,9 @@ function initApp() {
           </div>
         </div>`;
     }
+    // 레벨 뱃지 표시 (선생님 — MAX)
+    const lvElT = document.getElementById('user-level-display');
+    if (lvElT) { lvElT.textContent = 'Lv.MAX'; lvElT.style.display = 'inline'; }
     // 선생님 topbar에도 슬라임 UI 적용
     applySlimeTheme();
     buildStudentTopbar();
@@ -4311,29 +4324,29 @@ sb.auth.onAuthStateChange((event, session) => {
 
 
 const teacherNav = [
-  { group:'학습자료', items:[
-    {id:'pg-dashboard',icon:'dashboard',label:'대시보드'},
-    {id:'pg-library',icon:'library',label:'단어장 보관함'},
-    {id:'pg-sentences',icon:'sentences',label:'문장 보관함'},
-    {id:'pg-filevault',icon:'filevault',label:'파일 보관함'},
+  { group:'Material', items:[
+    {id:'pg-dashboard',icon:'dashboard',label:'Dashboard'},
+    {id:'pg-library',icon:'library',label:'Word'},
+    {id:'pg-sentences',icon:'sentences',label:'Reading'},
+    {id:'pg-filevault',icon:'filevault',label:'Edit'},
   ]},
-  { group:'관리', items:[
-    {id:'pg-students',icon:'students',label:'학생·반 관리'},
-    {id:'pg-messages',icon:'messages',label:'쪽지함'},
+  { group:'Tool', items:[
+    {id:'pg-students',icon:'students',label:'Student & Class'},
+    {id:'pg-messages',icon:'messages',label:'Message'},
   ]},
-  { group:'계정', items:[
-    {id:'pg-teachers',icon:'students',label:'선생님 계정 관리'},
+  { group:'Account', items:[
+    {id:'pg-teachers',icon:'students',label:'Teacher Account'},
   ]}
 ];
 const studentNav = [
-  { group:'홈', items:[
-    {id:'pg-slime-home',icon:'slime',label:'내 슬라임'},
+  { group:'Home', items:[
+    {id:'pg-slime-home',icon:'slime',label:'My Slime'},
   ]},
-  { group:'학습', items:[
-    {id:'pg-mybooks',icon:'library',label:'단어학습'},
-    {id:'pg-sentence-study',icon:'sentences',label:'문장학습'},
-    {id:'pg-progress',icon:'progress',label:'내 학습 기록'},
-    {id:'pg-messages',icon:'messages',label:'쪽지함'},
+  { group:'Learning', items:[
+    {id:'pg-mybooks',icon:'library',label:'Word'},
+    {id:'pg-sentence-study',icon:'sentences',label:'Reading'},
+    {id:'pg-progress',icon:'progress',label:'Record'},
+    {id:'pg-messages',icon:'messages',label:'Message'},
   ]}
 ];
 
@@ -4341,43 +4354,47 @@ const studentNav = [
 const NAV_ICONS = {
   dashboard: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
   slime: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="13" rx="8" ry="7"/><path d="M4 13c0-4 2-8 8-10 6 2 8 6 8 10"/><circle cx="9" cy="12" r="1.2" fill="currentColor"/><circle cx="15" cy="12" r="1.2" fill="currentColor"/></svg>`,
-  library:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+  library:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="12" y1="6" x2="16" y2="6"/><line x1="12" y1="10" x2="16" y2="10"/><line x1="8" y1="6" x2="8.01" y2="6"/><line x1="8" y1="10" x2="8.01" y2="10"/></svg>`,
   editor:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
   assign:    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>`,
   students:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
   classes:   `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
-  messages:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+  messages:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>`,
   filevault: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
   ai:        `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
   flashcard: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>`,
   quiz:      `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>`,
-  progress:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
-  sentences: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="13" y2="13"/></svg>`,
+  progress:  `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M5 9h2v11H5zm4-5h2v16H9zm4 8h2v8h-2zm4-4h2v12h-2z"/></svg>`,
+  sentences: `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>`,
 };
 
 function buildNav() {
   const nav = document.getElementById('sidebar-nav');
   const groups = currentUser.role==='teacher' ? teacherNav : studentNav;
+  const isStudent = currentUser.role !== 'teacher';
   nav.innerHTML = groups.map(g => `
-    <div class="nav-group-label">${g.group}</div>
+    ${isStudent
+      ? `<div class="nav-group-label-item">${g.group}</div>`
+      : `<div class="nav-group-label">${g.group}</div>`
+    }
     ${g.items.map(it => `
       <button class="nav-item" id="nav-${it.id}" onclick="showPage('${it.id}')">
-        <span class="nav-icon">${NAV_ICONS[it.icon] || ''}</span>${it.label}
+        ${it.icon ? `<span class="nav-icon">${NAV_ICONS[it.icon] || ''}</span>` : ''}${it.label}
       </button>
     `).join('')}
   `).join('');
 }
 
 const pageTitles = {
-  'pg-dashboard':'대시보드','pg-library':'단어장 보관함',
-  'pg-assign':'학생·반 관리','pg-ai':'AI 단어 생성','pg-filevault':'파일 보관함',
-  'pg-mybooks':'단어학습','pg-flashcard':'암기 학습',
-  'pg-quiz':'퀴즈 테스트','pg-progress':'내 학습 기록',
-  'pg-sentences':'문장 보관함','pg-sentence-study':'문장학습',
-  'pg-classes':'학생·반 관리','pg-messages':'쪽지함',
-  'pg-slime-home':'내 슬라임',
-  'pg-students':'학생·반 관리',
-  'pg-teachers':'선생님 계정 관리'
+  'pg-dashboard':'Dashboard','pg-library':'Word',
+  'pg-assign':'Student & Class','pg-ai':'AI 단어 생성','pg-filevault':'Edit',
+  'pg-mybooks':'Word','pg-flashcard':'암기 학습',
+  'pg-quiz':'퀴즈 테스트','pg-progress':'Record',
+  'pg-sentences':'Reading','pg-sentence-study':'Reading',
+  'pg-classes':'Student & Class','pg-messages':'Message',
+  'pg-slime-home':'My Slime',
+  'pg-students':'Student & Class',
+  'pg-teachers':'Teacher Account'
 };
 
 function showPage(id, addHistory = true) {
@@ -7011,7 +7028,7 @@ function sentStudyBackToList() {
   const ov = document.getElementById('sent-book-overlay');
   if (ov) ov.remove();
   const titleEl = document.getElementById('topbar-title');
-  if (titleEl) titleEl.textContent = '문장학습';
+  if (titleEl) titleEl.textContent = 'Sentences';
 }
 
 async function openSentStudyBook(bookId) {
@@ -7686,7 +7703,7 @@ async function renderSentenceStudy() {
   if (!body) return;
   body.style.display = '';
   const titleEl2 = document.getElementById('topbar-title');
-  if (titleEl2) titleEl2.textContent = '문장학습';
+  if (titleEl2) titleEl2.textContent = 'Sentences';
 
   function _renderSentStudyGrid() {
     if (!DB_sentBooks.length) {
@@ -7701,88 +7718,133 @@ async function renderSentenceStudy() {
     }
     const sl  = getSlimeData();
     const col = getSlimeColor(sl.colorId);
+    const _sbNextLv = sl.stage + 2;
+    const _sbExpPct = Math.min(100, Math.round(((sl.exp||0) % 100)));
     body.innerHTML = `
-      <div style="background:linear-gradient(135deg,${col.a}20,${col.light}30);
-        border:1.5px solid ${col.b}30;border-radius:18px;padding:14px 20px;
-        margin-bottom:20px;display:flex;align-items:center;gap:14px">
-        <div style="width:56px;height:56px;flex-shrink:0;animation:slimeBob 3s ease-in-out infinite">
-          ${buildSlimeSVG(sl.stage,56)}
+      <div style="position:relative;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:16px;
+        margin-bottom:20px;display:flex;align-items:center;overflow:hidden;
+        box-shadow:0 1px 4px rgba(15,23,42,0.05);min-height:84px">
+        <!-- 슬라임: 별도 박스 없이 직접 배치 -->
+        <div style="flex-shrink:0;width:100px;display:flex;align-items:center;justify-content:center;
+          padding:10px 0 10px 12px;animation:slimeBob 3s ease-in-out infinite;z-index:1">
+          ${buildSlimeSVG(sl.stage,64)}
         </div>
-        <div style="flex:1">
-          <div style="font-size:15px;font-weight:700;color:#1e3a5f;margin-bottom:2px">문장학습으로 슬라임 근력 UP! 💪</div>
-          <div style="font-size:12px;color:#7ea8cc">문장집을 1회독 완료할 때마다 +10 EXP를 얻어요</div>
+        <!-- 중앙 텍스트 -->
+        <div style="flex:1;min-width:0;padding:14px 12px;z-index:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap">
+            <span style="font-size:14px;font-weight:700;color:#1e293b">"새 단원을 배울 준비가 됐나요?"</span>
+            <span style="display:inline-flex;align-items:center;background:#1d4ed8;
+              border-radius:20px;padding:2px 10px;flex-shrink:0">
+              <span style="font-size:10px;font-weight:800;color:#fff;letter-spacing:0.06em">LV.${sl.stage+1} COMPANION</span>
+            </span>
+          </div>
+          <div style="font-size:11.5px;color:#64748b;line-height:1.5">
+            슬라임의 성장은 문장 마스터리와 연결돼요. 문장집 1회독 완료 시 <strong style="color:#2563eb">+10 EXP</strong>!
+          </div>
         </div>
-        <div style="text-align:center;padding:8px 16px;background:${col.b}20;border-radius:12px;border:1px solid ${col.b}35">
-          <div style="font-size:18px;font-weight:700;color:${col.dark}">Lv.${sl.stage+1}</div>
-          <div style="font-size:10px;color:#7ea8cc">현재 단계</div>
+        <!-- NEXT STAGE: 사선 구분 연한 파란 영역 -->
+        <div style="position:relative;flex-shrink:0;display:flex;align-items:center;
+          background:linear-gradient(135deg,#dbeafe,#bfdbfe);
+          padding:0 24px 0 70px;align-self:stretch;
+          clip-path:polygon(60px 0%,100% 0%,100% 100%,0% 100%)">
+          <div style="text-align:center">
+            <div style="font-size:9px;font-weight:700;color:#3b82f6;letter-spacing:0.12em;margin-bottom:3px">NEXT STAGE</div>
+            <div style="font-size:28px;font-weight:800;color:#1e3a8a;letter-spacing:-1px;line-height:1">Lv.${_sbNextLv}</div>
+            <div style="margin-top:7px;height:4px;background:rgba(59,130,246,0.2);border-radius:99px;overflow:hidden;width:64px">
+              <div style="height:100%;width:${_sbExpPct}%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:99px;transition:width 1s ease"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div id="sent-books-grid-student" class="cards-grid"></div>`;
 
     const grid = document.getElementById('sent-books-grid-student');
-    DB_sentBooks.forEach(function(b) {
+    // 문장집 고정 색상 (초록 계열)
+    const sentTop    = '#1a3a2a';
+    const sentAccent = '#059669';
+    const sentMid    = '#6ee7b7';
+    DB_sentBooks.forEach(function(b, idx) {
+      const sc = b.item_count||0;
+      const pct = 0;
+      const coll = (DB_sentColls||[]).find(c=>c.id===b.collection_id);
+      const collLabel = coll ? coll.name : (b.tag || '문장집');
       const card = document.createElement('div');
-      card.style.cssText = `position:relative;background:#fff;border-radius:20px;overflow:hidden;
-        box-shadow:0 4px 20px rgba(30,58,95,0.07),0 1px 4px rgba(30,58,95,0.04);
-        border:2px solid transparent;transition:all 0.25s cubic-bezier(0.34,1.2,0.64,1);cursor:default`;
-      card.onmouseenter = function(){ this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 36px rgba(30,58,95,0.13)'; this.style.borderColor=col.b+'55'; };
-      card.onmouseleave = function(){ this.style.transform=''; this.style.boxShadow='0 4px 20px rgba(30,58,95,0.07)'; this.style.borderColor='transparent'; };
+      card.style.cssText = `position:relative;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 1px 4px rgba(15,23,42,0.05),0 6px 24px rgba(15,23,42,0.07);border:1.5px solid #e8edf4;transition:all 0.25s cubic-bezier(0.34,1.2,0.64,1);cursor:default`;
+      card.onmouseenter = function(){
+        this.style.transform='translateY(-4px)';
+        this.style.boxShadow='0 12px 40px rgba(15,23,42,0.13),0 2px 8px rgba(15,23,42,0.06)';
+        this.style.borderColor='#bfdbfe';
+      };
+      card.onmouseleave = function(){
+        this.style.transform='';
+        this.style.boxShadow='0 1px 4px rgba(15,23,42,0.05),0 6px 24px rgba(15,23,42,0.07)';
+        this.style.borderColor='#e8edf4';
+      };
       card.innerHTML = `
-        <div style="height:72px;background:linear-gradient(135deg,${col.a}25,${col.b}15);position:relative;overflow:hidden;padding:14px 16px 0">
-          <div style="position:absolute;top:-15px;right:-15px;width:80px;height:80px;border-radius:50%;background:${col.b}15;animation:slimeBob 4s ease-in-out infinite"></div>
-          <div style="display:flex;align-items:center;gap:10px;position:relative;z-index:1">
-            <div style="width:36px;height:36px;border-radius:10px;background:${col.b}25;display:flex;align-items:center;justify-content:center;font-size:18px">📝</div>
-            <div style="flex:1;min-width:0">
-              <div style="font-size:14px;font-weight:800;color:#1e3a5f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.name||''}</div>
-              <div style="font-size:11px;color:#7ea8cc">${b.tag||'문장학습'} · ${b.item_count||0}개 문장</div>
-            </div>
+        <!-- 1행: 컬렉션 pill + 점수 -->
+        <div style="padding:18px 20px 0;display:flex;justify-content:space-between;align-items:center">
+          <div style="display:inline-flex;align-items:center;background:#f1f5f9;border:1px solid #cbd5e1;border-radius:20px;padding:4px 12px">
+            <span style="font-size:11px;font-weight:700;color:#475569;letter-spacing:0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px">${collLabel}</span>
+          </div>
+          ${pct > 0
+            ? '<div style="display:flex;align-items:baseline;gap:4px"><span style="font-size:20px;font-weight:800;color:#1e3a5f;letter-spacing:-0.5px">'+pct+'%</span><span style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.08em">MASTERED</span></div>'
+            : '<div style="display:flex;align-items:baseline;gap:4px"><span style="font-size:13px;font-weight:600;color:#cbd5e1">미시작</span></div>'
+          }
+        </div>
+
+        <!-- 2행: 문장집 이름 -->
+        <div style="padding:10px 20px 0">
+          <div style="font-size:20px;font-weight:800;color:#0f172a;letter-spacing:-0.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.name||''}</div>
+        </div>
+
+        <!-- 3행: 진도바 -->
+        <div style="padding:12px 20px 0">
+          <div style="position:relative;height:6px;background:#f1f5f9;border-radius:99px;overflow:hidden">
+            <div style="position:absolute;left:0;top:0;height:100%;width:${pct}%;background:linear-gradient(90deg,#059669 0%,#10b981 50%,#34d399 100%);border-radius:99px;transition:width 1.2s cubic-bezier(0.34,1.2,0.64,1);box-shadow:0 0 8px rgba(5,150,105,0.5)"></div>
           </div>
         </div>
 
-      <!-- 하단 버튼 -->
-      <div style="padding:14px 16px;display:flex;flex-direction:column;gap:7px">
-        <!-- 문장공부 메인 버튼 -->
-        <button onclick="openSentStudyBook('${b.id}')"
-          style="width:100%;padding:11px 0;background:linear-gradient(135deg,${col.a},${col.b});
-          color:${col.dark};border:none;border-radius:12px;
-          font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;
-          transition:all 0.18s;box-shadow:0 3px 10px ${col.b}40;letter-spacing:-0.2px"
-          onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 18px ${col.b}55'"
-          onmouseout="this.style.transform='';this.style.boxShadow='0 3px 10px ${col.b}40'">
-          문장공부
-        </button>
-        <!-- 기존 연습 버튼들 -->
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+        <!-- 4행: 문장 수 -->
+        <div style="padding:8px 20px 0">
+          <span style="font-size:12px;color:#94a3b8;font-weight:500">${sc}개 문장</span>
+        </div>
+
+        <!-- 5행: 문장공부 풀버튼 -->
+        <div style="padding:14px 16px 10px">
+          <button onclick="openSentStudyBook('${b.id}')"
+            style="width:100%;padding:11px 0;background:linear-gradient(135deg,#1e4db7 0%,#1a3fa0 100%);color:#fff;border:2px solid #1e4db7;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 3px 12px rgba(30,77,183,0.28)"
+            onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 20px rgba(30,77,183,0.42)'"
+            onmouseout="this.style.transform='';this.style.boxShadow='0 3px 12px rgba(30,77,183,0.28)'">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            문장공부
+          </button>
+        </div>
+
+        <!-- 6행: 배열 / 빈칸 / 낭독 1x3 그리드 -->
+        <div style="padding:0 16px 16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">
           <button onclick="startSentStudy('${b.id}','unscramble')"
-            style="padding:8px 0;background:#fff;color:#1e3a5f;
-            border:2px solid #dde8f2;border-radius:10px;
-            font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;cursor:pointer;
-            transition:all 0.18s"
-            onmouseover="this.style.borderColor='${col.b}';this.style.transform='translateY(-1px)'"
-            onmouseout="this.style.borderColor='#dde8f2';this.style.transform=''">
+            style="padding:10px 0;background:#fff;color:#1e3a5f;border:2px solid #cbd5e1;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.18s;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px"
+            onmouseover="this.style.borderColor='#3b82f6';this.style.color='#2563eb';this.style.background='#eff6ff'"
+            onmouseout="this.style.borderColor='#cbd5e1';this.style.color='#1e3a5f';this.style.background='#fff'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
             배열
           </button>
           <button onclick="startSentStudy('${b.id}','dictation')"
-            style="padding:8px 0;background:#fff;color:#1e3a5f;
-            border:2px solid #dde8f2;border-radius:10px;
-            font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;
-            transition:all 0.18s"
-            onmouseover="this.style.borderColor='${col.b}';this.style.transform='translateY(-1px)'"
-            onmouseout="this.style.borderColor='#dde8f2';this.style.transform=''">
+            style="padding:10px 0;background:#fff;color:#1e3a5f;border:2px solid #cbd5e1;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.18s;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px"
+            onmouseover="this.style.borderColor='#3b82f6';this.style.color='#2563eb';this.style.background='#eff6ff'"
+            onmouseout="this.style.borderColor='#cbd5e1';this.style.color='#1e3a5f';this.style.background='#fff'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
             빈칸
           </button>
           <button onclick="startSentRecording('${b.id}')"
-            style="padding:8px 0;background:#fff;color:#1e3a5f;
-            border:2px solid #dde8f2;border-radius:10px;
-            font-family:'Outfit',sans-serif;font-size:11px;font-weight:700;cursor:pointer;
-            transition:all 0.18s"
-            onmouseover="this.style.borderColor='${col.b}';this.style.transform='translateY(-1px)'"
-            onmouseout="this.style.borderColor='#dde8f2';this.style.transform=''">
+            style="padding:10px 0;background:#fff;color:#1e3a5f;border:2px solid #cbd5e1;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.18s;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:5px"
+            onmouseover="this.style.borderColor='#3b82f6';this.style.color='#2563eb';this.style.background='#eff6ff'"
+            onmouseout="this.style.borderColor='#cbd5e1';this.style.color='#1e3a5f';this.style.background='#fff'">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
             낭독
           </button>
         </div>
-      </div>
-    `;
+      `;
       grid.appendChild(card);
     });
   } // end _renderSentStudyGrid
@@ -7964,7 +8026,7 @@ function renderSentStudyCard() {
             </div>
 
             <!-- 진행 바 (두꺼운 버전) -->
-            <div style="height:10px;background:#e8f0f8;border-radius:99px;overflow:hidden;position:relative">
+            <div style="height:10px;background:#f8f9fa;border-radius:99px;overflow:hidden;position:relative">
               <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${col.a},${col.b});
                 border-radius:99px;transition:width 0.5s cubic-bezier(0.34,1.2,0.64,1);position:relative">
                 <!-- 빛나는 끝부분 -->
@@ -7993,7 +8055,7 @@ function renderSentStudyCard() {
           box-shadow:0 2px 12px rgba(30,58,95,0.06);border:1px solid #dde8f2;
           align-items:center;gap:14px">
           <span style="font-size:12px;font-weight:700;color:#7ea8cc;white-space:nowrap">${_sentStudyIdx+1}/${total} Sentences</span>
-          <div style="flex:1;height:8px;background:#e8f0f8;border-radius:99px;overflow:hidden">
+          <div style="flex:1;height:8px;background:#f8f9fa;border-radius:99px;overflow:hidden">
             <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${col.a},${col.b});
               border-radius:99px;transition:width 0.5s ease"></div>
           </div>
@@ -8296,7 +8358,7 @@ function sentAddWord(word, btn) {
 
   btn.dataset.used = '1';
   btn.style.opacity = '0.45';
-  btn.style.background = '#e8f0f8';
+  btn.style.background = '#f8f9fa';
   btn.style.borderColor = '#b8cfe4';
   btn.style.color = '#8aaac8';
   btn.style.transform = '';
@@ -11857,7 +11919,6 @@ function renderMyBooks() {
   const slime = getSlimeData();
   const colorDef = getSlimeColor(slime.colorId);
 
-  // 슬라임 미니 헤더
   const prog = DB.progress||{};
   const totalRounds = Object.values(prog).reduce((s,p)=>s+(p.rounds||0),0);
   const allScores   = Object.values(prog).flatMap(p=>p.quizScores||[]);
@@ -11866,35 +11927,49 @@ function renderMyBooks() {
   const grid = document.getElementById('mybooks-grid');
   if (!grid) return;
 
-  // 슬라임 배너 업데이트
+  // 슬라임 배너
   const banner = document.getElementById('mybooks-slime-banner');
+  const _wbNextLv = slime.stage + 2;
+  const _wbExpPct = Math.min(100, Math.round(((slime.exp||0) % 100)));
   if (banner) banner.innerHTML = `
-  <div style="background:linear-gradient(135deg,${colorDef.b}18,${colorDef.light}40);
-    border:1.5px solid ${colorDef.b}35;border-radius:18px;padding:16px 20px;
-    margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-    <div style="width:64px;height:64px;flex-shrink:0;animation:slimeBob 3s ease-in-out infinite">
+  <div style="position:relative;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:16px;
+    margin-bottom:20px;display:flex;align-items:center;overflow:hidden;
+    box-shadow:0 1px 4px rgba(15,23,42,0.05);min-height:84px">
+    <!-- 슬라임: 별도 박스 없이 직접 배치 -->
+    <div style="flex-shrink:0;width:100px;display:flex;align-items:center;justify-content:center;
+      padding:10px 0 10px 12px;animation:slimeBob 3s ease-in-out infinite;z-index:1">
       ${buildSlimeSVG(slime.stage,64)}
     </div>
-    <div style="flex:1;min-width:0">
-      <div style="font-size:15px;font-weight:700;color:var(--t1);margin-bottom:2px">
-        ${slime.slimeName||'내 슬라임'}이 응원해요! 💪
+    <!-- 중앙 텍스트 -->
+    <div style="flex:1;min-width:0;padding:14px 12px;z-index:1">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap">
+        <span style="font-size:14px;font-weight:700;color:#1e293b">"단어 마스터에 도전해볼까요?"</span>
+        <span style="display:inline-flex;align-items:center;background:#1d4ed8;
+          border-radius:20px;padding:2px 10px;flex-shrink:0">
+          <span style="font-size:10px;font-weight:800;color:#fff;letter-spacing:0.06em">LV.${slime.stage+1} COMPANION</span>
+        </span>
       </div>
-      <div style="font-size:12px;color:var(--t2)">단어를 외울수록 슬라임이 성장해요. 지금 바로 시작해볼까요?</div>
+      <div style="font-size:11.5px;color:#64748b;line-height:1.5">
+        단어장 1회독 완료 시 <strong style="color:#2563eb">+10 EXP</strong> 획득! 슬라임과 함께 성장해요.
+      </div>
     </div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap">
-      <div style="text-align:center;padding:8px 14px;background:${colorDef.b}20;border-radius:10px;border:1px solid ${colorDef.b}35">
-        <div style="font-size:18px;font-weight:700;color:${colorDef.dark}">${totalRounds}</div>
-        <div style="font-size:10px;color:var(--t3)">총 회독</div>
-      </div>
-      <div style="text-align:center;padding:8px 14px;background:rgba(251,191,36,0.12);border-radius:10px;border:1px solid rgba(251,191,36,0.3)">
-        <div style="font-size:18px;font-weight:700;color:#b45309">${bestScore?bestScore+'%':'-'}</div>
-        <div style="font-size:10px;color:var(--t3)">최고 점수</div>
+    <!-- NEXT STAGE: 사선 구분 연한 파란 영역 -->
+    <div style="position:relative;flex-shrink:0;display:flex;align-items:center;
+      background:linear-gradient(135deg,#dbeafe,#bfdbfe);
+      padding:0 24px 0 70px;align-self:stretch;
+      clip-path:polygon(60px 0%,100% 0%,100% 100%,0% 100%)">
+      <div style="text-align:center">
+        <div style="font-size:9px;font-weight:700;color:#3b82f6;letter-spacing:0.12em;margin-bottom:3px">NEXT STAGE</div>
+        <div style="font-size:28px;font-weight:800;color:#1e3a8a;letter-spacing:-1px;line-height:1">Lv.${_wbNextLv}</div>
+        <div style="margin-top:7px;height:4px;background:rgba(59,130,246,0.2);border-radius:99px;overflow:hidden;width:64px">
+          <div style="height:100%;width:${_wbExpPct}%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:99px;transition:width 1s ease"></div>
+        </div>
       </div>
     </div>
   </div>`;
 
   grid.innerHTML = books.length
-    ? books.map(b => {
+    ? books.map((b, idx) => {
         const key = currentUser.id+'_'+b.id;
         const p = DB.progress[key]||{};
         const rounds = p.rounds||0;
@@ -11902,106 +11977,72 @@ function renderMyBooks() {
         const avg = scores.length?Math.round(scores.reduce((a,c)=>a+c,0)/scores.length):null;
         const wc = b.wordCount||b.words?.length||0;
         const pct = rounds>0?Math.min(100,Math.round((rounds/5)*100)):0;
-        const bColor = '#3b82f6';
-        // 점수별 이모지
-        const scoreEmoji = avg===null?'🌱':avg>=90?'🏆':avg>=70?'⭐':avg>=50?'💪':'📖';
-        const scoreColor = avg===null?colorDef.dark:avg>=80?'#059669':avg>=60?'#b45309':'#dc2626';
+        const coll = (DB.collections||[]).find(c=>c.id===b.collectionId);
+        const collLabel = coll ? coll.name : (b.tag || '단어장');
+        const subText = [wc+'개 단어', b.grade].filter(Boolean).join(' · ');
         return `
-        <div onclick_dummy style="position:relative;background:#fff;border-radius:24px;overflow:hidden;
-          box-shadow:0 4px 20px rgba(15,23,42,0.07),0 1px 4px rgba(15,23,42,0.04);
-          transition:all 0.25s cubic-bezier(0.34,1.2,0.64,1);
-          border:2px solid transparent;"
-          onmouseover="this.style.transform='translateY(-6px)';this.style.boxShadow='0 12px 40px rgba(15,23,42,0.14),0 0 0 2px ${bColor}55'"
-          onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(15,23,42,0.07)'">
+        <div style="background:#fff;border-radius:20px;overflow:hidden;
+          box-shadow:0 1px 4px rgba(15,23,42,0.05),0 6px 24px rgba(15,23,42,0.07);
+          transition:all 0.25s cubic-bezier(0.34,1.2,0.64,1);border:1.5px solid #e8edf4;"
+          onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 40px rgba(15,23,42,0.13),0 2px 8px rgba(15,23,42,0.06)';this.style.borderColor='#bfdbfe'"
+          onmouseout="this.style.transform='';this.style.boxShadow='0 1px 4px rgba(15,23,42,0.05),0 6px 24px rgba(15,23,42,0.07)';this.style.borderColor='#e8edf4'">
 
-          <!-- 상단 배경 -->
-          <div style="height:80px;background:linear-gradient(135deg,${bColor}22,${bColor}08);
-            position:relative;overflow:hidden;padding:16px 18px 0">
-            <!-- 배경 블롭 -->
-            <div style="position:absolute;top:-20px;right:-20px;width:100px;height:100px;
-              border-radius:50% 40% 60% 50%;background:${bColor}15;animation:slimeBob 4s ease-in-out infinite"></div>
-            <div style="position:absolute;bottom:-10px;left:10px;width:60px;height:60px;
-              border-radius:40% 60% 50% 55%;background:${bColor}10;animation:slimeBob 5s ease-in-out infinite reverse"></div>
-            <!-- 단어장 아이콘 + 이름 -->
-            <div style="display:flex;align-items:center;gap:10px;position:relative;z-index:1">
-              <div style="width:38px;height:38px;border-radius:12px;background:${bColor}30;
-                border:2px solid ${bColor}40;display:flex;align-items:center;justify-content:center;font-size:18px">
-                📖
-              </div>
-              <div style="flex:1;min-width:0">
-                <div style="font-size:14px;font-weight:800;color:var(--t1);
-                  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.3px">${b.name}</div>
-                <div style="font-size:11px;color:var(--t3);margin-top:1px">${wc}개 단어${b.grade?' · '+b.grade:''}</div>
-              </div>
+          <!-- 1행: 컬렉션 pill + 점수 -->
+          <div style="padding:18px 20px 0;display:flex;justify-content:space-between;align-items:center">
+            <div style="display:inline-flex;align-items:center;background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;padding:4px 12px">
+              <span style="font-size:11px;font-weight:700;color:#2563eb;letter-spacing:0.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px">${collLabel}</span>
+            </div>
+            ${avg!==null
+              ? '<div style="display:flex;align-items:baseline;gap:4px"><span style="font-size:20px;font-weight:800;color:#1e3a5f;letter-spacing:-0.5px">'+avg+'%</span><span style="font-size:10px;font-weight:700;color:#94a3b8;letter-spacing:0.08em">MASTERED</span></div>'
+              : '<div style="display:flex;align-items:baseline;gap:4px"><span style="font-size:13px;font-weight:600;color:#cbd5e1">미시작</span></div>'
+            }
+          </div>
+
+          <!-- 2행: 단어장 이름 -->
+          <div style="padding:10px 20px 0">
+            <div style="font-size:20px;font-weight:800;color:#0f172a;letter-spacing:-0.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${b.name}</div>
+          </div>
+
+          <!-- 3행: 진도바 -->
+          <div style="padding:12px 20px 0">
+            <div style="position:relative;height:6px;background:#f1f5f9;border-radius:99px;overflow:hidden">
+              <div style="position:absolute;left:0;top:0;height:100%;width:${pct}%;background:linear-gradient(90deg,#1d4ed8 0%,#3b82f6 50%,#60a5fa 100%);border-radius:99px;transition:width 1.2s cubic-bezier(0.34,1.2,0.64,1);box-shadow:0 0 8px rgba(59,130,246,0.5)"></div>
             </div>
           </div>
 
-          <!-- 하단 내용 -->
-          <div style="padding:14px 18px 16px">
-            <!-- 진도 바 -->
-            <div style="margin-bottom:12px">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-                <span style="font-size:11px;font-weight:600;color:var(--t3)">학습 진도</span>
-                <span style="font-size:11px;font-weight:700;color:${bColor}">${rounds}회독</span>
-              </div>
-              <div style="height:7px;background:#f1f5f9;border-radius:99px;overflow:hidden">
-                <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,${bColor},${bColor}99);
-                  border-radius:99px;transition:width 1.2s cubic-bezier(0.34,1.2,0.64,1)"></div>
-              </div>
-            </div>
-
-            <!-- 점수 + 미니 바 -->
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;
-              min-height:32px;background:#f8fafc;border-radius:10px;padding:6px 10px">
-              <span style="font-size:18px">${scoreEmoji}</span>
-              <span style="font-size:13px;font-weight:700;color:${scoreColor}">
-                ${avg!==null?avg+'%':'아직 퀴즈 없음'}
-              </span>
-              ${scores.length>0?`
-              <div style="flex:1;display:flex;align-items:flex-end;gap:2px;height:20px;margin-left:4px">
-                ${scores.slice(-8).map(sc=>`
-                  <div style="flex:1;height:${Math.max(3,Math.round(sc/100*18))}px;
-                    background:${sc>=80?'#10b981':sc>=60?'#f59e0b':'#ef4444'};
-                    border-radius:2px;opacity:0.8"></div>`).join('')}
-              </div>`:''}
-            </div>
-
-            <!-- 버튼 -->
-            <div style="display:flex;flex-direction:column;gap:7px">
-              <button onclick="openStudentWordView('${b.id}')"
-                style="width:100%;padding:8px 0;background:#fff;color:var(--t2);
-                border:1.5px solid #dde8f2;border-radius:10px;
-                font-size:12px;font-weight:600;cursor:pointer;font-family:'Outfit',sans-serif;
-                transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:4px"
-                onmouseover="this.style.borderColor='${bColor}';this.style.color='${bColor}'"
-                onmouseout="this.style.borderColor='#dde8f2';this.style.color='var(--t2)'">
-                📖 단어 목록 보기
-              </button>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">
-                <button onclick="openStudentStudy('${b.id}')"
-                  style="padding:11px 0;background:linear-gradient(135deg,${bColor},${bColor}cc);
-                  color:#fff;border:none;border-radius:12px;
-                  font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;
-                  transition:all 0.18s;box-shadow:0 3px 10px ${bColor}35;
-                  display:flex;align-items:center;justify-content:center;gap:5px"
-                  onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 16px ${bColor}50'"
-                  onmouseout="this.style.transform='';this.style.boxShadow='0 3px 10px ${bColor}35'">
-                  🃏 암기
-                </button>
-                <button onclick="openStudentQuizPopup('${b.id}')"
-                  style="padding:11px 0;background:#fff;color:#1e3a5f;
-                  border:2px solid #dde8f2;border-radius:12px;
-                  font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;
-                  transition:all 0.18s;
-                  display:flex;align-items:center;justify-content:center;gap:5px"
-                  onmouseover="this.style.borderColor='${bColor}';this.style.color='${bColor}';this.style.transform='translateY(-2px)'"
-                  onmouseout="this.style.borderColor='#dde8f2';this.style.color='#1e3a5f';this.style.transform=''">
-                  📝 퀴즈
-                </button>
-              </div>
-            </div>
+          <!-- 4행: 단어 수 · 회독 수 -->
+          <div style="padding:8px 20px 0">
+            <span style="font-size:12px;color:#94a3b8;font-weight:500">${subText}${rounds>0?' · '+rounds+'회독 완료':''}</span>
           </div>
-        </div>`;
+
+          <!-- 5행: 버튼 -->
+          <div style="padding:14px 16px 10px">
+            <button onclick="openStudentWordView('${b.id}')"
+              style="width:100%;padding:11px 0;background:linear-gradient(135deg,#1e4db7 0%,#1a3fa0 100%);color:#fff;border:2px solid #1e4db7;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 3px 12px rgba(30,77,183,0.28)"
+              onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 20px rgba(30,77,183,0.42)'"
+              onmouseout="this.style.transform='';this.style.boxShadow='0 3px 12px rgba(30,77,183,0.28)'">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              단어보기
+            </button>
+          </div>
+          <div style="padding:0 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <button onclick="openStudentStudy('${b.id}')"
+              style="padding:11px 0;background:#fff;color:#1e3a5f;border:2px solid #cbd5e1;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:5px"
+              onmouseover="this.style.borderColor='#3b82f6';this.style.color='#2563eb';this.style.background='#eff6ff'"
+              onmouseout="this.style.borderColor='#cbd5e1';this.style.color='#1e3a5f';this.style.background='#fff'">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              암기
+            </button>
+            <button onclick="openStudentQuizPopup('${b.id}')"
+              style="padding:11px 0;background:#fff;color:#1e3a5f;border:2px solid #cbd5e1;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:5px"
+              onmouseover="this.style.borderColor='#3b82f6';this.style.color='#2563eb';this.style.background='#eff6ff'"
+              onmouseout="this.style.borderColor='#cbd5e1';this.style.color='#1e3a5f';this.style.background='#fff'">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              퀴즈
+            </button>
+          </div>
+        </div>
+`;
       }).join('')
     : `<div class="empty" style="grid-column:1/-1;padding:60px 20px">
         <div style="width:80px;height:80px;margin:0 auto 16px;animation:slimeBob 3s ease-in-out infinite">
@@ -12040,7 +12081,7 @@ function _createOverlay(id, bg) {
   if (prev) prev.remove();
   const ov = document.createElement('div');
   ov.id = id;
-  ov.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:150;display:flex;flex-direction:column;overflow:hidden;background:' + (bg || 'var(--surface2)');
+  ov.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;z-index:150;display:flex;flex-direction:column;overflow:hidden;background:' + (bg || '#f6f7f8');
   return ov;
 }
 
@@ -12051,60 +12092,66 @@ function _makeOverlayHeader(opts) {
   const slime = getSlimeData();
   const slimeCol = getSlimeColor(slime.colorId);
   return `
-    <div style="background:#fff;border-bottom:1.5px solid ${col.b}25;padding:0 max(12px,min(36px,3vw)) 0 max(12px,min(220px,4vw));height:66px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 10px rgba(15,23,42,0.06);overflow:hidden">
-      <div style="display:flex;align-items:center;gap:18px">
-        <button onclick="${opts.backFn}" style="display:flex;align-items:center;gap:7px;padding:9px 18px;background:none;border:1.5px solid ${col.b}40;border-radius:22px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:${col.dark};cursor:pointer;transition:all 0.15s;white-space:nowrap" onmouseover="this.style.background='${col.a}20'" onmouseout="this.style.background='none'">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>${opts.backLabel}
+    <div style="background:rgba(255,255,255,0.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(3,22,56,0.05);padding:0 24px 0 100px;height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 1px 0 rgba(3,22,56,0.04),0 2px 12px rgba(15,23,42,0.05);">
+      <!-- 왼쪽: 뒤로가기 + 타이틀 -->
+      <div style="display:flex;align-items:center;gap:14px">
+        <button onclick="${opts.backFn}" style="display:flex;align-items:center;gap:6px;padding:6px 12px;background:#f8fafc;border:1px solid #e8edf4;border-radius:8px;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#94a3b8;cursor:pointer;transition:all 0.15s;white-space:nowrap" onmouseover="this.style.background='#f1f5f9';this.style.color='#64748b'" onmouseout="this.style.background='#f8fafc';this.style.color='#94a3b8'">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>${opts.backLabel}
         </button>
-        <div style="width:1px;height:22px;background:${col.b}25;flex-shrink:0"></div>
-        <div style="display:flex;flex-direction:column;gap:2px">
-          <div style="font-size:16px;font-weight:800;color:#1e3a5f;letter-spacing:-0.3px">${opts.title}</div>
-          ${opts.subtitle ? `<div style="font-size:12px;color:#7ea8cc">${opts.subtitle}</div>` : ''}
+        <div>
+          <div style="font-size:16px;font-weight:800;color:#0f172a;letter-spacing:-0.4px;line-height:1.1">${opts.title}</div>
+          ${opts.subtitle ? `<div style="font-size:13px;color:#b0bec5;font-weight:400">${opts.subtitle}</div>` : ''}
         </div>
       </div>
-      <!-- 우측: 알림 / 설정 / 프로필 -->
-      <div style="display:flex;align-items:center;gap:6px;position:relative">
-        <button class="student-topbar-btn" id="ov-notif-btn" onclick="stToggleNotif()" title="알림" style="color:${slimeCol.dark}">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-          <span class="student-topbar-notif-dot" id="st-notif-dot" style="display:none"></span>
-        </button>
-        <div id="st-notif-panel" style="display:none;position:absolute;top:calc(100% + 8px);right:44px;min-width:280px;background:#fff;border:1.5px solid #dde8f2;border-radius:16px;box-shadow:0 8px 32px rgba(30,58,95,0.14);z-index:600;overflow:hidden;animation:fadeUp 0.15s ease both">
-          <div style="padding:12px 16px;border-bottom:1px solid var(--surface2);display:flex;align-items:center;justify-content:space-between">
-            <div style="font-size:13px;font-weight:700;color:#1e3a5f">알림</div>
-            <button onclick="stCloseAll()" style="font-size:11px;color:#7ea8cc;background:none;border:none;cursor:pointer">모두 닫기</button>
-          </div>
-          <div id="st-notif-list" style="max-height:280px;overflow-y:auto;padding:8px 0">
-            <div style="padding:20px;text-align:center;color:#b0c4d8;font-size:13px">새 알림이 없어요 🌱</div>
-          </div>
-          <div style="padding:10px 16px;border-top:1px solid var(--surface2);text-align:center">
-            <button onclick="showPage('pg-messages');stCloseAll()" style="font-size:12px;font-weight:600;color:${slimeCol.dark};background:none;border:none;cursor:pointer">📬 쪽지함 열기</button>
-          </div>
+      <!-- 우측: 검색바 + 아이콘 -->
+      <div style="display:flex;align-items:center;gap:20px;position:relative">
+        <div class="topbar-search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input placeholder="검색..." type="text">
         </div>
-        <button class="student-topbar-btn" onclick="stOpenSettings()" title="설정" style="color:${slimeCol.dark}">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </button>
-        <button class="student-topbar-btn" id="st-profile-btn" onclick="stToggleProfile()" title="프로필" style="width:36px;height:36px;border-radius:10px;overflow:hidden;padding:0;border:2px solid ${slimeCol.b}50;background:${slimeCol.a}20">
-          <div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center">
-            ${buildMiniSlimeSVG(slime.stage, 28, {colorId:slime.colorId,eyeStyle:slime.eyeStyle,accessory:slime.accessory})}
-          </div>
-        </button>
-        <div id="st-profile-panel" class="student-profile-menu" style="display:none">
-          <div style="padding:16px;background:linear-gradient(135deg,${slimeCol.a}20,${slimeCol.b}10);border-bottom:1px solid var(--surface2);display:flex;align-items:center;gap:12px">
-            <div style="width:44px;height:44px;flex-shrink:0;animation:slimeBob 3s ease-in-out infinite">${buildSlimeSVG(slime.stage,44)}</div>
-            <div>
-              <div style="font-size:14px;font-weight:800;color:#1e3a5f">${currentUser?.name||''}</div>
-              <div style="font-size:11px;color:#7ea8cc">Lv.${slime.stage+1} · ${slime.exp.toLocaleString()} EXP</div>
+        <div style="display:flex;align-items:center;gap:4px">
+          <button class="student-topbar-btn" id="ov-notif-btn" onclick="stToggleNotif()" title="알림">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="student-topbar-notif-dot" id="st-notif-dot" style="display:none"></span>
+          </button>
+          <div id="st-notif-panel" style="display:none;position:absolute;top:calc(100% + 8px);right:44px;min-width:280px;background:#fff;border:1.5px solid #dde8f2;border-radius:16px;box-shadow:0 8px 32px rgba(30,58,95,0.14);z-index:600;overflow:hidden;animation:fadeUp 0.15s ease both">
+            <div style="padding:12px 16px;border-bottom:1px solid var(--surface2);display:flex;align-items:center;justify-content:space-between">
+              <div style="font-size:13px;font-weight:700;color:#1e3a5f">알림</div>
+              <button onclick="stCloseAll()" style="font-size:11px;color:#7ea8cc;background:none;border:none;cursor:pointer">모두 닫기</button>
+            </div>
+            <div id="st-notif-list" style="max-height:280px;overflow-y:auto;padding:8px 0">
+              <div style="padding:20px;text-align:center;color:#b0c4d8;font-size:13px">새 알림이 없어요 🌱</div>
+            </div>
+            <div style="padding:10px 16px;border-top:1px solid var(--surface2);text-align:center">
+              <button onclick="showPage('pg-messages');stCloseAll()" style="font-size:12px;font-weight:600;color:#1e3a5f;background:none;border:none;cursor:pointer">📬 쪽지함 열기</button>
             </div>
           </div>
-          <button class="student-profile-menu-item" onclick="stCloseAll()"><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center;flex-shrink:0">${buildMiniSlimeSVG(0,20,{colorId:'blue'})}</span> 내 슬라임</button>
-          <button class="student-profile-menu-item" onclick="stCloseAll()"><span style="font-size:16px">📊</span> 학습 기록</button>
-          <button class="student-profile-menu-item" onclick="stCloseAll()"><span style="font-size:16px">📬</span> 쪽지함</button>
-          <div style="height:1px;background:var(--surface2);margin:4px 0"></div>
-          <button class="student-profile-menu-item" onclick="doLogout()" style="color:#dc2626"><span style="font-size:16px">🚪</span> 로그아웃</button>
+          <button class="student-topbar-btn" onclick="stOpenSettings()" title="설정">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </button>
+          <button id="st-profile-btn" onclick="stToggleProfile()" title="프로필"
+            style="width:40px;height:40px;border-radius:50%;overflow:hidden;padding:0;border:2px solid #e2e8f0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color 0.15s"
+            onmouseover="this.style.borderColor='#93c5fd'" onmouseout="this.style.borderColor='#e2e8f0'">
+            ${buildMiniSlimeSVG(slime.stage, 32, {colorId:slime.colorId,eyeStyle:slime.eyeStyle,accessory:slime.accessory})}
+          </button>
+          <div id="st-profile-panel" class="student-profile-menu" style="display:none">
+            <div style="padding:16px;background:linear-gradient(135deg,${slimeCol.a}20,${slimeCol.b}10);border-bottom:1px solid var(--surface2);display:flex;align-items:center;gap:12px">
+              <div style="width:44px;height:44px;flex-shrink:0;animation:slimeBob 3s ease-in-out infinite">${buildSlimeSVG(slime.stage,44)}</div>
+              <div>
+                <div style="font-size:14px;font-weight:800;color:#1e3a5f">${currentUser?.name||''}</div>
+                <div style="font-size:11px;color:#7ea8cc">Lv.${slime.stage+1} · ${slime.exp.toLocaleString()} EXP</div>
+              </div>
+            </div>
+            <button class="student-profile-menu-item" onclick="stCloseAll()"><span style="display:inline-flex;width:20px;height:20px;align-items:center;justify-content:center;flex-shrink:0">${buildMiniSlimeSVG(0,20,{colorId:'blue'})}</span> 내 슬라임</button>
+            <button class="student-profile-menu-item" onclick="stCloseAll()"><span style="font-size:16px">📊</span> 학습 기록</button>
+            <button class="student-profile-menu-item" onclick="stCloseAll()"><span style="font-size:16px">📬</span> 쪽지함</button>
+            <div style="height:1px;background:var(--surface2);margin:4px 0"></div>
+            <button class="student-profile-menu-item" onclick="doLogout()" style="color:#dc2626"><span style="font-size:16px">🚪</span> 로그아웃</button>
+          </div>
         </div>
       </div>
     </div>
-    ${opts.row2HTML ? `<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:12px max(16px,min(180px,4vw)) 12px max(16px,min(220px,4vw));display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:54px;flex-wrap:wrap;overflow-x:hidden">${opts.row2HTML}</div>` : ''}
+    ${opts.row2HTML ? `<div style="background:rgba(255,255,255,0.75);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(3,22,56,0.05);padding:12px 24px 12px 100px;display:flex;align-items:center;gap:10px;flex-shrink:0;min-height:52px;flex-wrap:wrap;overflow-x:hidden">${opts.row2HTML}</div>` : ''}
   `;
 }
 
