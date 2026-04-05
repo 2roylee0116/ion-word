@@ -291,6 +291,95 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);min-he
 .topbar-search input{border:none;background:none;outline:none;font-size:13px;color:#334155;width:100%;font-family:inherit}
 .topbar-search input::placeholder{color:#94a3b8}
 
+/* ════ 슬라임 챗봇 바 ════ */
+.slime-chat-bar{
+  display:flex;align-items:center;gap:0;
+  background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:28px;
+  height:42px;min-width:260px;max-width:420px;flex:1;
+  transition:all 0.2s;overflow:hidden;position:relative;
+}
+.slime-chat-bar:focus-within{
+  background:#fff;border-color:#93c5fd;
+  box-shadow:0 0 0 3px rgba(147,197,253,0.18);
+}
+.slime-chat-bar-avatar{
+  width:42px;height:42px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+}
+.slime-chat-bar-input{
+  flex:1;border:none;background:none;outline:none;
+  font-size:13px;color:#334155;font-family:'Outfit',sans-serif;
+  padding:0 4px 0 0;
+}
+.slime-chat-bar-input::placeholder{color:#94a3b8}
+.slime-chat-bar-send{
+  width:32px;height:32px;margin-right:5px;flex-shrink:0;
+  border:none;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#2563eb);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all 0.15s;opacity:0;pointer-events:none;
+}
+.slime-chat-bar-send.visible{opacity:1;pointer-events:auto}
+.slime-chat-bar-send:hover{transform:scale(1.08);box-shadow:0 2px 8px rgba(59,130,246,0.4)}
+
+/* 챗봇 드롭다운 패널 */
+.slime-chat-panel{
+  position:absolute;top:calc(100% + 10px);left:0;right:0;
+  background:#fff;border:1.5px solid #dde8f2;border-radius:20px;
+  box-shadow:0 8px 40px rgba(30,58,95,0.13);
+  z-index:600;overflow:hidden;
+  animation:fadeUp 0.18s ease both;
+  display:flex;flex-direction:column;
+  max-height:420px;min-width:320px;
+}
+.slime-chat-msgs{
+  flex:1;overflow-y:auto;padding:14px 14px 8px;
+  display:flex;flex-direction:column;gap:10px;
+  max-height:300px;
+  scrollbar-width:thin;scrollbar-color:#e2e8f0 transparent;
+}
+.slime-chat-msgs::-webkit-scrollbar{width:4px}
+.slime-chat-msgs::-webkit-scrollbar-thumb{background:#e2e8f0;border-radius:99px}
+.slime-chat-bubble{
+  display:flex;gap:8px;align-items:flex-end;
+}
+.slime-chat-bubble.user{flex-direction:row-reverse}
+.slime-chat-bubble-avatar{
+  width:28px;height:28px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.slime-chat-bubble-text{
+  max-width:78%;padding:9px 13px;border-radius:16px;
+  font-size:13px;line-height:1.5;color:#1e3a5f;
+  background:#f1f7ff;border:1px solid #dbeafe;
+  border-bottom-left-radius:4px;
+  word-break:break-word;
+}
+.slime-chat-bubble.user .slime-chat-bubble-text{
+  background:linear-gradient(135deg,#3b82f6,#2563eb);
+  color:#fff;border:none;
+  border-bottom-right-radius:4px;border-bottom-left-radius:16px;
+}
+.slime-chat-bubble-typing{
+  display:flex;gap:4px;align-items:center;padding:10px 14px;
+}
+.slime-chat-bubble-typing span{
+  width:6px;height:6px;border-radius:50%;background:#93c5fd;
+  animation:loader 1.2s ease infinite;
+}
+.slime-chat-bubble-typing span:nth-child(2){animation-delay:0.2s}
+.slime-chat-bubble-typing span:nth-child(3){animation-delay:0.4s}
+.slime-chat-footer{
+  padding:10px 12px;border-top:1px solid #f1f5f9;
+  display:flex;gap:6px;flex-wrap:wrap;
+}
+.slime-chat-quick{
+  padding:5px 11px;border-radius:99px;border:1.5px solid #dbeafe;
+  background:#eff6ff;color:#2563eb;font-size:11px;font-weight:600;
+  cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.15s;white-space:nowrap;
+}
+.slime-chat-quick:hover{background:#dbeafe}
+
 .content{padding:20px 32px 36px}
 .page{display:none}
 .page.active{display:block;background:#f8f9fa;min-height:calc(100vh - 58px);margin:-20px -32px -36px;padding:20px 32px 36px}
@@ -1162,7 +1251,7 @@ body.student-mode {
 .slime-body { animation:slimeBob 3.2s ease-in-out infinite;transform-origin:bottom center }
 .slime-aura { position:absolute;inset:-14px;border-radius:50%;animation:auraRotate 6s linear infinite;pointer-events:none;opacity:0;transition:opacity 0.4s; }
 .slime-stage.has-aura .slime-aura { opacity:1 }
-.slime-name-tag { font-family:'Fraunces',serif;font-size:16px;font-weight:900;color:#2e1065;letter-spacing:-0.3px;margin-bottom:3px;position:relative;z-index:1; }
+.slime-name-tag { font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:#2e1065;letter-spacing:0.2px;margin-bottom:3px;position:relative;z-index:1; }
 .slime-stage-badge { display:inline-flex;align-items:center;gap:4px;padding:3px 11px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:0.3px;margin-bottom:8px;background:rgba(99,102,241,0.14);color:#4338ca; }
 .slime-streak-row { display:flex;align-items:center;gap:4px;margin-bottom:0;font-size:11px;font-weight:600;color:#64748b; }
 
@@ -1360,6 +1449,8 @@ body.student-mode {
   }
   .topbar-title{font-size:17px;font-weight:800}
   .topbar-search{display:none} /* 모바일에서 topbar 검색창 숨김 */
+  .slime-chat-bar{min-width:160px;max-width:200px}
+  .slime-chat-panel{min-width:240px;left:-60px;right:-60px}
   .hamburger-btn{display:flex !important}
   .content{padding:12px 14px 20px}
 
@@ -1459,52 +1550,9 @@ body.student-mode {
   .content{padding:10px 12px 16px}
 }
 
-/* ════ 모바일 하단 네비게이션 바 ════ */
-#mobile-bottom-nav{
-  display:none;
-  position:fixed;bottom:0;left:0;right:0;
-  height:64px;z-index:150;
-  background:rgba(255,255,255,0.96);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-  border-top:1px solid rgba(0,0,0,0.08);
-  box-shadow:0 -2px 16px rgba(0,0,0,0.08);
-  padding:0 8px;
-  justify-content:space-around;
-  align-items:center;
-}
-@media(max-width:600px){
-  #mobile-bottom-nav{display:flex}
-}
-.mob-nav-btn{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;flex:1;padding:8px 4px;border:none;background:none;
-  cursor:pointer;border-radius:12px;transition:all 0.15s;
-  color:#94a3b8;min-width:0;
-}
-.mob-nav-btn.active{color:#3b82f6}
-.mob-nav-btn:active{background:rgba(59,130,246,0.08)}
-.mob-nav-icon{
-  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
-  border-radius:8px;transition:all 0.15s;
-}
-.mob-nav-btn.active .mob-nav-icon{
-  background:rgba(59,130,246,0.1);
-  color:#3b82f6;
-}
-.mob-nav-label{
-  font-size:9.5px;font-weight:600;font-family:'Outfit',sans-serif;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
-  letter-spacing:0.1px;
-}
 
-/* ─ 모바일에서 .main 하단 여백 (바텀 네비바 가림 방지) ─ */
-@media(max-width:600px){
-  .main{padding-bottom:80px}
-  #fc-body,#quiz-body{padding-bottom:170px !important}
-  .quiz-container{padding-bottom:170px}
-}
 
-@media print{.sidebar,.topbar,#modal-bg,.toast,#mobile-bottom-nav{display:none !important}.main{margin-left:0 !important;padding-bottom:0 !important}.content{padding:0 !important}}
+@media print{.sidebar,.topbar,#modal-bg,.toast{display:none !important}.main{margin-left:0 !important;padding-bottom:0 !important}.content{padding:0 !important}}
 
 .fav-toggle{display:flex;align-items:center;gap:6px;flex-shrink:0;cursor:pointer;padding:4px 2px;border-radius:8px;background:none;border:none;transition:opacity 0.15s}
 .fav-toggle:hover{opacity:0.8}
@@ -1581,7 +1629,7 @@ body.student-mode {
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 
     <!-- ====== 모바일 바텀 네비게이션 ====== -->
-    <nav id="mobile-bottom-nav" aria-label="하단 네비게이션"></nav>
+
 
     <div class="topbar">
       <div class="topbar-left">
@@ -4060,10 +4108,21 @@ function buildStudentTopbar() {
 
   right.innerHTML = `
     <div style="display:flex;align-items:center;gap:20px;position:relative">
-      <!-- 검색바 -->
-      <div class="topbar-search">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input placeholder="검색..." type="text">
+      <!-- 슬라임 챗봇 바 -->
+      <div class="slime-chat-bar" id="slime-chat-bar">
+        <div class="slime-chat-bar-avatar" onclick="stToggleChat()" title="슬라임과 대화하기">
+          ${buildMiniSlimeSVG(slime.stage, 30, {colorId:slime.colorId,eyeStyle:slime.eyeStyle,accessory:slime.accessory})}
+        </div>
+        <input class="slime-chat-bar-input" id="slime-chat-input"
+          placeholder="${slime.slimeName||'슬라임'}에게 물어보세요... 💬"
+          onkeydown="if(event.key==='Enter')slimeChatSend()"
+          oninput="const s=document.getElementById('slime-chat-send');if(s)s.classList.toggle('visible',this.value.trim().length>0)"
+          onfocus="if(!document.getElementById('slime-chat-panel'))stOpenChat()">
+        <button class="slime-chat-bar-send" id="slime-chat-send" onclick="slimeChatSend()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+        <!-- 채팅 드롭다운 -->
+        <div class="slime-chat-panel" id="slime-chat-panel" style="display:none"></div>
       </div>
       <!-- 아이콘 그룹 -->
       <div style="display:flex;align-items:center;gap:4px">
@@ -4142,6 +4201,193 @@ function buildStudentTopbar() {
   stCheckUnread();
 }
 
+// ════ 슬라임 챗봇 ════
+let _slimeChatHistory = []; // {role, content}
+
+function _slimeChatPersonality() {
+  const slime = getSlimeData();
+  const stage = slime.stage || 0;
+  const name = slime.slimeName || '슬라임';
+  const stageNames = ['베이비 슬라임','루키 슬라임','마스터 슬라임','가디언 슬라임'];
+  const personalities = [
+    `너는 "${name}"이라는 이름의 베이비 슬라임이야. 아직 아기라서 말투가 귀엽고 서툴러. 문장을 짧게 쓰고 ~요, ~해요 체를 써. 가끔 "뿌잉~", "으아~" 같은 감탄사를 써. 이모지를 자주 써. 모르는 게 있으면 솔직하게 몰라요! 라고 해.`,
+    `너는 "${name}"이라는 이름의 루키 슬라임이야. 이제 좀 성장해서 씩씩하고 긍정적인 말투야. ~해!, ~이야! 처럼 활기차게 말해. 학생의 영어 공부를 열심히 응원해줘. 이모지를 적당히 써.`,
+    `너는 "${name}"이라는 이름의 마스터 슬라임이야. 지혜롭고 차분한 선생님 같은 말투야. 영어 학습에 대해 깊이 있는 조언을 해줄 수 있어. 존댓말을 써. 이모지는 절제해서 써.`,
+    `너는 "${name}"이라는 이름의 가디언 슬라임이야. 전설적인 존재로 카리스마 있고 심오한 말투를 써. 영어와 학습에 대해 철학적인 조언도 해. 가끔 멋진 영어 명언을 인용하기도 해. 이모지는 ⚡✨ 위주로 씀.`
+  ];
+  const assignedBooks = getAssignedBooks ? getAssignedBooks() : [];
+  const bookNames = assignedBooks.slice(0,5).map(b=>b.name).join(', ');
+  const sentBooks = (DB_sentBooks||[]).slice(0,5).map(b=>b.name).join(', ');
+
+  return `${personalities[stage]}
+
+너의 역할:
+1. 영어 학습 도우미: 단어 뜻, 예문, 발음, 문법 질문에 답해줘
+2. 자유 대화: 학생의 이야기를 들어주고 공감해줘
+3. 학습 격려: 공부하기 싫을 때 동기부여 해줘
+4. 퀴즈 출제: "단어 퀴즈 내줘" 같은 요청에 간단한 퀴즈를 내줘
+
+현재 학생 정보:
+- 이름: ${currentUser?.name || '학생'}
+- 레벨: Lv.${stage+1} (${stageNames[stage]})
+- 배포된 단어장: ${bookNames || '없음'}
+- 배포된 문장집: ${sentBooks || '없음'}
+
+답변은 2~4문장으로 간결하게. 너무 길게 쓰지 마.`;
+}
+
+function _slimeChatRenderPanel() {
+  const panel = document.getElementById('slime-chat-panel');
+  if (!panel) return;
+  const slime = getSlimeData();
+  const col = getSlimeColor(slime.colorId);
+
+  const quickBtns = [
+    { label:'단어 퀴즈 내줘 🎯', msg:'단어 퀴즈 내줘!' },
+    { label:'오늘 공부 어떻게 할까?', msg:'오늘 영어 공부 어떻게 하면 좋을지 추천해줘!' },
+    { label:'영어 한마디 알려줘', msg:'오늘의 영어 표현 하나 알려줘!' },
+  ];
+
+  const msgsHTML = _slimeChatHistory.map(m => {
+    if (m.role === 'user') {
+      return `<div class="slime-chat-bubble user">
+        <div class="slime-chat-bubble-text">${m.content}</div>
+      </div>`;
+    } else {
+      return `<div class="slime-chat-bubble">
+        <div class="slime-chat-bubble-avatar">${buildMiniSlimeSVG(slime.stage,24,{colorId:slime.colorId})}</div>
+        <div class="slime-chat-bubble-text">${m.content.split('\n').join('<br>')}</div>
+      </div>`;
+    }
+  }).join('');
+
+  panel.innerHTML = `
+    <div style="padding:12px 14px 10px;border-bottom:1px solid #f1f5f9;
+      display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,${col.a}18,${col.b}10)">
+      <div style="width:28px;height:28px">${buildMiniSlimeSVG(slime.stage,28,{colorId:slime.colorId})}</div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#1e3a5f">${slime.slimeName||'슬라임'}</div>
+        <div style="font-size:10px;color:#7ea8cc">Lv.${slime.stage+1} · 언제든지 물어봐!</div>
+      </div>
+      <button onclick="stCloseAll()" style="margin-left:auto;background:none;border:none;color:#94a3b8;cursor:pointer;font-size:16px;line-height:1;padding:2px">✕</button>
+    </div>
+    <div class="slime-chat-msgs" id="slime-chat-msgs">
+      ${_slimeChatHistory.length === 0 ? `
+        <div class="slime-chat-bubble">
+          <div class="slime-chat-bubble-avatar">${buildMiniSlimeSVG(slime.stage,24,{colorId:slime.colorId})}</div>
+          <div class="slime-chat-bubble-text">안녕! 나는 ${slime.slimeName||'슬라임'}이야 🌟<br>영어 공부 도움이 필요하거나 그냥 얘기하고 싶으면 말해줘!</div>
+        </div>` : msgsHTML}
+    </div>
+    <div class="slime-chat-footer">
+      ${quickBtns.map(q=>`<button class="slime-chat-quick" onclick="slimeChatSendMsg('${q.msg}')">${q.label}</button>`).join('')}
+    </div>
+  `;
+
+  // 스크롤 맨 아래
+  setTimeout(() => {
+    const msgs = document.getElementById('slime-chat-msgs');
+    if (msgs) msgs.scrollTop = msgs.scrollHeight;
+  }, 50);
+}
+
+function stOpenChat() {
+  const panel = document.getElementById('slime-chat-panel');
+  if (!panel) return;
+  // 알림·프로필 닫기
+  const notif = document.getElementById('st-notif-panel');
+  const profile = document.getElementById('st-profile-panel');
+  if (notif) notif.style.display = 'none';
+  if (profile) profile.style.display = 'none';
+
+  panel.style.display = '';
+  _slimeChatRenderPanel();
+}
+
+function stToggleChat() {
+  const panel = document.getElementById('slime-chat-panel');
+  if (!panel) return;
+  if (panel.style.display === 'none' || panel.style.display === '') {
+    stOpenChat();
+  } else {
+    panel.style.display = 'none';
+  }
+}
+
+async function slimeChatSend() {
+  const input = document.getElementById('slime-chat-input');
+  if (!input) return;
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  const sendBtn = document.getElementById('slime-chat-send');
+  if (sendBtn) sendBtn.classList.remove('visible');
+  await slimeChatSendMsg(text);
+}
+
+async function slimeChatSendMsg(text) {
+  // 패널 열려있지 않으면 열기
+  const panel = document.getElementById('slime-chat-panel');
+  if (!panel || panel.style.display === 'none') stOpenChat();
+
+  _slimeChatHistory.push({ role: 'user', content: text });
+  _slimeChatRenderPanel();
+
+  // 타이핑 인디케이터 추가
+  const msgs = document.getElementById('slime-chat-msgs');
+  const slime = getSlimeData();
+  if (msgs) {
+    const typing = document.createElement('div');
+    typing.className = 'slime-chat-bubble';
+    typing.id = 'slime-typing';
+    typing.innerHTML = `
+      <div class="slime-chat-bubble-avatar">${buildMiniSlimeSVG(slime.stage,24,{colorId:slime.colorId})}</div>
+      <div class="slime-chat-bubble-text slime-chat-bubble-typing">
+        <span></span><span></span><span></span>
+      </div>`;
+    msgs.appendChild(typing);
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  try {
+    const messages = _slimeChatHistory.map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.content }));
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 400,
+        system: _slimeChatPersonality(),
+        messages,
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.map(c => c.text||'').join('') || '...';
+
+    // 타이핑 제거
+    const t = document.getElementById('slime-typing');
+    if (t) t.remove();
+
+    _slimeChatHistory.push({ role: 'assistant', content: reply });
+    _slimeChatRenderPanel();
+  } catch(e) {
+    const t = document.getElementById('slime-typing');
+    if (t) t.remove();
+    _slimeChatHistory.push({ role: 'assistant', content: '앗, 연결이 잠깐 끊겼어! 다시 말해줄래? 🫧' });
+    _slimeChatRenderPanel();
+  }
+}
+
+// 외부 클릭 시 채팅 패널 닫기 (기존 stCloseAll 외부클릭 로직 확장)
+document.addEventListener('click', function(e) {
+  const bar = document.getElementById('slime-chat-bar');
+  const panel = document.getElementById('slime-chat-panel');
+  if (!bar || !panel) return;
+  if (!bar.contains(e.target) && panel.style.display !== 'none') {
+    panel.style.display = 'none';
+  }
+});
+
 function stToggleNotif() {
   const notif = document.getElementById('st-notif-panel');
   const profile = document.getElementById('st-profile-panel');
@@ -4161,8 +4407,10 @@ function stToggleProfile() {
 function stCloseAll() {
   const notif = document.getElementById('st-notif-panel');
   const profile = document.getElementById('st-profile-panel');
+  const chat = document.getElementById('slime-chat-panel');
   if (notif) notif.style.display = 'none';
   if (profile) profile.style.display = 'none';
+  if (chat) chat.style.display = 'none';
 }
 
 function stOpenSettings() {
@@ -4567,10 +4815,6 @@ function showPage(id, addHistory = true) {
   document.getElementById('topbar-title').textContent = pageTitles[id] || '';
   // 모바일에서 페이지 이동 시 사이드바 자동 닫기
   if (window.innerWidth <= 600) closeSidebar();
-  // 모바일 바텀 네비 활성 상태 업데이트
-  document.querySelectorAll('.mob-nav-btn').forEach(b => {
-    b.classList.toggle('active', b.dataset.page === id);
-  });
 
   // 브라우저 히스토리에 추가
   if (addHistory) {
@@ -16894,40 +17138,6 @@ function closeSidebar() {
   overlay.classList.remove('open');
 }
 
-// ── 모바일 바텀 네비 렌더 ──
-function renderMobileBottomNav() {
-  const nav = document.getElementById('mobile-bottom-nav');
-  if (!nav || !currentUser) return;
-  const isTeacher = currentUser.role === 'teacher';
-  const curPage = document.querySelector('.page.active')?.id || '';
-
-  const teacherItems = [
-    { page:'pg-dashboard', label:'대시보드', icon:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>' },
-    { page:'pg-library',   label:'단어장',   icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>' },
-    { page:'pg-sentences', label:'문장집',   icon:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' },
-    { page:'pg-students',  label:'학생관리', icon:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>' },
-    { page:'pg-editor',    label:'에디터',   icon:'<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>' },
-  ];
-  const studentItems = [
-    { page:'pg-slime-home',     label:'홈',     icon:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>' },
-    { page:'pg-mybooks',        label:'단어장', icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>' },
-    { page:'pg-flashcard',      label:'플래시', icon:'<rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>' },
-    { page:'pg-quiz',           label:'퀴즈',   icon:'<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>' },
-    { page:'pg-sentence-study', label:'문장',   icon:'<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>' },
-  ];
-  const items = isTeacher ? teacherItems : studentItems;
-
-  nav.innerHTML = items.map(it => `
-    <button class="mob-nav-btn${curPage===it.page?' active':''}" data-page="${it.page}"
-      onclick="showPage('${it.page}')">
-      <div class="mob-nav-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${it.icon}</svg>
-      </div>
-      <span class="mob-nav-label">${it.label}</span>
-    </button>
-  `).join('');
-}
 
 // 모바일 여부에 따라 햄버거 버튼 표시
 function updateMobileUI() {
@@ -16941,8 +17151,6 @@ function updateMobileUI() {
     sidebar.classList.remove('open');
     overlay.classList.remove('open');
   }
-  // 바텀 네비 렌더 (currentUser 있을 때만)
-  if (currentUser) renderMobileBottomNav();
 }
 
 window.addEventListener('resize', updateMobileUI);
@@ -19230,6 +19438,7 @@ function saveSlimeCustomize() {
   showToast('슬라임이 꾸며졌어요! 🎉','success');
 }
 function openProfileEditModal() {
+  const slime = getSlimeData();
   showModal(`
     <div class="modal-title">✏️ 내 프로필 수정</div>
     <div class="form-group">
@@ -19242,6 +19451,10 @@ function openProfileEditModal() {
         ${['중1','중2','중3','고1','고2','고3','기타'].map(g=>`<option value="${g}" ${currentUser.grade===g?'selected':''}>${g}</option>`).join('')}
       </select>
     </div>
+    <div class="form-group">
+      <label class="form-label">슬라임 이름</label>
+      <input class="form-input" id="prof-slime-name" value="${slime.slimeName||'내 슬라임'}" placeholder="슬라임 이름" maxlength="12">
+    </div>
     <div class="modal-actions">
       <button class="btn btn-ghost" onclick="closeModal()">취소</button>
       <button class="btn btn-primary" onclick="saveProfile()">저장</button>
@@ -19252,10 +19465,16 @@ function openProfileEditModal() {
 async function saveProfile() {
   const name = document.getElementById('prof-name').value.trim();
   const grade = document.getElementById('prof-grade').value;
+  const slimeName = (document.getElementById('prof-slime-name')?.value||'').trim();
   if (!name) { showToast('이름을 입력하세요.','error'); return; }
   try {
     await sb.from('profiles').update({ name, grade }).eq('id', currentUser.id);
     currentUser.name = name; currentUser.grade = grade;
+    if (slimeName) {
+      const slime = getSlimeData();
+      slime.slimeName = slimeName;
+      saveSlimeData(slime);
+    }
     document.getElementById('user-name-display').textContent = name;
     closeModal(); showToast('프로필이 수정됐습니다!', 'success');
     renderSlimeHome();
@@ -19315,14 +19534,14 @@ function renderSlimeHome() {
         <div class="slime-book-name">${b.name}</div>
         <div class="slime-book-meta">${b.grade?b.grade+' · ':''}${wc}개 단어</div>
         <div class="slime-book-prog-wrap">
-          <div class="slime-book-prog" style="width:${pct}%;background:linear-gradient(90deg,#818cf8,#a78bfa);transition:width 0.8s ease"></div>
+          <div class="slime-book-prog" style="width:${pct}%;background:linear-gradient(90deg,#163490 0%,#1e4db7 50%,#60a5fa 100%);transition:width 0.8s ease;box-shadow:0 0 6px rgba(30,77,183,0.4)"></div>
         </div>
       </div>
       <div class="slime-book-actions">
         <button class="slime-mini-btn" style="background:#f8fafc;border-color:#e2e8f0;color:#475569"
           onclick="openStudentStudy('${b.id}')">보기</button>
         <div class="slime-popup-wrap">
-          <button class="slime-mini-btn" style="background:#eef2ff;border-color:#c7d2fe;color:#4338ca"
+        <button class="slime-mini-btn" style="background:#eff6ff;border-color:#bfdbfe;color:#1e4db7"
             onclick="slimeToggleDropdown('${uid}',this)">학습 ▾</button>
           <div class="slime-dropdown" id="${uid}">
             <button class="slime-dropdown-item" onclick="openStudentStudy('${b.id}');slimeCloseDropdown('${uid}')">암기</button>
@@ -19342,19 +19561,19 @@ function renderSlimeHome() {
         <div class="slime-book-name">${b.name}</div>
         <div class="slime-book-meta">${b.tag?b.tag+' · ':''}${cnt}개 문장</div>
         <div class="slime-book-prog-wrap">
-          <div class="slime-book-prog" style="width:0%;background:linear-gradient(90deg,#34d399,#10b981)"></div>
+          <div class="slime-book-prog" style="width:0%;background:linear-gradient(90deg,#059669 0%,#10b981 50%,#34d399 100%);box-shadow:0 0 6px rgba(5,150,105,0.4)"></div>
         </div>
       </div>
       <div class="slime-book-actions">
         <button class="slime-mini-btn" style="background:#f8fafc;border-color:#e2e8f0;color:#475569"
           onclick="showPage('pg-sentence-study')">보기</button>
         <div class="slime-popup-wrap">
-          <button class="slime-mini-btn" style="background:#f0fdf4;border-color:#bbf7d0;color:#15803d"
+        <button class="slime-mini-btn" style="background:#ecfdf5;border-color:#6ee7b7;color:#059669"
             onclick="slimeToggleDropdown('${uid}',this)">학습 ▾</button>
           <div class="slime-dropdown" id="${uid}">
-            <button class="slime-dropdown-item" onclick="showPage('pg-sentence-study');slimeCloseDropdown('${uid}')">배열</button>
-            <button class="slime-dropdown-item" onclick="showPage('pg-sentence-study');slimeCloseDropdown('${uid}')">빈칸</button>
-            <button class="slime-dropdown-item" onclick="showPage('pg-sentence-study');slimeCloseDropdown('${uid}')">낭독</button>
+            <button class="slime-dropdown-item" onclick="slimeCloseDropdown('${uid}');startSentStudy('${b.id}','unscramble')">배열</button>
+            <button class="slime-dropdown-item" onclick="slimeCloseDropdown('${uid}');startSentStudy('${b.id}','dictation')">빈칸</button>
+            <button class="slime-dropdown-item" onclick="slimeCloseDropdown('${uid}');startSentRecording('${b.id}')">낭독</button>
           </div>
         </div>
       </div>
@@ -19442,14 +19661,14 @@ function renderSlimeHome() {
     <div class="slime-study-panel">
       <div class="slime-study-section">
         <div class="slime-study-section-head">
-          <div class="slime-study-section-title"><div class="slime-section-dot" style="background:#818cf8"></div>나의 단어장</div>
+          <div class="slime-study-section-title"><div class="slime-section-dot" style="background:#1e4db7"></div>Vocabulary</div>
           <button class="slime-study-more" onclick="showPage('pg-mybooks')">전체보기 →</button>
         </div>
         ${wordBooks.length ? wordBooks.map((b,i)=>wordBookHTML(b,i)).join('') : `<div class="slime-empty">배포된 단어장이 없어요</div>`}
       </div>
       <div class="slime-study-section">
         <div class="slime-study-section-head">
-          <div class="slime-study-section-title"><div class="slime-section-dot" style="background:#34d399"></div>나의 문장집</div>
+          <div class="slime-study-section-title"><div class="slime-section-dot" style="background:#059669"></div>Reading</div>
           <button class="slime-study-more" onclick="showPage('pg-sentence-study')">전체보기 →</button>
         </div>
         ${sentBooks.length ? sentBooks.map((b,i)=>sentBookHTML(b,i)).join('') : `<div class="slime-empty">배포된 문장집이 없어요</div>`}
